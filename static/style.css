@@ -1,4 +1,11 @@
+html, body {
+    height: 100%;
+}
+
 body {
+    display: flex;
+    flex-direction: column;
+
     font-family: "noto sans", sans-serif;
     height: 100%;
 }
@@ -15,9 +22,22 @@ a:hover {
 
 header, footer, div.page {
     width: 760px;
+    padding: 20px 30px;
+}
+header {
+    flex: 0 1 auto;
+    margin: 0 auto;
+}
+
+div.page {
+    flex: 1 1 auto;
     margin: 0 auto;
     background: #daeef3;
-    padding: 20px 30px;
+}
+
+footer {
+    flex: 0 1 auto;
+    margin: 0 auto;
 }
 
 header, footer {
@@ -27,9 +47,10 @@ header, footer {
 header h1 {
     color: #169bbd;
     text-align: center;
-    margin: 0;
+    text-transform: uppercase;
+
     font-family: "noto sans", sans-serif;
-    font-weight: normal;
+    font-weight: bold;
     font-size: 42px;
 }
 
@@ -46,5 +67,20 @@ header nav ul li {
 }
 
 div.page {
+    display: flex;
+    flex-direction: column;
     background: #f1fbfe;
+}
+
+div.page .blog-post {
+      flex: 1 1 auto;
+}
+
+div.page h1, div.page .pagination {
+  text-align: center;
+}
+
+.meta {
+  font-style: italic;
+  font-weight: lighter;
 }
