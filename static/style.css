@@ -1,14 +1,16 @@
 body {
-    font-family: 'Verdana', sans-serif;
-    margin: 50px 25px;
+    font-family: "noto sans", sans-serif;
+    height: 100%;
 }
 
 a {
     color: #2a99b6;
+    text-decoration: none;
 }
 
 a:hover {
     color: #33bbdf;
+    text-decoration: underline;
 }
 
 header, footer, div.page {
@@ -18,9 +20,15 @@ header, footer, div.page {
     padding: 20px 30px;
 }
 
+header, footer {
+    text-align: center;
+}
+
 header h1 {
     color: #169bbd;
+    text-align: center;
     margin: 0;
+    font-family: "noto sans", sans-serif;
     font-weight: normal;
     font-size: 42px;
 }
