@@ -1,48 +1,28 @@
-html, body {
-    height: 100%;
+html, body, div#canvas {
+    height: 100%; /* using flex*/
 }
 
 body {
+    font-family: Roboto Slab, Georgia, Times New Roman, sans-serif;
+}
+
+div#canvas {
     display: flex;
     flex-direction: column;
-
-    font-family: "noto sans", sans-serif;
-    background: #f1fbfe;
-}
-
-a {
-    color: #2a99b6;
-    text-decoration: none;
-}
-
-a:hover {
-    color: #33bbdf;
-    text-decoration: underline;
-}
-
-header, footer, div.page {
-    width: 760px;
-    padding: 20px 30px;
-}
-header {
-    flex: 0 1 auto;
     margin: 0 auto;
-}
-
-div.page {
-    display: flex;
-    flex: 1 1 auto;
-    flex-direction: column;
-    margin: 0 auto;
-}
-
-footer {
-    flex: 0 1 auto;
-    margin: 0 auto;
+    max-width: 50em;
+    padding: 0 30px;
+    width: auto;
 }
 
 header, footer {
+    flex: 0 1 auto;
+    margin: 20px auto;
     text-align: center;
+}
+
+div.page {
+    flex: 1 1 auto;
 }
 
 header h1 {
@@ -78,4 +58,14 @@ div.page h1, div.page .pagination {
 .meta {
   font-style: italic;
   font-weight: lighter;
+}
+
+a {
+    color: #2a99b6;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #33bbdf;
+    text-decoration: underline;
 }
