@@ -59,8 +59,7 @@ div.page {
 }
 
 /* for website name style */
-header h1 {
-    color: #169bbd;
+header .logo-text {
     text-align: center;
     text-transform: uppercase;
 
@@ -82,18 +81,41 @@ header nav ul li {
     padding: 0;
 }
 
-div.page h1, div.page .pagination {
+div.page .logo-text, div.page .pagination {
     text-align: center;
 }
 
+/* for post title */
 div.page .blog-post h2 {
     font-family: Noe Text, qingkai, serif;
 }
 
+/* for first paragraph style*/
+p.firstpara:first-letter {
+    font-size: 4em;
+    font-weight: bold;
+    margin-right: 8px;
+    float: left;	
+}
+.smallcaps {
+    font-variant: small-caps;
+    font-weight: 400;
+    letter-spacing: 0.0625rem;
+    text-transform: lowercase;
+}
+
 /* for post field style */
-.meta {
+p.meta {
     font-style: italic;
-    font-weight: lighter;
+    font-size: 1rem;
+}
+
+/* for post pagination */
+div.nav-prev {
+    float: left;
+}
+div.nav-next {
+    float: right;
 }
 
 a {
@@ -106,18 +128,11 @@ a:hover {
     text-decoration: underline;
 }
 
+p.post-image>img {
+    display:block;
+    margin:auto;
 
-/* first paragraph style*/
-p.firstpara:first-letter {
-    font-size: 4em;
-    font-weight: bold;
-    margin-right: 8px;
-    float: left;	
-}
-
-.smallcaps {
-    font-variant: small-caps;
-    font-weight: 400;
-    letter-spacing: 0.0625rem;
-    text-transform: lowercase;
+    border-radius: 50%;
+    width: 75%;
+    height: 75%;
 }
