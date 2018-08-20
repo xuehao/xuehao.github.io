@@ -1,16 +1,50 @@
+@font-face {
+    font-family: "Noe Text";
+    src: 
+        url("./Noe-Text-Black.woff2") format("woff2"), 
+        url("./Noe-Text-Black.woff") format("woff");
+    font-style: normal;
+    font-weight: 900;
+    font-stretch: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Lyon Text";
+    src: 
+        url("./Lyon-Text-Regular.woff2") format("woff2"), 
+        url("./Lyon-Text-Regular.woff") format("woff");
+    font-style: normal;
+    font-weight: 400;
+    font-stretch: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'qingkai';
+    src:
+      url('./qingkai.woff2') format('woff2'),
+      url('./qingkai.woff') format('woff');
+    font-weight: normal;
+    font-style: 400;
+    font-stretch: normal;
+    font-display: swap;
+  }
+
 html, body, div#canvas {
     height: 100%; /* using flex*/
 }
 
 body {
-    font-family: Roboto Slab, Georgia, Times New Roman, sans-serif;
+    font-family: Lyon Text, qingkai, serif;
+    font-size: 1.2375rem;
 }
 
 div#canvas {
     display: flex;
     flex-direction: column;
     margin: 0 auto;
-    max-width: 50em;
+    max-width: 40em;
     padding: 0 30px;
     width: auto;
 }
@@ -30,9 +64,8 @@ header h1 {
     text-align: center;
     text-transform: uppercase;
 
-    font-family: "noto sans", sans-serif;
+    font-family: Noe Text, qingkai, serif;
     font-weight: bold;
-    font-size: 42px;
 }
 
 header nav ul {
@@ -48,16 +81,21 @@ header nav ul li {
 }
 
 div.page .blog-post {
-      flex: 1 1 auto;
+
+    flex: 1 1 auto;
 }
 
 div.page h1, div.page .pagination {
-  text-align: center;
+    text-align: center;
+}
+
+div.page .blog-post h2 {
+    font-family: Noe Text, qingkai, serif;
 }
 
 .meta {
-  font-style: italic;
-  font-weight: lighter;
+    font-style: italic;
+    font-weight: lighter;
 }
 
 a {
@@ -69,3 +107,16 @@ a:hover {
     color: #33bbdf;
     text-decoration: underline;
 }
+
+.smallcaps {
+    font-variant: small-caps;
+    font-weight: 400;
+    letter-spacing: 0.0625rem;
+    text-transform: lowercase;
+}
+p.firstpara:first-letter {
+    font-size: 4em;
+    font-weight: bold;
+    margin-right: 8px;
+    float: left;	
+  }
