@@ -138,3 +138,11 @@ p.post-image>img {
     width: 75%;
     height: 75%;
 }
+p.head-image>img {
+    display:block;
+    margin:auto;
+
+    border-radius: 50%;
+    width: 50%;
+    height: 50%;
+}
