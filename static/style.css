@@ -20,23 +20,12 @@
     font-display: swap;
 }
 
-@font-face {
-    font-family: 'qingkai';
-    src:
-      url('./qingkai.woff2') format('woff2'),
-      url('./qingkai.woff') format('woff');
-    font-weight: normal;
-    font-style: 400;
-    font-stretch: normal;
-    font-display: swap;
-  }
-
 html, body, div#canvas {
     height: 100%; /* using flex*/
 }
 
 body {
-    font-family: Lyon Text, qingkai, serif;
+    font-family: Lyon Text, PMingLiU, serif;
     font-size: 1.25rem;
 }
 
@@ -63,7 +52,7 @@ header .logo-text {
     text-align: center;
     text-transform: uppercase;
 
-    font-family: Noe Text, qingkai, serif;
+    font-family: Noe Text, PMingLiU, serif;
     font-weight: bold;
     letter-spacing: 0.0625rem;
     font-size: 2.25em;
@@ -89,7 +78,7 @@ div.page .logo-text, div.page .pagination {
 
 /* for post title */
 div.page .blog-post h2 {
-    font-family: Noe Text, qingkai, serif;
+    font-family: Noe Text, PMingLiU, serif;
 }
 
 /* for first paragraph style*/
