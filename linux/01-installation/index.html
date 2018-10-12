@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../../static/normalize.css">
 <link rel="stylesheet" href="../../static/style.css">
 <link rel="stylesheet" href="../../static/pygments.css">
-<title>Linux 学习笔记[1%] — StickMind</title>
+<title>1. 安装 CentOS[TODO] — StickMind</title>
 
 <body>
   <div id="canvas">
@@ -18,7 +18,7 @@
           
           <li ><a href="../../english/">英语</a></li>
           
-          <li  class="active" ><a href="../../blog/">文章</a></li>
+          <li ><a href="../../blog/">文章</a></li>
           
           <li  class="active" ><a href="../../">关于我</a></li>
           
@@ -33,19 +33,16 @@
 <div class="blog-post">
 
   
-  <h2>Linux 学习笔记[1%]</h2>
+  <h2>1. 安装 CentOS[TODO]</h2>
   
 
   <p class="meta">
-    发表于 2018-10-10
+    发表于 2018-10-01
   </p>
 
   
 
   <ul class="toc">
-    
-    <li><a href="#0.-linux">0. 关于学习 Linux 系统</a>
-      </li>
     
     <li><a href="#1.">1. 系统安装</a>
       <ul>
@@ -55,12 +52,7 @@
     
   </ul>
 
-  <h2 id="0.-linux">0. 关于学习 Linux 系统</h2><ul>
-<li>发行版本：综合网上信息，商用上目前国内使用 CentOS 居多，目前最新版本是 CentOS-7-1804</li>
-<li>学习平台：MacBook + 虚拟机</li>
-<li>教材：《Linux 就该这么学》、《鸟哥的 Linux 私房菜》</li>
-</ul>
-<h2 id="1.">1. 系统安装</h2><p>安装 CentOS 过程中的几个选项：</p>
+  <h2 id="1.">1. 系统安装</h2><p>安装 CentOS 过程中的几个选项：</p>
 <ul>
 <li>SOFTWARE SELECTION 选择 Server with GUI</li>
 <li>INSTALLATION DESTINATION 默认即可</li>
@@ -73,7 +65,7 @@
 </ul>
 <h3 id="1.1-root">1.1 如何重置 root 密码？</h3><p>a. 开机后，在引导界面按键盘上e键，进入内核编辑界面。</p>
 <p>b. 在“linux16”参数这行的最后面追加“rd.break”参数，然后按下Ctrl + X组合键来运行修改过的内核程序：</p>
-<p><img src="../../blog/2018-10-10/1.1-a.png" alt="修改内核" title="修改内核"></p>
+<p><img src="../../linux/01-installation/1.1-a.png" alt="修改内核" title="修改内核"></p>
 <p>c. 进入到系统的紧急求援模式，依次执行以下代码，重启后便完成了新密码的设置。</p>
 <pre><code>$ mount -o remount,rw /sysroot
 $ chroot /sysroot
@@ -82,6 +74,7 @@ $ touch /.autorelabel
 $ exit
 $ reboot
 </code></pre>
+<p><img src="../../linux/01-installation/1.1-b.png" alt="修改root密码" title="修改root密码"></p>
 
 </div>
 
@@ -89,10 +82,6 @@ $ reboot
   
   
   
-  
-    <div class="nav-prev">
-      <a href="../../blog/2018-06-02/">上一篇：追求卓越，宁静致远</a>
-    </div>
   
   
 
