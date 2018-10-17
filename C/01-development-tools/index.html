@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../../static/normalize.css">
 <link rel="stylesheet" href="../../static/style.css">
 <link rel="stylesheet" href="../../static/pygments.css">
-<title>Chapter 1. 安装 C 开发工具 — StickMind</title>
+<title>Chapter 1. CentOS搭建C开发工具 — StickMind</title>
 
 <body>
   <div id="canvas">
@@ -33,7 +33,7 @@
 <div class="blog-post">
 
   
-  <h2>Chapter 1. 安装 C 开发工具</h2>
+  <h2>Chapter 1. CentOS搭建C开发工具</h2>
   
 
   <p class="meta">
@@ -49,8 +49,9 @@
     
   </ul>
 
-  <p>因为 C 来源于 Unix 操作系统，所以我们采用 CentOS 作为练习平台，方便各个概念的学习和测试。CentOS 的安装可以参考另一篇文章：<a href="../../linux/01-installation">安装 CentOS 7</a></p>
-<h2 id="1.1">1.1 编译器的安装</h2><p>CenOS 有一个开发工具集“Developer Toolset”，目前版本是7。可以参考<a href="https://www.softwarecollections.org/en/scls/rhscl/devtoolset-7/">Software Collections </a>说明来安装。</p>
+  <p>因为C来源于 Unix 操作系统，所以我们采用 CentOS 作为练习平台，方便各个概念的学习和测试。CentOS 的安装可以参考另一篇文章：<a href="../../linux/01-installation">安装 CentOS 7</a></p>
+<h2 id="1.1">1.1 编译器的安装</h2><p>CentOS 有一个开发工具集“Developer Toolset”，目前版本是“devtoolset-7”。该工具提供了最新版GCC和GDB，以及其他一些开发、调试、性能测试的工具。</p>
+<p>可以参考<a href="https://www.softwarecollections.org/en/scls/rhscl/devtoolset-7/">Software Collections </a>说明来安装。</p>
 <div class="hll"><pre><span></span><span class="c1"># 1. Install a package with repository for your system:</span>
 $ sudo yum install centos-release-scl
 

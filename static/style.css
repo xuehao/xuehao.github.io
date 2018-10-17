@@ -1,8 +1,8 @@
 @font-face {
     font-family: "Noe Text";
     src: 
-        url("./Noe-Text-Black.woff2") format("woff2"), 
-        url("./Noe-Text-Black.woff") format("woff");
+        url("./fonts/Noe-Text-Black.woff2") format("woff2"), 
+        url("./fonts/Noe-Text-Black.woff") format("woff");
     font-style: normal;
     font-weight: 900;
     font-stretch: normal;
@@ -12,8 +12,8 @@
 @font-face {
     font-family: "Lyon Text";
     src: 
-        url("./Lyon-Text-Regular.woff2") format("woff2"), 
-        url("./Lyon-Text-Regular.woff") format("woff");
+        url("./fonts/Lyon-Text-Regular.woff2") format("woff2"), 
+        url("./fonts/Lyon-Text-Regular.woff") format("woff");
     font-style: normal;
     font-weight: 400;
     font-stretch: normal;
@@ -21,10 +21,10 @@
 }
 
 @font-face {
-    font-family: 'qingkai';
+    font-family: 'official-script';
     src:
-      url('./qingkai.woff2') format('woff2'),
-      url('./qingkai.woff') format('woff');
+      url('./fonts/official-script.woff2') format('woff2'),
+      url('./fonts/official-script.woff') format('woff');
     font-weight: normal;
     font-style: 400;
     font-stretch: normal;
@@ -36,7 +36,7 @@ html, body, div#canvas {
 }
 
 body {
-    font-family: Lyon Text, qingkai, serif;
+    font-family: Lyon Text, official-script, serif;
     font-size: 1.25rem;
 }
 
@@ -67,7 +67,7 @@ header .logo-text {
     text-align: center;
     text-transform: uppercase;
 
-    font-family: Noe Text, qingkai, serif;
+    font-family: Noe Text, official-script, serif;
     font-weight: bold;
     letter-spacing: 0.0625rem;
     font-size: 2.25em;
@@ -93,7 +93,7 @@ div.page .logo-text, div.page .pagination {
 
 /* for post title */
 div.page .blog-post h2 {
-    font-family: Noe Text, qingkai, serif;
+    font-family: Noe Text, official-script, serif;
 }
 
 /* for first paragraph style*/
@@ -128,30 +128,17 @@ a {
     color: #2a99b6;
     text-decoration: none;
 }
-
 a:hover {
     color: #33bbdf;
     text-decoration: underline;
 }
-
-element {
-
-}
 a.branch-name {
-
     color: #0366d6;
-
-}
-a:hover {
-
-    text-decoration: underline;
-
 }
 a:active, a:hover {
-
     outline-width: 0;
-
 }
+
 code {
     padding: 2px 6px;
     background-color: #eaf5ff;
@@ -283,4 +270,5 @@ table th {
 /* pyments font size */
 .hll {
     font-size: medium;
+    overflow: auto;
 }
