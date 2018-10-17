@@ -10,17 +10,6 @@
 }
 
 @font-face {
-    font-family: "Lyon Text";
-    src: 
-        url("./fonts/Lyon-Text-Regular.woff2") format("woff2"), 
-        url("./fonts/Lyon-Text-Regular.woff") format("woff");
-    font-style: normal;
-    font-weight: 400;
-    font-stretch: normal;
-    font-display: swap;
-}
-
-@font-face {
     font-family: 'official-script';
     src:
       url('./fonts/official-script.woff2') format('woff2'),
@@ -36,7 +25,7 @@ html, body, div#canvas {
 }
 
 body {
-    font-family: Lyon Text, official-script, serif;
+    font-family: Didot, official-script, serif;
     font-size: 1.25rem;
 }
 
@@ -112,7 +101,7 @@ p.firstpara:first-letter {
 
 /* for post field style */
 p.meta {
-    font-style: italic;
+    font-style: Didot;
     font-size: 1rem;
 }
 
