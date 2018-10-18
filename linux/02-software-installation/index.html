@@ -62,7 +62,7 @@
     
   </ul>
 
-  <h2 id="2.1-sudoers">2.1 添加用户到“sudoers”</h2><p>在装完系统后，CentOS 默认普通用户是无法使用“sudo”命令的，这时我们就需要将登陆的用户加入“/etc/sudoers”文件中。</p>
+  <h3 id="2.1-sudoers">2.1 添加用户到“sudoers”</h3><p>在装完系统后，CentOS 默认普通用户是无法使用“sudo”命令的，这时我们就需要将登陆的用户加入“/etc/sudoers”文件中。</p>
 <ul>
 <li><p>切换到超级用户，打开“/etc/sudoers”文件：</p>
 <div class="hll"><pre><span></span>  $ su -
@@ -78,17 +78,17 @@
 </pre></div>
 <div class="admonition admonition-tip"><p>这个文件是只读的，保存时需要加“!”，强制保存。</p></div></li>
 </ul>
-<h2 id="2.2-software-collection">2.2 通过 Software Collection 安装管理软件包</h2><p>Software Collection 可以方便的管理软件的不同版本，我们通过安装<em>git</em>来说明。</p>
-<h3 id="2.2.1-software-collection">2.2.1 安装 Software Collection</h3><div class="hll"><pre><span></span>$ sudo yum install centos-release-scl
+<h3 id="2.2-software-collection">2.2 通过 Software Collection 安装管理软件包</h3><p>Software Collection 可以方便的管理软件的不同版本，我们通过安装<em>git</em>来说明。</p>
+<h4 id="2.2.1-software-collection">2.2.1 安装 Software Collection</h4><div class="hll"><pre><span></span>$ sudo yum install centos-release-scl
 </pre></div>
-<h3 id="2.2.2">2.2.2 搜索软件包</h3><div class="hll"><pre><span></span>$ yum search git
+<h4 id="2.2.2">2.2.2 搜索软件包</h4><div class="hll"><pre><span></span>$ yum search git
 </pre></div>
-<h3 id="2.2.3">2.2.3 安装软件包</h3><div class="hll"><pre><span></span>$ sudo yum install rh-git29
+<h4 id="2.2.3">2.2.3 安装软件包</h4><div class="hll"><pre><span></span>$ sudo yum install rh-git29
 </pre></div>
 <p>软件包安装后，可以查看安装情况，该命令会列出安装过的所有软件包：</p>
 <div class="hll"><pre><span></span>$ scl --list
 </pre></div>
-<h3 id="2.2.4">2.2.4 启用软件包</h3><div class="hll"><pre><span></span>$ scl <span class="nb">enable</span> rh-git29 bash
+<h4 id="2.2.4">2.2.4 启用软件包</h4><div class="hll"><pre><span></span>$ scl <span class="nb">enable</span> rh-git29 bash
 </pre></div>
 <p>注意，这些软件包在重启后不会激活。SCL 的设计初衷就是在不影响原有配置的前提下，让新旧软件能一起运行。不过你可以通过<em>~/.bashrc</em>加载 SCL 提供的 enable 脚本来实现自动启用。</p>
 <div class="hll"><pre><span></span><span class="nb">source</span> /opt/rh/rh-git29/root/usr/bin/git/enable

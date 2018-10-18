@@ -59,14 +59,14 @@
     
   </ul>
 
-  <h2 id="1.1-gpt">1.1 关于 GPT 分区表</h2><p>GUID 磁盘分区表（GUID Partition Table，缩写：GPT），用于替代BIOS系统中的一个扇区来存储逻辑块地址和大小信息的主开机纪录（MBR）分区表。</p>
+  <h3 id="1.1-gpt">1.1 关于 GPT 分区表</h3><p>GUID 磁盘分区表（GUID Partition Table，缩写：GPT），用于替代BIOS系统中的一个扇区来存储逻辑块地址和大小信息的主开机纪录（MBR）分区表。</p>
 <p>对于那些扇区为512 bytes 的磁盘，MBR分区表不支持容量大于2 TB（2^32 × 512 bytes）的分区。GPT 分配 64 bits 给逻辑块地址，因而使得最大分区大小在2^64个扇区成为了可能。对于每个扇区大小为512 bytes 的磁盘，那意味着可以有 9.4 ZB 或 8 ZB 的最大容量。</p>
 <p>实际安装过程中，磁盘容量小于2 TB，CentOS 默认采用 MBR 分区表，所有可以通过设置，强制使用 GPT 分区表。</p>
-<h3 id="1.1-centos-gpt">1.1 强制 CentOS 使用 GPT 分区表</h3><p>（1）在安装启动界面，定位到“Install CentOS 7”，按 [TAB] 键；</p>
+<h4 id="1.1-centos-gpt">1.1 强制 CentOS 使用 GPT 分区表</h4><p>（1）在安装启动界面，定位到“Install CentOS 7”，按 [TAB] 键；</p>
 <p><img src="../../linux/01-installation/1.1.1-a.png" alt="启动界面" title="启动界面"></p>
 <p>（2）在出现的命令行中，添加“inst.gpt”，按 [回车] 确认即可。</p>
 <p><img src="../../linux/01-installation/1.1.1-b.png" alt="设置GPT" title="设置GPT"></p>
-<h2 id="1.2">1.2 系统安装</h2><p>安装 CentOS 过程中的几个选项：</p>
+<h3 id="1.2">1.2 系统安装</h3><p>安装 CentOS 过程中的几个选项：</p>
 <ul>
 <li>SOFTWARE SELECTION 选择 Server with GUI</li>
 <li>NETWORK &amp; HOSTNAME 主机名设置，例如：stickmind.com</li>
@@ -77,7 +77,7 @@
 <li>ROOT PASSWORD 设置太简单的话，可以通过双击<strong><code>DONE</code></strong>按钮通过</li>
 <li>USER CREATION 创建一个本地用户</li>
 </ul>
-<h3 id="1.2.1">1.2.1 分区设置</h3><p>我们采用一块 40 GB 的硬盘，预计分割情况表：</p>
+<h4 id="1.2.1">1.2.1 分区设置</h4><p>我们采用一块 40 GB 的硬盘，预计分割情况表：</p>
 <table>
 <thead><tr>
 <th>目录</th>
@@ -120,7 +120,7 @@
 </tbody>
 </table>
 <p>注意上表，/、/home、swap 分区依旧采用 LVM 文件系统。另外，设置这三个分区的过程中，在 Volume Group 选项中，把 40 GB 改为“Fixed”固定 30 GB 容量，留出 10 Gb 左右空间供后续学习使用。每次添加完分区，记得点一下<strong><code>update</code></strong>，更新一下磁盘剩余空间。</p>
-<h3 id="1.2.2-root">1.2.2 如何重置 root 密码？</h3><p>如果后期需要重设 root 密码，可以按照如下步骤：</p>
+<h4 id="1.2.2-root">1.2.2 如何重置 root 密码？</h4><p>如果后期需要重设 root 密码，可以按照如下步骤：</p>
 <p>（1） 开机后，在引导界面按键盘上 [e] 键，进入内核编辑界面。</p>
 <p>（2） 在“linux16”参数这行的最后面追加“rd.break”参数，然后按下 [Ctrl + X] 组合键来运行修改过的内核程序：</p>
 <p><img src="../../linux/01-installation/1.2.2-a.png" alt="修改内核" title="修改内核"></p>

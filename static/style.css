@@ -18,15 +18,22 @@
     font-style: 400;
     font-stretch: normal;
     font-display: swap;
-  }
+}
 
 html, body, div#canvas {
     height: 100%; /* using flex*/
 }
-
 body {
     font-family: Didot, official-script, serif;
     font-size: 1.25rem;
+}
+/* for website name style */
+header .logo-text {
+    font-family: Noe Text, official-script, serif;
+}
+/* for post title */
+div.page .blog-post h2 {
+    font-family: Noe Text, official-script, serif;
 }
 
 *, ::after, ::before {
@@ -55,8 +62,6 @@ div.page {
 header .logo-text {
     text-align: center;
     text-transform: uppercase;
-
-    font-family: Noe Text, official-script, serif;
     font-weight: bold;
     letter-spacing: 0.0625rem;
     font-size: 2.25em;
@@ -78,11 +83,6 @@ header nav ul li {
 
 div.page .logo-text, div.page .pagination {
     text-align: center;
-}
-
-/* for post title */
-div.page .blog-post h2 {
-    font-family: Noe Text, official-script, serif;
 }
 
 /* for first paragraph style*/
