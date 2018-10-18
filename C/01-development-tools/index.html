@@ -1,0 +1,78 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" href="../../static/favicon.ico">
+<link rel="stylesheet" href="../../static/normalize.css">
+<link rel="stylesheet" href="../../static/style.css">
+<link rel="stylesheet" href="../../static/pygments.css">
+<title>Chapter 1. CentOS搭建C开发工具 — StickMind</title>
+
+<body>
+  <div id="canvas">
+    <header>
+      <h1 class="logo-text"><a href="/">StickMind</a></h1>
+      <nav>
+        <ul class="nav navbar-nav">
+          
+          <li ><a href="../../projects/">代码</a></li>
+          
+          <li ><a href="../../english/">英语</a></li>
+          
+          <li ><a href="../../blog/">文章</a></li>
+          
+          <li  class="active" ><a href="../../">关于我</a></li>
+          
+        </ul>
+      </nav>
+    </header>
+
+    <div class="page">
+      
+
+
+<div class="blog-post">
+
+  
+  <h2>Chapter 1. CentOS搭建C开发工具</h2>
+  
+
+  <p class="meta">发表于 2018-10-16</p>
+
+  
+
+  <ul class="toc">
+    
+    <li><a href="#1.1">1.1 编译器的安装</a>
+      </li>
+    
+  </ul>
+
+  <p>因为C来源于 Unix 操作系统，所以我们采用 CentOS 作为练习平台，方便各个概念的学习和测试。CentOS 的安装可以参考另一篇文章：<a href="../../linux/01-installation">安装 CentOS 7</a></p>
+<h2 id="1.1">1.1 编译器的安装</h2><p>CentOS 有一个开发工具集“Developer Toolset”，目前版本是“devtoolset-7”。该工具提供了最新版GCC和GDB，以及其他一些开发、调试、性能测试的工具。</p>
+<p>可以参考<a href="https://www.softwarecollections.org/en/scls/rhscl/devtoolset-7/">Developer Toolset 7</a>说明来安装。</p>
+<div class="hll"><pre><span></span><span class="c1"># 1. 安装软件仓库包:</span>
+$ sudo yum install centos-release-scl
+
+<span class="c1"># 2. 安装devtoolset工具集:</span>
+$ sudo yum install devtoolset-7
+
+<span class="c1"># 3. 启用软件集:</span>
+$ scl <span class="nb">enable</span> devtoolset-7 bash
+</pre></div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+    </div>
+
+    <footer>&copy; 2018 StickMind.</footer>
+  </div>
+</body>
