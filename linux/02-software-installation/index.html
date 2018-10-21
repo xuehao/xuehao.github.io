@@ -45,7 +45,13 @@
     <li><a href="#2.1-sudoers">2.1 添加用户到“sudoers”</a>
       </li>
     
-    <li><a href="#2.2-software-collection">2.2 通过 Software Collection 安装管理软件包</a>
+    <li><a href="#2.2-yum">2.2 使用 <strong>Yum</strong> 安装工具</a>
+      </li>
+    
+    <li><a href="#2.3-software-collection">2.3 通过 Software Collection 管理软件版本</a>
+      </li>
+    
+    <li><a href="#2.4">2.4 通过源码编译安装</a>
       </li>
     
   </ul>
@@ -66,7 +72,7 @@
 </pre></div>
 <div class="admonition admonition-tip"><p>这个文件是只读的，保存时需要加“!”，强制保存。</p></div></li>
 </ul>
-<h2 id="2.2-software-collection">2.2 通过 Software Collection 安装管理软件包</h2><p>Software Collection 可以方便的管理软件的不同版本，我们通过安装<em>git</em>来说明。</p>
+<h2 id="2.2-yum">2.2 使用 <strong>Yum</strong> 安装工具</h2><h2 id="2.3-software-collection">2.3 通过 Software Collection 管理软件版本</h2><p>Software Collection 可以方便的管理软件的不同版本，我们通过安装<em>git</em>来说明。</p>
 <div class="hll"><pre><span></span><span class="c1"># 1. 安装 Software Collection：</span>
 $ sudo yum install centos-release-scl
 
@@ -87,6 +93,125 @@ $ scl <span class="nb">enable</span> rh-git29 bash
 </pre></div>
 <div class="admonition admonition-note"><p>Q：什么是“.bashrc”？<br>
 A：参考<a href="https://linux.cn/article-9298-1.html">什么是 .bashrc，为什么要编辑 .bashrc？</a></p></div><p>更多软件的安装可以参考官网：<a href="https://www.softwarecollections.org/en/">Software Collection 官网</a></p>
+<h2 id="2.4">2.4 通过源码编译安装</h2><p>有时会遇到一些软件，没有提供官方或第三方软件包，所以只能通过源代码手动编译安装。手动编译安装，看起来比较恐怖，但仔细阅读官方源码提供的安装说明，也不是什么难事。编译安装经常会遇到依赖库缺失的问题，以下我们通过编译安装 Emacs 来说明。</p>
+<ul>
+<li><p>下载 Emacs 源码：</p>
+<p>Emacs 等软件在系统软件仓库里，并没有最新版本，所以为了使用类似 <strong>Spacemacs</strong> 这样的第三方配置文件，我们需要安装最新版的软件。</p>
+<p>Emacs 最新版本目前是 <a href="http://mirrors.nju.edu.cn/gnu/emacs/">Emacs 26</a></p>
+</li>
+<li><p>解压 Emacs 源码：</p>
+<div class="hll"><pre><span></span>  $ tar -zxvf emacs26.1.tar.gz
+</pre></div>
+</li>
+<li><p>生成 Makefile 配置文件：</p>
+<div class="hll"><pre><span></span>  $ ./configure --prefix<span class="o">=</span>/opt/emacs26.1  <span class="c1"># --prefix 指定安装路径</span>
+</pre></div>
+<p><code>./configure</code> 会检测平台是否包含编译需要的所有依赖，生成 Makefile 配置文件为编译做准备。</p>
+<p>在 CentOS 7 中，执行完出现了以下几个错误：</p>
+<ul>
+<li>没有安装 GTK：<div class="hll"><pre><span></span>  ...
+  configure: error: No X toolkit could be found.
+  ...
+  $ yum search gtk3 <span class="c1"># 安装之前，先搜索软件包</span>
+  ...
+  gtk3.i686 : GTK+ graphical user interface library
+  gtk3.x86_64 : GTK+ graphical user interface library
+  gtk3-devel.i686 : Development files <span class="k">for</span> GTK+
+  gtk3-devel.x86_64 : Development files <span class="k">for</span> GTK+
+  ...
+  $ sudo yum install gtk3-devel <span class="c1"># 一般选择安装带有 -devel 后缀的软件</span>
+</pre></div>
+</li>
+<li>没有安装依赖：<div class="hll"><pre><span></span>  ...
+  configure: error: The following required libraries were not found:
+      libXpm libjpeg libpng ...
+  ...
+  $ yum search libtiff
+  $ sudo yum install libtiff-devel
+</pre></div>
+</li>
+<li>缺少相关函数，系统给出了推荐安装的库：<div class="hll"><pre><span></span>  ...
+  configure: error: The required <span class="k">function</span> <span class="s1">&#39;tputs&#39;</span> was not found in any library.
+  ...
+  For example, a libncurses-dev<span class="o">(</span>el<span class="o">)</span> or similar package.
+  $ yum search ncurses
+  $ sudo yum install ncurses-devel
+</pre></div>
+</li>
+</ul>
+<p>正确的配置结果，贴在这里，可以了解下有哪些内容。</p>
+<div class="hll"><pre><span></span>  Configured <span class="k">for</span> <span class="s1">&#39;x86_64-pc-linux-gnu&#39;</span>.
+
+  Where should the build process find the <span class="nb">source</span> code?    .
+  What compiler should emacs be built with?               gcc -g3 -O2
+  Should Emacs use the GNU version of malloc?             yes
+      <span class="o">(</span>Using Doug Lea<span class="err">&#39;</span>s new malloc from the GNU C Library.<span class="o">)</span>
+  Should Emacs use a relocating allocator <span class="k">for</span> buffers?    no
+  Should Emacs use mmap<span class="o">(</span><span class="m">2</span><span class="o">)</span> <span class="k">for</span> buffer allocation?         no
+  What window system should Emacs use?                    x11
+  What toolkit should Emacs use?                          GTK3
+  Where <span class="k">do</span> we find X Windows header files?                Standard <span class="nb">dirs</span>
+  Where <span class="k">do</span> we find X Windows libraries?                   Standard <span class="nb">dirs</span>
+  Does Emacs use -lXaw3d?                                 no
+  Does Emacs use -lXpm?                                   yes
+  Does Emacs use -ljpeg?                                  yes
+  Does Emacs use -ltiff?                                  yes
+  Does Emacs use a gif library?                           yes -lgif
+  Does Emacs use a png library?                           yes -L/usr/lib64 -lpng15
+  Does Emacs use -lrsvg-2?                                no
+  Does Emacs use cairo?                                   no
+  Does Emacs use -llcms2?                                 no
+  Does Emacs use imagemagick <span class="o">(</span>version <span class="m">6</span><span class="o">)</span>?                 no
+  Does Emacs support sound?                               yes
+  Does Emacs use -lgpm?                                   no
+  Does Emacs use -ldbus?                                  yes
+  Does Emacs use -lgconf?                                 no
+  Does Emacs use GSettings?                               yes
+  Does Emacs use a file notification library?             yes -lglibc <span class="o">(</span>inotify<span class="o">)</span>
+  Does Emacs use access control lists?                    no
+  Does Emacs use -lselinux?                               no
+  Does Emacs use -lgnutls?                                yes
+  Does Emacs use -lxml2?                                  no
+  Does Emacs use -lfreetype?                              yes
+  Does Emacs use -lm17n-flt?                              no
+  Does Emacs use -lotf?                                   no
+  Does Emacs use -lxft?                                   yes
+  Does Emacs use -lsystemd?                               no
+  Does Emacs directly use zlib?                           yes
+  Does Emacs have dynamic modules support?                no
+  Does Emacs use toolkit scroll bars?                     yes
+  Does Emacs support Xwidgets <span class="o">(</span>requires gtk3<span class="o">)</span>?            no
+  Does Emacs have threading support in lisp?              yes
+</pre></div>
+</li>
+<li><p>编译并验证：</p>
+<div class="hll"><pre><span></span>  $ make <span class="c1"># 编译</span>
+  $ src/emacs -Q <span class="c1"># 执行程序</span>
+</pre></div>
+<p><code>make</code> 命令将源代码进行编译生成可执行程序，编译后的可执行程序在 “/src” 目录下。编译一切正常的话，已经可以直接运行程序了，Emacs 提供了第二个命令来验证程序。</p>
+</li>
+<li><p>安装：</p>
+<div class="hll"><pre><span></span>  $ sudo make install
+</pre></div>
+</li>
+<li><p>加入系统路径：</p>
+<p>安装完之后，记得加入系统路径，将以下内容添加到 “./bashrc” 中：</p>
+<div class="hll"><pre><span></span>  <span class="nv">PATH</span><span class="o">=</span>/opt/emacs26.1/bin:<span class="nv">$PATH</span>
+  <span class="nb">export</span> PATH
+</pre></div>
+<p>这样可以直接在命令行中打开 Emacs：</p>
+<div class="hll"><pre><span></span>  $ <span class="nb">source</span> .bashrc
+  $ emacs --version
+  GNU Emacs <span class="m">26</span>.1
+  Copyright <span class="o">(</span>C<span class="o">)</span> <span class="m">2018</span> Free Software Foundation, Inc.
+  GNU Emacs comes with ABSOLUTELY NO WARRANTY.
+  You may redistribute copies of GNU Emacs
+  under the terms of the GNU General Public License.
+  For more information about these matters, see the file named COPYING.
+</pre></div>
+</li>
+</ul>
+<p>以上就是通过源码编译安装一个软件的过程。</p>
 
 
 </div>

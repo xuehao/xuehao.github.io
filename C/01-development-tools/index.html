@@ -45,20 +45,34 @@
     <li><a href="#1.1">1.1 编译器的安装</a>
       </li>
     
+    <li><a href="#1.2">1.2 编辑器的选择</a>
+      </li>
+    
   </ul>
 
   <p>因为C来源于 Unix 操作系统，所以我们采用 CentOS 作为练习平台，方便各个概念的学习和测试。CentOS 的安装可以参考另一篇文章：<a href="../../linux/01-installation">安装 CentOS 7</a></p>
 <h2 id="1.1">1.1 编译器的安装</h2><p>CentOS 有一个开发工具集“Developer Toolset”，目前版本是“devtoolset-7”。该工具提供了最新版GCC和GDB，以及其他一些开发、调试、性能测试的工具。</p>
 <p>可以参考<a href="https://www.softwarecollections.org/en/scls/rhscl/devtoolset-7/">Developer Toolset 7</a>说明来安装。</p>
-<div class="hll"><pre><span></span><span class="c1"># 1. 安装软件仓库包:</span>
+<div class="hll"><pre><span></span><span class="c1"># 1. 安装软件仓库包：</span>
 $ sudo yum install centos-release-scl
 
-<span class="c1"># 2. 安装devtoolset工具集:</span>
+<span class="c1"># 2. 安装devtoolset工具集：</span>
 $ sudo yum install devtoolset-7
 
-<span class="c1"># 3. 启用软件集:</span>
+<span class="c1"># 3. 启用软件集：</span>
 $ scl <span class="nb">enable</span> devtoolset-7 bash
+
+<span class="c1"># 4. 查看编译器版本：</span>
+$ cc --version
+cc <span class="o">(</span>GCC<span class="o">)</span> <span class="m">7</span>.3.1 <span class="m">20180303</span> <span class="o">(</span>Red Hat <span class="m">7</span>.3.1-5<span class="o">)</span>
+Copyright <span class="o">(</span>C<span class="o">)</span> <span class="m">2017</span> Free Software Foundation, Inc.
+This is free software<span class="p">;</span> see the <span class="nb">source</span> <span class="k">for</span> copying conditions.  There is NO
+warranty<span class="p">;</span> not even <span class="k">for</span> MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 </pre></div>
+<h2 id="1.2">1.2 编辑器的选择</h2><ul>
+<li>新手建议直接使用 Visual Studio Code</li>
+<li>远程或跨平台开发建议选择 Vim 或 Emacs。附：<a href="../../linux/02-software-installation/#2.4">Emacs 安装教程</a></li>
+</ul>
 
 
 </div>
