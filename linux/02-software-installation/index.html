@@ -83,7 +83,7 @@ $ scl --list
 $ scl <span class="nb">enable</span> rh-git29 bash
 </pre></div>
 <p>注意，这些软件包在重启后不会激活。Software Collection 设计初衷就是在不影响原有配置的前提下，让新旧软件能一起运行。不过你可以通过<em>~/.bashrc</em>加载 Software Collection 提供的“enable”脚本来实现自动启用。</p>
-<div class="hll"><pre><span></span><span class="nb">source</span> /opt/rh/rh-git29/root/usr/bin/git/enable
+<div class="hll"><pre><span></span><span class="nb">source</span> /opt/rh/rh-git29/enable
 </pre></div>
 <div class="admonition admonition-note"><p>Q：什么是“.bashrc”？<br>
 A：参考<a href="https://linux.cn/article-9298-1.html">什么是 .bashrc，为什么要编辑 .bashrc？</a></p></div><p>更多软件的安装可以参考官网：<a href="https://www.softwarecollections.org/en/">Software Collection 官网</a></p>
