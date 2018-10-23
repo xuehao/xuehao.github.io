@@ -70,7 +70,7 @@
 <ul>
 <li>SOFTWARE SELECTION 选择 Server with GUI</li>
 <li>NETWORK &amp; HOSTNAME 主机名设置，例如：stickmind.com</li>
-<li>INSTALLATION DESTINATION 按如下方案设定。</li>
+<li>INSTALLATION DESTINATION 按如下分区方案设定。</li>
 </ul>
 <p>执行安装后：</p>
 <ul>
@@ -119,7 +119,7 @@
 </tr>
 </tbody>
 </table>
-<p>注意上表，biosboot、/boot 采用 Standard Partition 分区模式，/、/home、swap 采用 LVM 分区模式。另外，设置这 LVM 分区的过程中，在 Volume Group 选项中，把 40 GB 改为“Fixed”固定 30 GB 容量，留出 10 Gb 左右空间供后续学习使用。每次添加完分区，记得点一下<strong><code>update</code></strong>，更新一下磁盘剩余空间。</p>
+<p>注意上表，biosboot、/boot 采用 Standard Partition 分区模式，/、/home、swap 采用 LVM 分区模式。另外，设置 LVM 分区时，在 Volume Group 选项中，把 40 GB 改为“Fixed”固定 30 GB 容量，留出 10 Gb 左右空间供后续学习使用。每次添加完分区，记得点一下<strong><code>update</code></strong>，更新一下磁盘剩余空间。</p>
 <h3 id="1.2.2-root">1.2.2 如何重置 root 密码？</h3><p>如果后期需要重设 root 密码，可以按照如下步骤：</p>
 <p>（1） 开机后，在引导界面按键盘上 [e] 键，进入内核编辑界面。</p>
 <p>（2） 在“linux16”参数这行的最后面追加“rd.break”参数，然后按下 [Ctrl + X] 组合键来运行修改过的内核程序：</p>

@@ -45,7 +45,7 @@
     <li><a href="#1.">1. 标题</a>
       </li>
     
-    <li><a href="#2.">2. 字体</a>
+    <li><a href="#2.">2. 行内样式</a>
       </li>
     
     <li><a href="#3.">3. 引用</a>
@@ -78,7 +78,7 @@
 ###### 这是六级标题
 </pre></div>
 <p>文章名默认为一级标题，所以内容中的标题要依次顺延，不可使用一级标题。</p>
-<h2 id="2.">2. 字体</h2><p><em>倾斜</em>的文字左右分别用1个“*”号包起来：</p>
+<h2 id="2.">2. 行内样式</h2><p><em>倾斜</em>的文字左右分别用1个“*”号包起来：</p>
 <div class="hll"><pre><span></span>*斜体*
 </pre></div>
 <p><strong>加粗</strong>的文字左右分别用2个“**”号包起来：</p>
@@ -143,15 +143,17 @@
 <li>列表内容</li>
 <li>列表内容</li>
 </ol>
-<p>列表嵌套：上一级和下一级之间敲三个空格即可</p>
+<p>列表嵌套：上一级和下一级之间敲<strong>三个空格</strong>即可</p>
 <div class="hll"><pre><span></span>1. 一级有序列表内容
-    - 二级有序列表内容
-        3. 级有序列表内容
+    - 二级无序列表内容
+        1. 级有序列表内容
+   此行不是列表部分，但要求与第二级对齐
 </pre></div>
 <ol>
 <li>一级有序列表内容<ul>
-<li>二级有序列表内容<ol>
-<li>级有序列表内容</li>
+<li>二级无序列表内容<ol>
+<li>级有序列表内容
+此行不是列表部分，但要求与第二级对齐</li>
 </ol>
 </li>
 </ul>
@@ -184,7 +186,10 @@
 </tr>
 </tbody>
 </table>
-<h2 id="9.">9. 代码块</h2><p>代码块：代码之间分别用三个反引号包起来且单独占一行，可以用<em>Pygments</em>改变代码样式。</p>
+<h2 id="9.">9. 代码块</h2><p>代码块使用三个反引号包起来，每组反引号单独占一行。</p>
+<p>代码高亮可以使用插件：<em><a href="https://www.getlektor.com/plugins/lektor-markdown-highlighter/">lektor-markdown-highlighter</a></em></p>
+<p>代码样式可以在配置中修改。目前支持的配置列表：<em><a href="https://help.farbox.com/pygments.html">Pygments</a></em></p>
+<p>代码语言可以在第一组反引号后面紧跟支持的语言名，之间不要加空格。目前支持的语言列表：<em><a href="http://pygments.org/languages/">Pygments Language</a></em></p>
 <h2 id="10.">10. 按钮</h2><p><code>按钮</code>的语法：用反引号将按钮名称包起来</p>
 <div class="hll"><pre><span></span>`按钮`
 </pre></div>
