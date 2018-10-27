@@ -109,7 +109,7 @@ A：参考<a href="https://linux.cn/article-9298-1.html">什么是 .bashrc，为
 <p><code>./configure</code> 会检测平台是否包含编译需要的所有依赖，生成 Makefile 配置文件为编译做准备。</p>
 <p>在 CentOS 7 中，执行完出现了以下几个错误：</p>
 <ul>
-<li>没有安装 GTK：<div class="hll"><pre><span></span>  ...
+<li>没有安装 GTK+：<div class="hll"><pre><span></span>  ...
   configure: error: No X toolkit could be found.
   ...
   $ yum search gtk3 <span class="c1"># 安装之前，先搜索软件包</span>
@@ -122,7 +122,7 @@ A：参考<a href="https://linux.cn/article-9298-1.html">什么是 .bashrc，为
   $ sudo yum install gtk3-devel <span class="c1"># 一般选择安装带有 -devel 后缀的软件</span>
 </pre></div>
 </li>
-<li>没有安装依赖：<div class="hll"><pre><span></span>  ...
+<li>没有安装其他依赖：<div class="hll"><pre><span></span>  ...
   configure: error: The following required libraries were not found:
       libXpm libjpeg libpng ...
   ...
@@ -130,7 +130,7 @@ A：参考<a href="https://linux.cn/article-9298-1.html">什么是 .bashrc，为
   $ sudo yum install libtiff-devel
 </pre></div>
 </li>
-<li>缺少相关函数，系统给出了推荐安装的库：<div class="hll"><pre><span></span>  ...
+<li>缺少相关函数，配置给出了推荐的库：<div class="hll"><pre><span></span>  ...
   configure: error: The required <span class="k">function</span> <span class="s1">&#39;tputs&#39;</span> was not found in any library.
   ...
   For example, a libncurses-dev<span class="o">(</span>el<span class="o">)</span> or similar package.
@@ -203,11 +203,6 @@ A：参考<a href="https://linux.cn/article-9298-1.html">什么是 .bashrc，为
 <div class="hll"><pre><span></span>  $ <span class="nb">source</span> .bashrc
   $ emacs --version
   GNU Emacs <span class="m">26</span>.1
-  Copyright <span class="o">(</span>C<span class="o">)</span> <span class="m">2018</span> Free Software Foundation, Inc.
-  GNU Emacs comes with ABSOLUTELY NO WARRANTY.
-  You may redistribute copies of GNU Emacs
-  under the terms of the GNU General Public License.
-  For more information about these matters, see the file named COPYING.
 </pre></div>
 </li>
 </ul>
