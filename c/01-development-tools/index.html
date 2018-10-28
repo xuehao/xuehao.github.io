@@ -79,7 +79,7 @@ cc <span class="o">(</span>GCC<span class="o">)</span> <span class="m">7</span>.
 <li>新手建议直接使用 Visual Studio Code</li>
 <li>远程或跨平台开发建议选择 Vim 或 Emacs。附：<a href="../../linux/02-software-installation/#2.4">Emacs 安装教程</a></li>
 </ul>
-<h2 id="1.3">1.3 第三方库的使用</h2><p>在学习《C语言的科学和艺术》这本教材时，书中用到了很多作者自己开发的库。这样设计的好处是，可以隐藏C语言的诸多细节，尽快开发出实用好玩的程序。待后续逐渐深入时，再逐渐揭开这些隐藏的谜题。</p>
+<h2 id="1.3">1.3 第三方库的使用</h2><p>在学习《C语言的科学和艺术》这本教材时，书中用到了很多作者自己开发的库。这样设计的好处是，可以隐藏C语言的诸多细节，尽快开发出实用好玩的程序，待后续深入时，再逐渐揭开这些隐藏的谜题。</p>
 <p>作者提供的源代码年代略显久远，我手头获取的一份拷贝还是1994年的。庆幸的是，该代码库仅依赖标准C库，没有其他依赖，现如今依然可以很好的使用。特别是<em>graphics.h</em>图形库，很多人因为不会用就放弃了这么好的一本书，着实可惜。</p>
 <p>以下便是该库的使用说明：</p>
 <h3 id="1.3.1">1.3.1 手动链接</h3><p>代码库包含了几组<code>.c</code>和<code>.h</code>的文件，如果我们想直接使用也是可以的，只需要将所有<code>.c</code>的文件全部链接上就可以了。</p>
@@ -87,7 +87,7 @@ cc <span class="o">(</span>GCC<span class="o">)</span> <span class="m">7</span>.
 <div class="hll"><pre><span></span>$ cc *.c -o house -lm <span class="c1"># 使用*通配符编译所有源代码，-o生成指定的程序名，CentOS需要加-lm链接math.h库</span>
 $ ./house <span class="c1"># 运行生成的程序，会在当前目录下生成一个graphics.ps的图形文件</span>
 </pre></div>
-<h3 id="1.3.2">1.3.2 共享头文件和目标代码</h3><p>手动编译缺点是，每次都需要拷贝库文件到项目目录，一不小心就容易删除或修改库代码，更安全的做法是使用共享库。</p>
+<h3 id="1.3.2">1.3.2 共享头文件和目标代码</h3><p>手动编译缺点是，每次都需要拷贝项目文件到库目录，一不小心就容易删除或修改库代码，更安全的做法是使用共享库<sup class="footnote-ref" id="fnref-static-lib"><a href="#fn-static-lib">1</a></sup>。</p>
 <p>比如在编写C程序的时候，我们会导入头文件，类似这样：</p>
 <div class="hll"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;genlib.h&quot;</span><span class="cp"></span>
@@ -106,6 +106,11 @@ $ ./house
 </pre></div>
 <p>以上就是安装简单第三方库的方法。</p>
 <p>简单的意思是，库只包含几个C文件且只依赖系统自带标准库，像 SDL 这样的大型库，则需要一些额外的技术来构建。</p>
+<div class="footnotes">
+<hr>
+<ol><li id="fn-static-lib"><p>共享库：参考《Head First C》第8章<a href="#fnref-static-lib" class="footnote">&#8617;</a></p></li>
+</ol>
+</div>
 
 
 </div>
