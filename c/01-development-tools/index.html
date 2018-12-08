@@ -87,7 +87,7 @@ cc <span class="o">(</span>GCC<span class="o">)</span> <span class="m">7</span>.
 <div class="hll"><pre><span></span>$ cc *.c -o house -lm <span class="c1"># 使用*通配符编译所有源代码，-o生成指定的程序名，CentOS需要加-lm链接math.h库</span>
 $ ./house <span class="c1"># 运行生成的程序，会在当前目录下生成一个graphics.ps的图形文件</span>
 </pre></div>
-<h3 id="1.3.2">1.3.2 共享头文件和目标代码</h3><p>手动编译缺点是，每次都需要拷贝项目文件到库目录，一不小心就容易删除或修改库代码，更安全的做法是使用共享库<sup class="footnote-ref" id="fnref-static-lib"><a href="#fn-static-lib">1</a></sup>。</p>
+<h3 id="1.3.2">1.3.2 共享头文件和目标代码</h3><p>手动编译缺点是，每次都需要拷贝项目文件到库目录，一不小心就容易删除或修改库代码，更安全的做法是使用库<sup class="footnote-ref" id="fnref-static-lib"><a href="#fn-static-lib">1</a></sup>。</p>
 <p>比如在编写C程序的时候，我们会导入头文件，类似这样：</p>
 <div class="hll"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&quot;genlib.h&quot;</span><span class="cp"></span>
@@ -100,7 +100,7 @@ $ ./house <span class="c1"># 运行生成的程序，会在当前目录下生成
 $ ar -rcs libcs.a *.o <span class="c1"># 使用ar命令打包成一个.a静态库，命名规则是libXXX.a</span>
 $ sudo mv libcs.a /usr/local/lib <span class="c1"># 需要管理员权限，把静态库放入标准目录</span>
 </pre></div>
-<p>这样我们就得到了一个名叫<code>cs</code>的共享库，然后我们就可以方便的使用该库编译其他程序了：</p>
+<p>这样我们就得到了一个名叫<code>cs</code>的静态库，然后我们就可以方便的使用该库编译其他程序了：</p>
 <div class="hll"><pre><span></span>$ cc house.c -o house -lcs -lm <span class="c1"># 使用-l链接cs库</span>
 $ ./house
 </pre></div>
