@@ -4,11 +4,6 @@ install: "pip install Lektor"
 script: 
   - "lektor build"
 
-cache:
-  directories:
-    - $HOME/.cache/pip
-    - $HOME/.cache/lektor/builds
-
 deploy:
   provider: script
   script: lektor deploy
