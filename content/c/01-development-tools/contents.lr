@@ -1,0 +1,90 @@
+title: Chapter 1. CentOS搭建C开发工具
+---
+pub_date: 2018-10-16
+---
+author: 薛浩
+---
+cover_image: 
+---
+description: 安装C开发工具，以及学习用到的库文件的使用
+---
+body:
+
+因为C来源于 Unix 操作系统，所以我们采用 CentOS 作为练习平台，方便各个概念的学习和测试。CentOS 的安装可以参考另一篇文章：[安装 CentOS 7](/linux/01-installation)
+
+## 1.1 编译器的安装
+
+CentOS 有一个开发工具集“Developer Toolset”，目前版本是“devtoolset-7”。该工具提供了最新版GCC和GDB，以及其他一些开发、调试、性能测试的工具。
+
+可以参考[Developer Toolset 7](https://www.softwarecollections.org/en/scls/rhscl/devtoolset-7/)说明来安装。
+```bash
+# 1. 安装软件仓库包：
+$ sudo yum install centos-release-scl
+
+# 2. 安装devtoolset工具集：
+$ sudo yum install devtoolset-7
+
+# 3. 启用软件集：
+$ scl enable devtoolset-7 bash
+
+# 4. 查看编译器版本：
+$ cc --version
+cc (GCC) 7.3.1 20180303 (Red Hat 7.3.1-5)
+```
+
+## 1.2 编辑器的选择
+
+- 新手建议直接使用 Visual Studio Code
+- 远程或跨平台开发建议选择 Vim 或 Emacs。附：[Emacs 安装教程](/linux/02-software-installation/#2.4)
+
+## 1.3 第三方库的使用
+
+在学习《C语言的科学和艺术》这本教材时，书中用到了很多作者自己开发的库。这样设计的好处是，可以隐藏C语言的诸多细节，尽快开发出实用好玩的程序，待后续深入时，再逐渐揭开这些隐藏的谜题。
+
+作者提供的源代码年代略显久远，我手头获取的一份拷贝还是1994年的。庆幸的是，该代码库仅依赖标准C库，没有其他依赖，现如今依然可以很好的使用。特别是*graphics.h*图形库，很多人因为不会用就放弃了这么好的一本书，着实可惜。
+
+以下便是该库的使用说明：
+
+### 1.3.1 手动链接
+
+代码库包含了几组`.c`和`.h`的文件，如果我们想直接使用也是可以的，只需要将所有`.c`的文件全部链接上就可以了。
+
+比如编译第7章的 *house.c* 程序，我们将其放入代码库中：
+```bash
+$ cc *.c -o house -lm # 使用*通配符编译所有源代码，-o生成指定的程序名，CentOS需要加-lm链接math.h库
+$ ./house # 运行生成的程序，会在当前目录下生成一个graphics.ps的图形文件
+```
+
+### 1.3.2 共享头文件和目标代码
+
+手动编译缺点是，每次都需要拷贝项目文件到库目录，一不小心就容易删除或修改库代码，更安全的做法是使用库[^static-lib]。
+
+比如在编写C程序的时候，我们会导入头文件，类似这样：
+```c
+#include <stdio.h>
+#include "genlib.h"
+```
+
+其中，尖括号包含的头文件，在系统的标准目录中，例如 */usr/local/include*。在编译C程序时，GCC 编译器会自动查找该目录。而双引号包含的头文件，则是当前目录下的头文件。所以，为了安全的使用该库的头文件，我们可以将`.h`放到上述目录中：
+```bash
+$ sudo mv *.h /usr/local/include # 需要管理员权限，把所有头文件放入标准目录
+```
+
+至于库实现部分的`.c`文件，我们可以打包成一个`.a`的存档，放入系统标准目录 */usr/local/lib* 下：
+```bash
+$ cc -c *.c # 使用-c选项，把.c文件编译成.o目标代码
+$ ar -rcs libcs.a *.o # 使用ar命令打包成一个.a静态库，命名规则是libXXX.a
+$ sudo mv libcs.a /usr/local/lib # 需要管理员权限，把静态库放入标准目录
+```
+
+这样我们就得到了一个名叫`cs`的静态库，然后我们就可以方便的使用该库编译其他程序了：
+```bash
+$ cc house.c -o house -lcs -lm # 使用-l链接cs库
+$ ./house
+```
+
+以上就是安装简单第三方库的方法。
+
+简单的意思是，库只包含几个C文件且只依赖系统自带标准库，像 SDL 这样的大型库，则需要一些额外的技术来构建。
+
+[^static-lib]: 共享库：参考《Head First C》第8章

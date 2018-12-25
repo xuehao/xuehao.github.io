@@ -1,0 +1,22 @@
+title: 代码
+---
+body:
+
+# 代码
+
+学习笔记：
+
+|                     |                      |                             |
+| :-----------------: | :------------------: | :-------------------------: |
+| [CS50](/cs50)       | [C](/c)/[Rust](rust) | [Algorithm](/algorithm)     | 
+| [Linux](/linux)     |                      |                             |   
+| [Web](/web)         | [Odoo](/odoo)        | [Database](/db)             | 
+| [SDL2](/sdl2)       |                      | [Git](git)/[Docker](docker) |
+
+正在学习的课程:
+
+- [CS50 - Problem Sets](https://github.com/xuehao/myCS50)
+
+待解决的问题：
+
+- 如何结合 [Lektor](https://www.getlektor.com/) 和[字蛛](http://font-spider.org/)，解决网页中文字体加载速度慢的问题
