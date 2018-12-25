@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ this.title }}{% endblock %}
+
+{% block body %}
+{{ this.body }}
+<p>
+    <div class="notes row">
+        {% for notes_row in this.children | batch(2) %}
+        <div class="row">
+            {% for note in notes_row %}
+            <div class="notes col-md-6">
+                <a href="{{ note|url }}">
+                    <p>{{ note.title }}</p>
+                    {% if note.cover_image %}
+                    {% set image = note.attachments.get(note.cover_image) %}
+                    <div class="note">
+                        <img src="{{ image.thumbnail(480)|url }}" width="100%" alt="">
+                    </div>
+                    {% endif %}
+                </a>
+                <small>{{ note.description }}</small>
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+</p>
+{% endblock %}

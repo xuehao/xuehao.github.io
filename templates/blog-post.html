@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% from "macros/blog_post.html" import render_blog_post %}
+{% from "macros/toc.html" import render_toc %}
+{% block title %}{{ this.title }}{% endblock %}
+{% block body %}
+
+{{ render_blog_post(this) }}
+
+{% set siblings = this.get_siblings() %}
+{% set older = siblings.next_page %}
+{% set newer = siblings.prev_page %}
+{% if older %}
+<div class="nav-prev">
+  <a href="{{ older|url }}">
+    ◀ {{ older.title }}
+  </a>
+</div>
+{% endif %}
+{% if newer %}
+<div class="nav-next">
+  <a href="{{ newer|url }}">
+    {{ newer.title }} ▶
+  </a>
+</div>
+{% endif %}
+
+{% endblock %}
