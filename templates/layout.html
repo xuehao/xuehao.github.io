@@ -1,0 +1,34 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" href="{{ '/static/favicon.ico'|url }}">
+<link rel="stylesheet" href="{{ '/static/normalize.css'|url }}">
+<link rel="stylesheet" href="{{ '/static/style.css'|url }}">
+<link rel="stylesheet" href="{{ get_pygments_stylesheet()|url }}">
+<title>{% block title %}Welcome{% endblock %} — StickMind</title>
+
+<body>
+  <div id="canvas">
+    <header>
+      <h1 class="logo-text"><a href="/">StickMind</a></h1>
+      <nav>
+        <ul class="nav navbar-nav">
+          {% for href, title in [
+          ['/projects', '代码'],
+          ['/english', '英语'],
+          ['/blog', '文章'],
+          ['/', '关于我']
+          ] %}
+          <li {% if this.is_child_of(href) %} class="active" {% endif %}><a href="{{ href|url }}">{{ title }}</a></li>
+          {% endfor %}
+        </ul>
+      </nav>
+    </header>
+
+    <div class="page">
+      {% block body %}{% endblock %}
+    </div>
+
+    <footer>&copy; 2018 StickMind.</footer>
+  </div>
+</body>

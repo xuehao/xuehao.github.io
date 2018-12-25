@@ -1,0 +1,79 @@
+title: Chapter 1. 安装 CentOS 7
+---
+pub_date: 2018-10-01
+---
+author: 薛浩
+---
+cover_image: 1.1.1-a.png
+---
+description: 安装 CentOS 过程中的一些要点
+---
+body:
+
+## 1.1 关于 GPT 分区表
+
+GUID 磁盘分区表（GUID Partition Table，缩写：GPT），用于替代BIOS系统中的一个扇区来存储逻辑块地址和大小信息的主开机纪录（MBR）分区表。
+
+MBR 采用 32bits 地址分配给磁盘扇区，那么对于扇区为 512 bytes 的磁盘，MBR 分区表不支持容量大于 2 TB（2^32 × 512 bytes）的分区。GPT 采用 64 bits 地址给磁盘扇区，因而最大分区可以有 2^64 个扇区。对于扇区同样为 512 bytes 的磁盘，这意味着可以有 8 ZB （2^64 × 512 bytes）的最大容量。
+
+### 1.1 强制 CentOS 使用 GPT 分区表
+
+实际安装过程中，磁盘容量小于2 TB，CentOS 会默认采用 MBR 分区表。我们可以通过以下设置，强制使用 GPT 分区表。
+
+（1）在安装启动界面，定位到“Install CentOS 7”，按 [TAB] 键；
+
+![启动界面](1.1.1-a.png "启动界面")
+
+（2）在出现的命令行中，添加“inst.gpt”，按 [回车] 确认即可。
+
+![设置GPT](1.1.1-b.png "设置GPT")
+
+## 1.2 系统安装
+
+安装 CentOS 过程中的几个选项：
+
+- SOFTWARE SELECTION 选择 Server with GUI
+- NETWORK & HOSTNAME 主机名设置，例如：stickmind.com
+- INSTALLATION DESTINATION 按如下分区方案设定。
+
+执行安装后：
+
+- ROOT PASSWORD 设置太简单的话，可以通过双击**`DONE`**按钮通过
+- USER CREATION 创建一个本地用户
+
+### 1.2.1 分区设置
+
+我们采用一块 40 GB 的硬盘，预计分割情况表：
+
+| 目录 | 容量 |	文件系统 | 分割格式 |
+| ---- | ---- | ---- | ---- |
+| biosboot	| 2MB | 默认 | Standard Partition |
+| /boot	| 1GB | xfs | Standard Partition |
+| /	| 10GB |xfs | LVM |
+| /home |5GB | xfs | LVM |
+| swap |1GB | swap | LVM |
+
+注意上表，biosboot、/boot 采用 Standard Partition 分区模式，/、/home、swap 采用 LVM 分区模式。另外，设置 LVM 分区时，在 Volume Group 选项中，把 40 GB 改为“Fixed”固定 30 GB 容量，留出 10 Gb 左右空间供后续学习使用。每次添加完分区，记得点一下**`update`**，更新一下磁盘剩余空间。
+
+### 1.2.2 如何重置 root 密码？
+
+如果后期需要重设 root 密码，可以按照如下步骤：
+
+（1） 开机后，在引导界面按键盘上 [e] 键，进入内核编辑界面。
+
+（2） 在“linux16”参数这行的最后面追加“rd.break”参数，然后按下 [Ctrl + X] 组合键来运行修改过的内核程序：
+
+![修改内核](1.2.2-a.png "修改内核")
+
+（3） 进入到系统的紧急求援模式，依次执行以下代码，重启后便完成了新密码的设置。
+
+```bash
+$ mount -o remount,rw /sysroot
+$ chroot /sysroot
+$ passwd
+$ touch /.autorelabel
+$ exit
+$ reboot
+```
+
+![修改root密码](1.2.2-b.png "修改root密码")
