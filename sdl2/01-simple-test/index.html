@@ -1,0 +1,133 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" href="/static/favicon.ico">
+<link rel="stylesheet" href="/static/normalize.css">
+<link rel="stylesheet" href="/static/style.css">
+<link rel="stylesheet" href="/static/pygments.css">
+<title>Chapter 1. 简单的测试程序 — StickMind</title>
+
+<body>
+  <div id="canvas">
+    <header>
+      <h1 class="logo-text"><a href="/">StickMind</a></h1>
+      <nav>
+        <ul class="nav navbar-nav">
+          
+          <li ><a href="/projects/">代码</a></li>
+          
+          <li ><a href="/english/">英语</a></li>
+          
+          <li ><a href="/blog/">文章</a></li>
+          
+          <li  class="active" ><a href="/">关于我</a></li>
+          
+        </ul>
+      </nav>
+    </header>
+
+    <div class="page">
+      
+
+
+<div class="blog-post">
+
+  
+  <h2>Chapter 1. 简单的测试程序</h2>
+  
+
+  <p class="meta">发表于 2018-10-28</p>
+
+  
+
+  <ul class="toc">
+    
+    <li><a href="#1.1">1.1 命令行界面</a>
+      </li>
+    
+    <li><a href="#1.2">1.2 图形界面</a>
+      </li>
+    
+  </ul>
+
+  <p>以下两个小程序可以测试安装是否正确。</p>
+<h2 id="1.1">1.1 命令行界面</h2><p>第一个程序是命令行界面，输出初始化信息是否正常。</p>
+<div class="hll"><pre><span></span>    <span class="c1">// test_sdl.c</span>
+    <span class="cp">#include</span> <span class="cpf">&lt;SDL2/SDL.h&gt;</span><span class="cp"></span>
+
+    <span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">((</span><span class="n">SDL_Init</span><span class="p">(</span><span class="n">SDL_INIT_VIDEO</span> <span class="o">|</span> <span class="n">SDL_INIT_AUDIO</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+        <span class="p">{</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Could not initialize SDL2: %s.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">SDL_GetError</span><span class="p">());</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">&quot;SDL initialize OK!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="n">SDL_Quit</span><span class="p">();</span>
+
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+</pre></div>
+<h2 id="1.2">1.2 图形界面</h2><p>第二个程序是图形界面，显示一个空白窗口，2000ms后会自动关闭。</p>
+<div class="hll"><pre><span></span>    <span class="c1">// hello_sdl.c</span>
+    <span class="cp">#include</span> <span class="cpf">&lt;SDL2/SDL.h&gt;</span><span class="cp"></span>
+    <span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+
+    <span class="k">const</span> <span class="kt">int</span> <span class="n">SCREEN_WIDTH</span> <span class="o">=</span> <span class="mi">640</span><span class="p">;</span>
+    <span class="k">const</span> <span class="kt">int</span> <span class="n">SCREEN_HEIGHT</span> <span class="o">=</span> <span class="mi">480</span><span class="p">;</span>
+
+    <span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">args</span><span class="p">[])</span>
+    <span class="p">{</span>
+        <span class="n">SDL_Window</span> <span class="o">*</span><span class="n">window</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+        <span class="n">SDL_Surface</span> <span class="o">*</span><span class="n">screenSurface</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">SDL_Init</span><span class="p">(</span><span class="n">SDL_INIT_VIDEO</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">&quot;SDL could not initialize! SDL_Error: %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">SDL_GetError</span><span class="p">());</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">window</span> <span class="o">=</span> <span class="n">SDL_CreateWindow</span><span class="p">(</span><span class="s">&quot;Hello SDL2&quot;</span><span class="p">,</span> <span class="n">SDL_WINDOWPOS_UNDEFINED</span><span class="p">,</span>
+                                    <span class="n">SDL_WINDOWPOS_UNDEFINED</span><span class="p">,</span> <span class="n">SCREEN_WIDTH</span><span class="p">,</span>
+                                    <span class="n">SCREEN_HEIGHT</span><span class="p">,</span> <span class="n">SDL_WINDOW_SHOWN</span><span class="p">);</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">window</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Window could not be created! SDL_Error: %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">SDL_GetError</span><span class="p">());</span>
+            <span class="p">}</span>
+            <span class="k">else</span>
+            <span class="p">{</span>
+                <span class="n">screenSurface</span> <span class="o">=</span> <span class="n">SDL_GetWindowSurface</span><span class="p">(</span><span class="n">window</span><span class="p">);</span>
+                <span class="n">SDL_FillRect</span><span class="p">(</span><span class="n">screenSurface</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span>
+                            <span class="n">SDL_MapRGB</span><span class="p">(</span><span class="n">screenSurface</span><span class="o">-&gt;</span><span class="n">format</span><span class="p">,</span> <span class="mh">0xFF</span><span class="p">,</span> <span class="mh">0xFF</span><span class="p">,</span> <span class="mh">0xFF</span><span class="p">));</span>
+                <span class="n">SDL_UpdateWindowSurface</span><span class="p">(</span><span class="n">window</span><span class="p">);</span>
+                <span class="n">SDL_Delay</span><span class="p">(</span><span class="mi">2000</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="n">SDL_DestroyWindow</span><span class="p">(</span><span class="n">window</span><span class="p">);</span>
+        <span class="n">SDL_Quit</span><span class="p">();</span>
+
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+</pre></div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+    </div>
+
+    <footer>&copy; 2018 StickMind.</footer>
+  </div>
+</body>
