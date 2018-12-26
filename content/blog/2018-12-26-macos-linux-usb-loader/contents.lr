@@ -1,0 +1,63 @@
+title: macOS 制作 Linux USB 启动盘
+---
+pub_date: 2018-12-26
+---
+author: 薛浩
+---
+description: 本文介绍了 macOS 平台下，制作 USB 启动盘的方法，以便安装操作系统。
+---
+post_image: 
+---
+body: 
+
+有一个老的笔记本，运行 Windows 比较吃力，所以测试一些 Linux 发行版，目的是找一个驱动管理好，运行流畅的系统。以下记录一下 macOS 下制作 USB 启动盘的步骤：
+
+## 1. 转换系统镜像格式
+
+```bash
+~/Downloads                                                                    
+▶ hdiutil convert -format UDRW -o linuxmint-19.1-cinnamon-64bit.dmg linuxmint-19.1-cinnamon-64bit.iso
+正在读取Driver Descriptor Map（DDM：0）…
+正在读取Linux Mint 19.1 Cinnamon 64-bit （Apple_ISO：1）…
+正在读取Apple（Apple_partition_map：2）…
+正在读取Linux Mint 19.1 Cinnamon 64-bit （Apple_ISO：3）…
+..............................................................................
+正在读取EFI（Apple_HFS：4）…
+..............................................................................
+正在读取Linux Mint 19.1 Cinnamon 64-bit （Apple_ISO：5）…
+..............................................................................
+已耗时： 6.405s
+速度：293.9M 字节/秒
+节省：0.0%
+created: /Users/xuehao/Downloads/linuxmint-19.1-cinnamon-64bit.dmg
+```
+
+## 2. 查看U盘编号
+
+```bash
+~/Downloads                                                                    
+▶ diskutil list
+......
+/dev/disk3 (external, physical):
+   #:                       TYPE NAME                    SIZE       IDENTIFIER
+   0:     FDisk_partition_scheme                        *15.6 GB    disk3
+   1:                       0xCD                         2.0 GB     disk3s1
+   2:                       0xEF                         4.2 MB     disk3s2
+```
+## 3. 写入前先卸载U盘
+
+```bash
+~/Downloads                                                                    
+▶ diskutil umountDisk /dev/disk3
+Unmount of all volumes on disk3 was successful
+```
+
+## 4. 将系统写入U盘
+
+```bash
+~/Downloads                                                                    
+▶ sudo dd bs=1m if=linuxmint-19.1-cinnamon-64bit.dmg of=/dev/rdisk3
+Password:
+```
+
+此过程会持续数分钟，请耐心等待。
