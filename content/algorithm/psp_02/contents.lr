@@ -6,7 +6,7 @@ author: 薛浩
 ---
 body:
 
-## 2.1. Objectives 目标
+### 2.1. Objectives 目标
 
 - 理解算法分析的重要性
 - 能够使用“Big-O”描述执行时间
@@ -14,7 +14,7 @@ body:
 - 理解Python数据实现对算法分析的影响
 - 理解如何对简单的Python程序做benchmark测试
 
-## 2.2. What Is Algorithm Analysis? 什么是算法分析？
+### 2.2. What Is Algorithm Analysis? 什么是算法分析？
 
 ! Q：处理同一个问题的两个程序，是否存在优劣？
 
@@ -134,4 +134,4 @@ Sum is 5000000050000000 required 0.00000119 seconds
  
 我们需要**更好的工具**来反应算法的执行时间。基准测试可以告诉我们特定平台上的执行时间。更好的工具**不依赖特定平台**。
 
-## 2.3. Big-O Notation 大O表示法
+### 2.3. Big-O Notation 大O表示法
