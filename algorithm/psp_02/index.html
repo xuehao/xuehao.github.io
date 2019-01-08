@@ -1,0 +1,165 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" href="/static/favicon.ico">
+<link rel="stylesheet" href="/static/normalize.css">
+<link rel="stylesheet" href="/static/style.css">
+<link rel="stylesheet" href="/static/pygments.css">
+<title>Problem Solving - 2. Analysis 分析 — StickMind</title>
+
+<body>
+  <div id="canvas">
+    <header>
+      <h1 class="logo-text"><a href="/">StickMind</a></h1>
+      <nav>
+        <ul class="nav navbar-nav">
+          
+          <li ><a href="/projects/">代码</a></li>
+          
+          <li ><a href="/english/">英语</a></li>
+          
+          <li ><a href="/blog/">文章</a></li>
+          
+          <li  class="active" ><a href="/">关于我</a></li>
+          
+        </ul>
+      </nav>
+    </header>
+
+    <div class="page">
+      
+
+
+<div class="blog-post">
+
+  
+  <h2>Problem Solving - 2. Analysis 分析</h2>
+  
+
+  <p class="meta">发表于 2019-01-08</p>
+
+  
+
+  <ul class="toc">
+    
+    <li><a href="#2.1.-objectives">2.1. Objectives 目标</a>
+      </li>
+    
+    <li><a href="#2.2.-what-is-algorithm-analysis?">2.2. What Is Algorithm Analysis? 什么是算法分析？</a>
+      </li>
+    
+    <li><a href="#2.3.-big-o-notation-o">2.3. Big-O Notation 大O表示法</a>
+      </li>
+    
+  </ul>
+
+  <h2 id="2.1.-objectives">2.1. Objectives 目标</h2><ul>
+<li>理解算法分析的重要性</li>
+<li>能够使用“Big-O”描述执行时间</li>
+<li>理解Python中list和dict常用操作的“Big-O”执行时间</li>
+<li>理解Python数据实现对算法分析的影响</li>
+<li>理解如何对简单的Python程序做benchmark测试</li>
+</ul>
+<h2 id="2.2.-what-is-algorithm-analysis?">2.2. What Is Algorithm Analysis? 什么是算法分析？</h2><div class="admonition admonition-note"><p>Q：处理同一个问题的两个程序，是否存在优劣？</p></div><p><strong>算法</strong>是解决问题的一系列步骤，<strong>程序</strong>是算法的某种编程语言实现。</p>
+<div class="hll"><pre><span></span><span class="c1"># Summation of the First n Integers (active1)</span>
+<span class="k">def</span> <span class="nf">sumOfN</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+   <span class="n">theSum</span> <span class="o">=</span> <span class="mi">0</span>
+   <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+       <span class="n">theSum</span> <span class="o">=</span> <span class="n">theSum</span> <span class="o">+</span> <span class="n">i</span>
+   <span class="k">return</span> <span class="n">theSum</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">sumOfN</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+</pre></div>
+<p>ActiveCode 1：通过<strong>累加</strong>初始化为0的变量来计算前n个自然数的和。</p>
+<div class="hll"><pre><span></span><span class="c1"># Another Summation of the First n Integers (active2)</span>
+<span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="n">tom</span><span class="p">):</span>
+    <span class="n">fred</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">bill</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">tom</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+       <span class="n">barney</span> <span class="o">=</span> <span class="n">bill</span>
+       <span class="n">fred</span> <span class="o">=</span> <span class="n">fred</span> <span class="o">+</span> <span class="n">barney</span>
+    <span class="k">return</span> <span class="n">fred</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">foo</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+</pre></div>
+<p>ActiveCode 2：同样是累加方法，但是程序<strong>可读性</strong>变差。</p>
+<p>程序是否优劣，取决于你的评判标准。上述两个程序，在可读性上，sumOfN比foo要好。</p>
+<p>本课程评判标准是<strong>算法</strong>本身。</p>
+<p>算法分析关注的是<strong>计算资源的利用率</strong>。如果一个程序使用的计算资源更少，那么这个程序就更好。</p>
+<p>关于计算资源，我们可以分几个方面考虑。一个是计算空间，另一个是计算时间。对于计算时间，可以使用<strong>基准测试</strong>工具，Python的time模块可以帮助我们分析。</p>
+<div class="hll"><pre><span></span><span class="c1"># Listing 1</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="k">def</span> <span class="nf">sumOfN2</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+   <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+   <span class="n">theSum</span> <span class="o">=</span> <span class="mi">0</span>
+   <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+      <span class="n">theSum</span> <span class="o">=</span> <span class="n">theSum</span> <span class="o">+</span> <span class="n">i</span>
+
+   <span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+   <span class="k">return</span> <span class="n">theSum</span><span class="p">,</span><span class="n">end</span><span class="o">-</span><span class="n">start</span>
+</pre></div>
+<p>在程序首尾插入时间戳，计算执行时间。</p>
+<div class="hll"><pre><span></span><span class="c1"># 计算10,000个数的时间</span>
+<span class="o">&gt;&gt;&gt;</span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+       <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Sum is </span><span class="si">%d</span><span class="s2"> required </span><span class="si">%10.7f</span><span class="s2"> seconds&quot;</span><span class="o">%</span><span class="n">sumOfN</span><span class="p">(</span><span class="mi">10000</span><span class="p">))</span>
+<span class="n">Sum</span> <span class="ow">is</span> <span class="mi">50005000</span> <span class="n">required</span>  <span class="mf">0.0018950</span> <span class="n">seconds</span>
+<span class="n">Sum</span> <span class="ow">is</span> <span class="mi">50005000</span> <span class="n">required</span>  <span class="mf">0.0018620</span> <span class="n">seconds</span>
+<span class="n">Sum</span> <span class="ow">is</span> <span class="mi">50005000</span> <span class="n">required</span>  <span class="mf">0.0019171</span> <span class="n">seconds</span>
+<span class="n">Sum</span> <span class="ow">is</span> <span class="mi">50005000</span> <span class="n">required</span>  <span class="mf">0.0019162</span> <span class="n">seconds</span>
+<span class="n">Sum</span> <span class="ow">is</span> <span class="mi">50005000</span> <span class="n">required</span>  <span class="mf">0.0019360</span> <span class="n">seconds</span>
+</pre></div>
+<div class="hll"><pre><span></span><span class="c1"># 计算100,000个数的时间。</span>
+<span class="o">&gt;&gt;&gt;</span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+       <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Sum is </span><span class="si">%d</span><span class="s2"> required </span><span class="si">%10.7f</span><span class="s2"> seconds&quot;</span><span class="o">%</span><span class="n">sumOfN</span><span class="p">(</span><span class="mi">100000</span><span class="p">))</span>
+<span class="n">Sum</span> <span class="ow">is</span> <span class="mi">5000050000</span> <span class="n">required</span>  <span class="mf">0.0199420</span> <span class="n">seconds</span>
+<span class="n">Sum</span> <span class="ow">is</span> <span class="mi">5000050000</span> <span class="n">required</span>  <span class="mf">0.0180972</span> <span class="n">seconds</span>
+<span class="n">Sum</span> <span class="ow">is</span> <span class="mi">5000050000</span> <span class="n">required</span>  <span class="mf">0.0194821</span> <span class="n">seconds</span>
+<span class="n">Sum</span> <span class="ow">is</span> <span class="mi">5000050000</span> <span class="n">required</span>  <span class="mf">0.0178988</span> <span class="n">seconds</span>
+<span class="n">Sum</span> <span class="ow">is</span> <span class="mi">5000050000</span> <span class="n">required</span>  <span class="mf">0.0188949</span> <span class="n">seconds</span>
+<span class="o">&gt;&gt;&gt;</span>
+</pre></div>
+<div class="hll"><pre><span></span><span class="c1"># 计算1,000,000个数的时间。</span>
+<span class="o">&gt;&gt;&gt;</span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+       <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Sum is </span><span class="si">%d</span><span class="s2"> required </span><span class="si">%10.7f</span><span class="s2"> seconds&quot;</span><span class="o">%</span><span class="n">sumOfN</span><span class="p">(</span><span class="mi">1000000</span><span class="p">))</span>
+<span class="n">Sum</span> <span class="ow">is</span> <span class="mi">500000500000</span> <span class="n">required</span>  <span class="mf">0.1948988</span> <span class="n">seconds</span>
+<span class="n">Sum</span> <span class="ow">is</span> <span class="mi">500000500000</span> <span class="n">required</span>  <span class="mf">0.1850290</span> <span class="n">seconds</span>
+<span class="n">Sum</span> <span class="ow">is</span> <span class="mi">500000500000</span> <span class="n">required</span>  <span class="mf">0.1809771</span> <span class="n">seconds</span>
+<span class="n">Sum</span> <span class="ow">is</span> <span class="mi">500000500000</span> <span class="n">required</span>  <span class="mf">0.1729250</span> <span class="n">seconds</span>
+<span class="n">Sum</span> <span class="ow">is</span> <span class="mi">500000500000</span> <span class="n">required</span>  <span class="mf">0.1646299</span> <span class="n">seconds</span>
+<span class="o">&gt;&gt;&gt;</span>
+</pre></div>
+<p>通过几个不同数量级的测试，可以判断<strong>执行时间是线性的</strong>。</p>
+<div class="hll"><pre><span></span><span class="c1"># Summation Without Iteration (active3)</span>
+<span class="k">def</span> <span class="nf">sumOfN3</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+   <span class="k">return</span> <span class="p">(</span><span class="n">n</span><span class="o">*</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span><span class="o">/</span><span class="mi">2</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">sumOfN3</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+</pre></div>
+<p>ActiveCode 3：使用<strong>方程求</strong>解，计算前n个自然数的和</p>
+<div class="hll"><pre><span></span><span class="n">Sum</span> <span class="ow">is</span> <span class="mi">50005000</span> <span class="n">required</span> <span class="mf">0.00000095</span> <span class="n">seconds</span>
+<span class="n">Sum</span> <span class="ow">is</span> <span class="mi">5000050000</span> <span class="n">required</span> <span class="mf">0.00000191</span> <span class="n">seconds</span>
+<span class="n">Sum</span> <span class="ow">is</span> <span class="mi">500000500000</span> <span class="n">required</span> <span class="mf">0.00000095</span> <span class="n">seconds</span>
+<span class="n">Sum</span> <span class="ow">is</span> <span class="mi">50000005000000</span> <span class="n">required</span> <span class="mf">0.00000095</span> <span class="n">seconds</span>
+<span class="n">Sum</span> <span class="ow">is</span> <span class="mi">5000000050000000</span> <span class="n">required</span> <span class="mf">0.00000119</span> <span class="n">seconds</span>
+</pre></div>
+<p>通过基准测试，可以发现方程求解算法<strong>不受自然数个数影响</strong>。透过基准测试，可以发现<strong>迭代计算</strong>在任务变多的情况下需要更多工作。</p>
+<div class="admonition admonition-note"><p>Q：另一个问题，同样的算法在<strong>不同编程语言</strong>或<strong>不同的计算机</strong>上，执行时间也会有差异。</p></div><p>我们需要<strong>更好的工具</strong>来反应算法的执行时间。基准测试可以告诉我们特定平台上的执行时间。更好的工具<strong>不依赖特定平台</strong>。</p>
+<h2 id="2.3.-big-o-notation-o">2.3. Big-O Notation 大O表示法</h2>
+
+</div>
+
+
+
+
+
+
+
+
+
+    </div>
+
+    <footer>&copy; 2018 StickMind.</footer>
+  </div>
+</body>
