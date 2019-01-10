@@ -1,9 +1,9 @@
 <!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="shortcut icon" href="/static/favicon.ico">
-<link rel="stylesheet" href="/static/normalize.css">
-<link rel="stylesheet" href="/static/style.css">
+<link rel="shortcut icon" href="/static/favicon.ico?h=9547cfbf">
+<link rel="stylesheet" href="/static/normalize.css?h=734a72e6">
+<link rel="stylesheet" href="/static/style.css?h=15ba82be">
 <link rel="stylesheet" href="/static/pygments.css">
 <title>Chapter 1. 安装 CentOS 7 — StickMind</title>
 
@@ -14,7 +14,7 @@
       <nav>
         <ul class="nav navbar-nav">
           
-          <li ><a href="/projects/">代码</a></li>
+          <li ><a href="/code/">代码</a></li>
           
           <li ><a href="/english/">英语</a></li>
           
@@ -63,9 +63,9 @@
 <p>MBR 采用 32bits 地址分配给磁盘扇区，那么对于扇区为 512 bytes 的磁盘，MBR 分区表不支持容量大于 2 TB（2^32 × 512 bytes）的分区。GPT 采用 64 bits 地址给磁盘扇区，因而最大分区可以有 2^64 个扇区。对于扇区同样为 512 bytes 的磁盘，这意味着可以有 8 ZB （2^64 × 512 bytes）的最大容量。</p>
 <h3 id="1.1-centos-gpt">1.1 强制 CentOS 使用 GPT 分区表</h3><p>实际安装过程中，磁盘容量小于2 TB，CentOS 会默认采用 MBR 分区表。我们可以通过以下设置，强制使用 GPT 分区表。</p>
 <p>（1）在安装启动界面，定位到“Install CentOS 7”，按 [TAB] 键；</p>
-<p><img src="/devops/01-installation/1.1.1-a.png" alt="启动界面" title="启动界面"></p>
+<p><img src="/code_devops/01-installation/1.1.1-a.png" alt="启动界面" title="启动界面"></p>
 <p>（2）在出现的命令行中，添加“inst.gpt”，按 [回车] 确认即可。</p>
-<p><img src="/devops/01-installation/1.1.1-b.png" alt="设置GPT" title="设置GPT"></p>
+<p><img src="/code_devops/01-installation/1.1.1-b.png" alt="设置GPT" title="设置GPT"></p>
 <h2 id="1.2">1.2 系统安装</h2><p>安装 CentOS 过程中的几个选项：</p>
 <ul>
 <li>SOFTWARE SELECTION 选择 Server with GUI</li>
@@ -123,7 +123,7 @@
 <h3 id="1.2.2-root">1.2.2 如何重置 root 密码？</h3><p>如果后期需要重设 root 密码，可以按照如下步骤：</p>
 <p>（1） 开机后，在引导界面按键盘上 [e] 键，进入内核编辑界面。</p>
 <p>（2） 在“linux16”参数这行的最后面追加“rd.break”参数，然后按下 [Ctrl + X] 组合键来运行修改过的内核程序：</p>
-<p><img src="/devops/01-installation/1.2.2-a.png" alt="修改内核" title="修改内核"></p>
+<p><img src="/code_devops/01-installation/1.2.2-a.png" alt="修改内核" title="修改内核"></p>
 <p>（3） 进入到系统的紧急求援模式，依次执行以下代码，重启后便完成了新密码的设置。</p>
 <div class="hll"><pre><span></span>$ mount -o remount,rw /sysroot
 $ chroot /sysroot
@@ -132,7 +132,7 @@ $ touch /.autorelabel
 $ <span class="nb">exit</span>
 $ reboot
 </pre></div>
-<p><img src="/devops/01-installation/1.2.2-b.png" alt="修改root密码" title="修改root密码"></p>
+<p><img src="/code_devops/01-installation/1.2.2-b.png" alt="修改root密码" title="修改root密码"></p>
 
 
 </div>
@@ -143,7 +143,7 @@ $ reboot
 
 
 <div class="nav-prev">
-  <a href="/devops/02-software-installation/">
+  <a href="/code_devops/02-software-installation/">
     ◀ Chapter 2. 安装软件
   </a>
 </div>
