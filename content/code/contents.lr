@@ -1,0 +1,21 @@
+title: 代码
+---
+body:
+
+# 代码
+
+学习笔记：
+
+|                          |                           |                                  |
+| :----------------------: | :-----------------------: | :------------------------------: |
+| [CS50](/code_cs50)       | [C](/code_c)/[Rust](rust) | [Algorithm](/code_algorithm)     | 
+| [Web](/code_web)         | [Odoo](/code_odoo)        | [Database](/code_db)             | 
+| [SDL2](/code_sdl2)       | [DevOps](/code_devops)    | [Tools](code_tools)              |
+
+正在学习的课程:
+
+- [CS50 - Problem Sets](https://github.com/xuehao/myCS50)
+
+待解决的问题：
+
+- 解决网页中文字体加载速度慢的问题
