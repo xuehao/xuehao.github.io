@@ -1,0 +1,15 @@
+_model: notes
+---
+title: Odoo 学习笔记
+---
+body:
+
+# Odoo 开发
+
+记录学习 Odoo 的点点滴滴，了解企业应用开发流程，以及软件在企业管理中的应用。
+
+技术栈包括：
+
+- Python（MVC）
+- HTML/CSS/JavaScript（Bootstrap/SCSS）
+- PostgreSQL
