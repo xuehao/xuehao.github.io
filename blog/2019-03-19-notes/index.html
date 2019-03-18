@@ -1,0 +1,131 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" href="/static/favicon.ico?h=9547cfbf">
+<link rel="stylesheet" href="/static/normalize.css?h=734a72e6">
+<link rel="stylesheet" href="/static/style.css?h=15ba82be">
+<link rel="stylesheet" href="/static/pygments.css">
+<title>安装 cslib 的步骤和问题 — StickMind</title>
+
+<body>
+  <div id="canvas">
+    <header>
+      <h1 class="logo-text"><a href="/">StickMind</a></h1>
+      <nav>
+        <ul class="nav navbar-nav">
+          
+          <li ><a href="/code/">代码</a></li>
+          
+          <li ><a href="/english/">英语</a></li>
+          
+          <li  class="active" ><a href="/blog/">文章</a></li>
+          
+          <li  class="active" ><a href="/">关于我</a></li>
+          
+        </ul>
+      </nav>
+    </header>
+
+    <div class="page">
+      
+
+
+<div class="blog-post">
+
+  
+  <h2>安装 cslib 的步骤和问题</h2>
+  
+
+  <p class="meta">发表于 2019-03-19</p>
+
+  
+
+  <ul class="toc">
+    
+    <li><a href="#1.-cslib">1. 解压文件，此命令会生成一个cslib文件夹</a>
+      </li>
+    
+    <li><a href="#2.-cslib">2. 切换到  cslib 文件夹</a>
+      </li>
+    
+    <li><a href="#3.-make">3. 使用make构建</a>
+      </li>
+    
+    <li><a href="#4.-gccxpath">4. 将gccx文件添加到PATH路径</a>
+      </li>
+    
+    <li><a href="#5.">5. 测试安装</a>
+      </li>
+    
+  </ul>
+
+  <h3 id="1.-cslib">1. 解压文件，此命令会生成一个cslib文件夹</h3><div class="hll"><pre><span></span> $ sh cslib.shar
+</pre></div>
+<h3 id="2.-cslib">2. 切换到  cslib 文件夹</h3><h3 id="3.-make">3. 使用make构建</h3><div class="admonition admonition-note"><p>注意ubuntu系统需要安装csh工具以及x11开发包</p></div><div class="hll"><pre><span></span>$ sudo apt install csh x11-dev
+$ make
+</pre></div>
+<p>错误记录：</p>
+<div class="hll"><pre><span></span>stickmind@mint:~/cslib$ make
+gcc <span class="sb">`</span>csh config.csh -DHasPoll gcc -E -DHasPoll xcompat.c<span class="sb">`</span> -g -I.  -c xdisplay.c
+Segmentation fault <span class="o">(</span>core dumped<span class="o">)</span>
+xdisplay.c: In <span class="k">function</span> ‘XDOpenDisplay’:
+xdisplay.c:225:25: warning: format ‘%d’ expects argument of <span class="nb">type</span> ‘int’, but argument <span class="m">3</span> has <span class="nb">type</span> ‘long int’ <span class="o">[</span>-Wformat<span class="o">=]</span>
+     sprintf<span class="o">(</span>geometry, <span class="s2">&quot;%dx%d+%d+%d&quot;</span>, width, height,
+                        ~^
+                        %ld
+xdisplay.c:225:28: warning: format ‘%d’ expects argument of <span class="nb">type</span> ‘int’, but argument <span class="m">4</span> has <span class="nb">type</span> ‘long int’ <span class="o">[</span>-Wformat<span class="o">=]</span>
+     sprintf<span class="o">(</span>geometry, <span class="s2">&quot;%dx%d+%d+%d&quot;</span>, width, height,
+                           ~^
+                           %ld
+xdisplay.c:225:31: warning: format ‘%d’ expects argument of <span class="nb">type</span> ‘int’, but argument <span class="m">5</span> has <span class="nb">type</span> ‘long int’ <span class="o">[</span>-Wformat<span class="o">=]</span>
+     sprintf<span class="o">(</span>geometry, <span class="s2">&quot;%dx%d+%d+%d&quot;</span>, width, height,
+                              ~^
+                              %ld
+             <span class="o">(</span>DisplayWidth<span class="o">(</span>disp, scnum<span class="o">)</span> - width<span class="o">)</span> / <span class="m">2</span>,
+             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+xdisplay.c:225:34: warning: format ‘%d’ expects argument of <span class="nb">type</span> ‘int’, but argument <span class="m">6</span> has <span class="nb">type</span> ‘long int’ <span class="o">[</span>-Wformat<span class="o">=]</span>
+     sprintf<span class="o">(</span>geometry, <span class="s2">&quot;%dx%d+%d+%d&quot;</span>, width, height,
+                                 ~^
+                                 %ld
+xdisplay.c:227:13:
+             <span class="o">(</span>DisplayHeight<span class="o">(</span>disp, scnum<span class="o">)</span> - height<span class="o">)</span> / <span class="m">2</span><span class="o">)</span><span class="p">;</span>
+             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+gcc <span class="sb">`</span>csh config.csh -DHasPoll gcc -E -DHasPoll xcompat.c<span class="sb">`</span> -g -I.  -c xcompat.c
+Segmentation fault <span class="o">(</span>core dumped<span class="o">)</span>
+gcc -g -I.  -c glibrary.c
+rm -f cslib.a
+ar cr cslib.a genlib.o exception.o strlib.o simpio.o random.o graphics.o xmanager.o xdisplay.o xcompat.o glibrary.o
+ranlib cslib.a
+<span class="o">[</span>gccx script created<span class="o">]</span>
+stickmind@mint:~/cslib$
+</pre></div>
+<h3 id="4.-gccxpath">4. 将gccx文件添加到PATH路径</h3><div class="hll"><pre><span></span><span class="nv">PATH</span><span class="o">=</span>~/cslib:<span class="nv">$PATH</span>
+<span class="nb">export</span> PATH
+</pre></div>
+<h3 id="5.">5. 测试安装</h3><div class="hll"><pre><span></span>$ gccx -o house house.c 
+$ ./house
+</pre></div>
+<p>我们会得到这样一幅图像：</p>
+
+
+</div>
+
+
+
+
+
+
+<div class="nav-prev">
+  <a href="/blog/2018-12-26-macos-linux-usb-loader/">
+    ◀ macOS 制作 Linux USB 启动盘
+  </a>
+</div>
+
+
+
+
+    </div>
+
+    <footer>&copy; 2019 StickMind.</footer>
+  </div>
+</body>
