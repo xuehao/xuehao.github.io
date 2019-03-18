@@ -1,0 +1,85 @@
+title: 安装 cslib 的步骤和问题
+---
+pub_date: 2019-03-19
+---
+author: 薛浩
+---
+description: 学习《C语言的科学与艺术》笔记——安装cslib开发环境
+---
+post_image: 
+---
+body: 
+
+
+### 1. 解压文件，此命令会生成一个cslib文件夹
+
+```bash
+ $ sh cslib.shar
+```
+
+### 2. 切换到  cslib 文件夹
+
+### 3. 使用make构建
+
+! 注意ubuntu系统需要安装csh工具以及x11开发包
+
+```bash
+$ sudo apt install csh x11-dev
+$ make
+```
+
+错误记录：
+
+```bash
+stickmind@mint:~/cslib$ make
+gcc `csh config.csh -DHasPoll gcc -E -DHasPoll xcompat.c` -g -I.  -c xdisplay.c
+Segmentation fault (core dumped)
+xdisplay.c: In function ‘XDOpenDisplay’:
+xdisplay.c:225:25: warning: format ‘%d’ expects argument of type ‘int’, but argument 3 has type ‘long int’ [-Wformat=]
+     sprintf(geometry, "%dx%d+%d+%d", width, height,
+                        ~^
+                        %ld
+xdisplay.c:225:28: warning: format ‘%d’ expects argument of type ‘int’, but argument 4 has type ‘long int’ [-Wformat=]
+     sprintf(geometry, "%dx%d+%d+%d", width, height,
+                           ~^
+                           %ld
+xdisplay.c:225:31: warning: format ‘%d’ expects argument of type ‘int’, but argument 5 has type ‘long int’ [-Wformat=]
+     sprintf(geometry, "%dx%d+%d+%d", width, height,
+                              ~^
+                              %ld
+             (DisplayWidth(disp, scnum) - width) / 2,
+             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+xdisplay.c:225:34: warning: format ‘%d’ expects argument of type ‘int’, but argument 6 has type ‘long int’ [-Wformat=]
+     sprintf(geometry, "%dx%d+%d+%d", width, height,
+                                 ~^
+                                 %ld
+xdisplay.c:227:13:
+             (DisplayHeight(disp, scnum) - height) / 2);
+             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+gcc `csh config.csh -DHasPoll gcc -E -DHasPoll xcompat.c` -g -I.  -c xcompat.c
+Segmentation fault (core dumped)
+gcc -g -I.  -c glibrary.c
+rm -f cslib.a
+ar cr cslib.a genlib.o exception.o strlib.o simpio.o random.o graphics.o xmanager.o xdisplay.o xcompat.o glibrary.o
+ranlib cslib.a
+[gccx script created]
+stickmind@mint:~/cslib$
+```
+
+### 4. 将gccx文件添加到PATH路径
+
+```bash
+PATH=~/cslib:$PATH
+export PATH
+```
+
+### 5. 测试安装
+
+```bash
+$ gccx -o house house.c 
+$ ./house
+```
+
+我们会得到这样一幅图像：
+
+
