@@ -22,7 +22,9 @@
     font-display: swap;
 }
 
-html, body, div#canvas {
+html,
+body,
+div#canvas {
     height: 100%;
     /* using flex*/
 }
@@ -31,10 +33,11 @@ body {
     background-image: url('background.png');
     background-repeat: repeat;
     font-family: Centaur, Official, Running, serif;
-    font-size: 1.25rem;
+    font-size: 1.25em;
 }
 
-pre, code {
+pre,
+code {
     font-family: Centaur, Official, Running, serif;
     margin: 6px 6px;
 }
@@ -45,7 +48,9 @@ div.page .blog-post h2 {
     font-family: Centaur-Bold, Official, Running, serif;
 }
 
-*, ::after, ::before {
+*,
+::after,
+::before {
     box-sizing: border-box;
 }
 
@@ -60,7 +65,8 @@ div#canvas {
     width: auto;
 }
 
-header, footer {
+header,
+footer {
     flex: 0 1 auto;
     margin: 20px auto;
     text-align: center;
@@ -95,7 +101,8 @@ header nav ul li {
     padding: 0;
 }
 
-div.page .logo-text, div.page .pagination {
+div.page .logo-text,
+div.page .pagination {
     text-align: center;
 }
 
@@ -146,7 +153,8 @@ a.branch-name {
     color: #0366d6;
 }
 
-a:active, a:hover {
+a:active,
+a:hover {
     outline-width: 0;
 }
 
@@ -261,7 +269,8 @@ table tr:nth-child(2n) {
     background: #f7f7f7;
 }
 
-table td, table th {
+table td,
+table th {
     padding: 5px 10px;
     text-align: left;
 }
@@ -275,14 +284,72 @@ table th {
 
 /* for notes list style */
 
-.col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-11, .col-lg-12, .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12, .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12, .col-xs-1, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9, .col-xs-10, .col-xs-11, .col-xs-12 {
+.col-lg-1,
+.col-lg-2,
+.col-lg-3,
+.col-lg-4,
+.col-lg-5,
+.col-lg-6,
+.col-lg-7,
+.col-lg-8,
+.col-lg-9,
+.col-lg-10,
+.col-lg-11,
+.col-lg-12,
+.col-md-1,
+.col-md-2,
+.col-md-3,
+.col-md-4,
+.col-md-5,
+.col-md-6,
+.col-md-7,
+.col-md-8,
+.col-md-9,
+.col-md-10,
+.col-md-11,
+.col-md-12,
+.col-sm-1,
+.col-sm-2,
+.col-sm-3,
+.col-sm-4,
+.col-sm-5,
+.col-sm-6,
+.col-sm-7,
+.col-sm-8,
+.col-sm-9,
+.col-sm-10,
+.col-sm-11,
+.col-sm-12,
+.col-xs-1,
+.col-xs-2,
+.col-xs-3,
+.col-xs-4,
+.col-xs-5,
+.col-xs-6,
+.col-xs-7,
+.col-xs-8,
+.col-xs-9,
+.col-xs-10,
+.col-xs-11,
+.col-xs-12 {
     position: relative;
     min-height: 1px;
     padding-left: 15px;
     padding-right: 15px;
 }
 
-.col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12 {
+.col-md-1,
+.col-md-2,
+.col-md-3,
+.col-md-4,
+.col-md-5,
+.col-md-6,
+.col-md-7,
+.col-md-8,
+.col-md-9,
+.col-md-10,
+.col-md-11,
+.col-md-12 {
     float: left;
 }
 
