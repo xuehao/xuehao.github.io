@@ -3,7 +3,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="shortcut icon" href="/static/favicon.ico?h=9547cfbf">
 <link rel="stylesheet" href="/static/normalize.css?h=2fef84a1">
-<link rel="stylesheet" href="/static/style.css?h=67549dc2">
+<link rel="stylesheet" href="/static/style.css?h=9c91dbc4">
 <link rel="stylesheet" href="/static/pygments.css">
 <title>Markdown 语法整理 — StickMind</title>
 
@@ -110,16 +110,12 @@
 </blockquote>
 </blockquote>
 </blockquote>
-<h3 id="4.">4. 分割线</h3><p>因为3个“-”被属性占用，所以分割线使用4以上“-”或3个以上“*”表示，注意前后用空格隔开：</p>
-<div class="hll"><pre><span></span>----
-***
+<h3 id="4.">4. 分割线</h3><p>因为3个“-”被属性占用，所以分割线使用3个以上“*”表示，注意前后用空格隔开：</p>
+<div class="hll"><pre><span></span>***
 </pre></div>
 <p>示例：</p>
-<p>4个“-”</p>
-<hr>
 <p>3个“*”</p>
 <hr>
-<p>可以看到，显示效果是一样的。</p>
 <h3 id="5.">5. 图片</h3><p>插入图片的语法：</p>
 <div class="hll"><pre><span></span>![alt](地址 &#39;&#39;title&#39;&#39;)
 </pre></div>
@@ -167,10 +163,10 @@
 </li>
 </ol>
 <h3 id="8.">8. 表格</h3><p>语法：</p>
-<div class="hll"><pre><span></span>表头|表头|表头
----|:--:|---:
-内容|内容|内容
-内容|内容|内容
+<div class="hll"><pre><span></span>| | 表头  |  表头    |  表头 | |
+| | ---- - |  :----:  |  ---: | |
+| | 内容  |  内容    |  内容 | |
+| | 内容  |  内容    |  内容 | |
 </pre></div>
 <p>表头可以用冒号改变对齐。</p>
 <table>

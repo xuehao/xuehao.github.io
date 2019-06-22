@@ -36,10 +36,14 @@ body {
     font-size: 1.25em;
 }
 
-pre,
+pre {
+    font-size: 16px;
+    font-family: serif;
+    margin: 6px 6px;
+}
+
 code {
     font-family: Centaur, Official, Running, serif;
-    margin: 6px 6px;
 }
 
 /* for post title */
@@ -84,7 +88,7 @@ header .logo-text {
     font-family: Centaur-Bold, Official, Running, serif;
     font-weight: bold;
     letter-spacing: 0.0625rem;
-    font-size: 2.25em;
+    font-size: 2em;
 }
 
 /* for nav style */
@@ -165,8 +169,16 @@ code {
 }
 
 blockquote {
-    background-color: #f7f7f7;
-    border-left: 6px solid #b4b4b4;
+    font-style: italic;
+    margin: 0 0 0 2em;
+}
+
+blockquote p:first-of-type::before {
+    content: "“";
+}
+
+blockquote p:first-of-type::after {
+    content: "”";
 }
 
 /* for image style */
@@ -279,7 +291,6 @@ table th {
     border-bottom: 1px solid #2a99b6;
     background: #2a99b6;
     color: #fff;
-    font-size: 13px;
 }
 
 /* for notes list style */
@@ -369,5 +380,5 @@ table th {
 
 .hll {
     overflow: auto;
-    font-size: 1.0rem;
+    font-size: 16px;
 }
