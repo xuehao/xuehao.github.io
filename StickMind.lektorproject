@@ -7,6 +7,7 @@ url_style = absolute
 target = ghpages+https://xuehao/xuehao.github.io?cname=www.stickmind.com
 
 [packages]
-lektor-markdown-header-anchors = 0.3
-lektor-markdown-highlighter = 0.3
-lektor-markdown-admonition = 0.3
+lektor-markdown-header-anchors = 0.3.1
+lektor-markdown-highlighter = 0.3.1
+lektor-markdown-admonition = 0.3.1
+
