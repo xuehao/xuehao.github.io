@@ -10,11 +10,7 @@ description: 安装C开发工具，以及学习用到的库文件的使用
 ---
 body:
 
-> 不愤不启，不悱不发，举一隅不以三隅反，则不复也。
-> 
-> —— 孔子
-
-因为C来源于 Unix 操作系统，所以我们采用 CentOS 作为练习平台，方便各个概念的学习和测试。CentOS 的安装可以参考另一篇文章：[安装 CentOS 7](/code_devops/01-installation)
+因为C来源于 Unix 操作系统，所以我们采用 CentOS 作为练习平台，方便各个概念的学习和测试。CentOS 的安装可以参考另一篇文章：[安装 CentOS 7](/code-devops/01-installation)
 
 ## 1.1 编译器的安装
 

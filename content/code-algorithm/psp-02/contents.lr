@@ -150,15 +150,15 @@ Sum is 5000000050000000 required 0.00000119 seconds
 
 学习算法过程中，常见数量级函数。
 
-|   f(n)    | 	Name    |
-|:-----------:|:-----------:|
-|   1       | Constant  |
-|  logn     | Logarithmic |
-|   n       | Linear    |
-|  nlogn    | Log Linear|
-|  n^2      | Quadratic |
-|   n^3     |	Cubic   |
-|  2^n      | Exponential |
+| f(n)  |    Name     |
+| :---: | :---------: |
+|   1   |  Constant   |
+| logn  | Logarithmic |
+|   n   |   Linear    |
+| nlogn | Log Linear  |
+|  n^2  |  Quadratic  |
+|  n^3  |    Cubic    |
+|  2^n  | Exponential |
 
 ![Figure1](newplot.png)
 

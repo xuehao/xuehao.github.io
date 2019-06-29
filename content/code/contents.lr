@@ -6,11 +6,11 @@ body:
 
 学习笔记：
 
-|                          |                           |                                  |
-| :----------------------: | :-----------------------: | :------------------------------: |
-| [CS50](/code_cs50)       | [C](/code_c)/[Rust](rust) | [Algorithm](/code_algorithm)     | 
-| [Web](/code_web)         | [Odoo](/code_odoo)        | [Database](/code_db)             | 
-| [SDL2](/code_sdl2)       | [DevOps](/code_devops)    | [Tools](code_tools)              |
+|                    |                        |                              |
+| :----------------: | :--------------------: | :--------------------------: |
+| [CS50](/code_cs50) |      [C](/code_c)      | [Algorithm](/code_algorithm) |
+|  [Web](/code_web)  |   [Odoo](/code_odoo)   |     [Database](/code_db)     |
+|                    | [DevOps](/code_devops) |                              |
 
 正在学习的课程:
 

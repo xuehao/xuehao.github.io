@@ -10,7 +10,9 @@ description: CentOS 常用开发工具的安装和使用
 ---
 body:
 
-## 2.1 添加用户到“sudoers”
+本文介绍了 CentOS 下，几种常用的软件安装方法。
+
+## 2.1 使用“sudo”命令：添加用户到“sudoers”
 
 在装完系统后，CentOS 默认普通用户是无法使用“sudo”命令的，这时我们就需要将登陆的用户加入“/etc/sudoers”文件中。
 
@@ -34,7 +36,9 @@ body:
 
     !!! 这个文件是只读的，保存时需要加“!”，强制保存。
 
-## 2.2 使用 **Yum** 安装工具
+## 2.2 使用 Yum 安装工具
+
+Yum（全称为 Yellow dog Updater, Modified）是一个在 Fedora 和 RedHat 以及 CentOS 中的 Shell 前端软件包管理器。基于RPM包管理，能够从指定的服务器自动下载RPM包并且安装，可以自动处理依赖性关系，并且一次安装所有依赖的软件包，无须繁琐地一次次下载、安装。
 
 ## 2.3 通过 Software Collection 管理软件版本
 
