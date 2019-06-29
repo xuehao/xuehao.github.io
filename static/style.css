@@ -170,7 +170,9 @@ code {
 
 blockquote {
     font-style: italic;
-    margin: 0 0 0 2em;
+    margin: 0 0;
+    padding: 5px 2em;
+    background-color: #ccc;
 }
 
 blockquote p:first-of-type::before {
