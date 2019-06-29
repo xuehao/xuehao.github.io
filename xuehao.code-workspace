@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"*.lr": "markdown",
+		},
+		"editor.minimap.enabled": false,
+	}
+}
