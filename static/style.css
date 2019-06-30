@@ -113,7 +113,7 @@ div.page .pagination {
 /* for first paragraph style*/
 
 p.firstpara:first-letter {
-    font-size: 4em;
+    font-size: 2em;
     font-weight: bold;
     margin-right: 8px;
     float: left;
