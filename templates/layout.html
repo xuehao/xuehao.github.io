@@ -16,8 +16,9 @@
           {% for href, title in [
           ['/code', '代码'],
           ['/english', '英语'],
-          ['/blog', '文章'],
-          ['/', '关于我']
+          ['/music', '音乐'],
+          ['/photography', '摄影'],
+          ['/blog', '文章']
           ] %}
           <li {% if this.is_child_of(href) %} class="active" {% endif %}><a href="{{ href|url }}">{{ title }}</a></li>
           {% endfor %}

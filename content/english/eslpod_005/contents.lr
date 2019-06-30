@@ -6,9 +6,9 @@ author: 薛浩
 ---
 body:
 
-<audio src="005_story.mp3" controls="controls" preload="metadata">
+<p><audio src="005_story.mp3" controls="controls" preload="metadata">
 Your browser does not support the audio element.
-</audio>
+</audio></p>
 
 <p class="firstpara"><span class="smallcaps">Well, I would say</span> that my favourite place to live is in a big city. I've lived in a medium size city, a city of about 500,000 people. And now I live in a city, Los Angeles, of <del>three and a half</del> four million people.</p>
 

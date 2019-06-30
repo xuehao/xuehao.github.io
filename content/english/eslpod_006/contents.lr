@@ -6,9 +6,9 @@ author: 薛浩
 ---
 body:
 
-<audio src="006_story.mp3" controls="controls" preload="metadata">
+<p><audio src="006_story.mp3" controls="controls" preload="metadata">
 Your browser does not support the audio element.
-</audio>
+</audio></p>
 
 <p class="firstpara"><span class="smallcaps">I do have nightmares</span> sometimes. I do have bad dreams. A lot of my bad dreams are things like I’m being chased by someone. I can’t get away from them or I’m hiding from them.</p>
 

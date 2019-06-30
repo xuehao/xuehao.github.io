@@ -8,17 +8,17 @@ body:
 
 *Hello and welcome to another edition of ESL Podcast. The podcast is designed especially for those who are speakers of English as a Second Language. I'm your host, Jeff McQuillan. This podcast is brought to you by the Center for Educational Development on www.eslpod.com.*
 
-Today our podcast will go into be interviewing Lucy, who's going to tell us about 
+> Today our podcast will go into be **Interviewing Lucy**, who's going to tell us about 
+> 
+> - Where she likes to live,
+> - What she likes about places where she lives, and 
+> - Something that she doesn't like about where she lives.
+>
+> Let's listen it.
 
-- Where she likes to live,
-- What she likes about places where she lives, and 
-- Something that she doesn't like about where she lives.
-
-Let's listen it.
-
-<audio src="003_story.mp3" controls="controls" preload="metadata">
+<p><audio src="003_story.mp3" controls="controls" preload="metadata">
 Your browser does not support the audio element.
-</audio>
+</audio></p>
 
 <p class="firstpara"><span class="smallcaps">If you ask me</span> which I like better, the suburbs or the city. I will definitely say the city. I'm a little biased though.</p>
 

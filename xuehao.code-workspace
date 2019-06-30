@@ -9,5 +9,6 @@
 			"*.lr": "markdown",
 		},
 		"editor.minimap.enabled": false,
+		"editor.fontSize": 16,
 	}
 }

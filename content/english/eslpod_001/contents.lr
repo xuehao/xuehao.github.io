@@ -6,9 +6,9 @@ author: 薛浩
 ---
 body:
 
-<audio src="001_Introduction.mp3" controls="controls" preload="metadata">
+<p><audio src="001_Introduction.mp3" controls="controls" preload="metadata">
 Your browser does not support the audio element.
-</audio>
+</audio></p>
 
 <p class="firstpara"><span class="smallcaps">Welcome to our first</span> English as a Second Language Podcast.</p>
 
