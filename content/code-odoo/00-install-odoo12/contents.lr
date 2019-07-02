@@ -1,0 +1,73 @@
+title: Task 00. macOS 安装 Odoo 12
+---
+pub_date: 2019-01-02
+---
+author: 薛浩
+---
+cover_image: 
+---
+description: 使用 macOS 作为 Odoo 12 的开发平台
+---
+body:
+
+为了开发的便利与灵活，我们采用 [Source Code](https://www.odoo.com/documentation/12.0/setup/install.html#source-install) 源代码安装模式，同时也考虑到安装的简易，方便折腾。
+
+### 0.1 依赖安装
+
+- 安装 Python 
+
+  !!!! 注意 Python 的版本，后面安装依赖可能会有影响，简易安装 3.5
+
+  目前使用 Homebrew 安装 Python 默认版本是 3.7：
+
+  ```bash
+  $ brew install python
+  ```
+
+- 安装 PostgreSQL
+  
+  为了方便，我们直接使用[Postgres.app](https://postgresapp.com/)
+
+- 安装 Python 的依赖
+  
+  !!! 建议使用 venv 虚拟环境安装
+
+  !!!! Pillow 6.0.0 以下版本，似乎不支持 Python 3.7，安装前记得修改 `requirements.txt` 文件中的版本号为6.0.0
+
+  ```bash
+  $ pip3 install -r requirements.txt
+  ```
+
+### 0.2 获取 Odoo 源代码
+
+避免使用 git 控制版本是因为不相关文件太多，关注 git 版本也容易分心。从学习角度来讲，专注当前版本就好了。所以，我们直接从[官网下载](https://www.odoo.com/page/download)现成的源码压缩包。
+
+官网的源代码是每天更新的，如果有必要可以定期卸载重新安装。解压切换到 Odoo 源代码目录，执行命令：
+
+```bash
+$ python setup.py install
+```
+
+使用 `pip list` 可以看到 odoo 已经在列表中
+
+### 0.3 可能需要安装的其他依赖
+
+如果遇到问题，可能还需要安装以下依赖：
+
+- 相关库
+  
+  ```bash
+  $ brew install freetype jpeg libpng libtiff webp xz
+  ```
+
+- PDF 相关的工具
+  
+  直接下载 [Wkhtmltopdf](https://wkhtmltopdf.org/downloads.html) 安装
+
+### 0.4 启动 Odoo
+
+安装完 Postgres.app 后，默认 PostgreSQL 已启动，不需要执行其他命令。启动 Odoo 需要指定一个数据库实例，使用 `-d` 指定数据库名称，Odoo 会自动创建数据库实例，以及加载相关模块：
+
+```bash
+$ odoo -d todo
+```
