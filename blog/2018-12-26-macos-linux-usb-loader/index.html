@@ -3,7 +3,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="shortcut icon" href="/static/favicon.ico?h=9547cfbf">
 <link rel="stylesheet" href="/static/normalize.css?h=2fef84a1">
-<link rel="stylesheet" href="/static/style.css?h=5c29c003">
+<link rel="stylesheet" href="/static/style.css?h=4d128e1d">
 <link rel="stylesheet" href="/static/pygments.css">
 <title>macOS 制作 Linux USB 启动盘 — StickMind</title>
 
@@ -32,33 +32,36 @@
       
 
 
-<div class="blog-post">
+<div class="post">
+  <div class="blog-post">
 
-  
-  <h2>macOS 制作 Linux USB 启动盘</h2>
-  
+    
+    <h2>macOS 制作 Linux USB 启动盘</h2>
+    
 
-  <p class="meta">发表于 2018-12-26</p>
+    <p class="meta">发表于 2018-12-26</p>
 
-  
+    
 
-  <ul class="toc">
-    
-    <li><a href="#1.">1. 转换系统镜像格式</a>
-      </li>
-    
-    <li><a href="#2.-u">2. 查看U盘编号</a>
-      </li>
-    
-    <li><a href="#3.-u">3. 写入前先卸载U盘</a>
-      </li>
-    
-    <li><a href="#4.-u">4. 将系统写入U盘</a>
-      </li>
-    
-  </ul>
+    <div class="toc">
+      <ul>
+        
+        <li><a href="#1.">1. 转换系统镜像格式</a>
+          </li>
+        
+        <li><a href="#2.-u">2. 查看U盘编号</a>
+          </li>
+        
+        <li><a href="#3.-u">3. 写入前先卸载U盘</a>
+          </li>
+        
+        <li><a href="#4.-u">4. 将系统写入U盘</a>
+          </li>
+        
+      </ul>
+    </div>
 
-  <p>有一个老的笔记本，运行 Windows 比较吃力，所以测试一些 Linux 发行版，目的是找一个驱动管理好，运行流畅的系统。以下记录一下 macOS 下制作 USB 启动盘的步骤：</p>
+    <p>有一个老的笔记本，运行 Windows 比较吃力，所以测试一些 Linux 发行版，目的是找一个驱动管理好，运行流畅的系统。以下记录一下 macOS 下制作 USB 启动盘的步骤：</p>
 <h3 id="1.">1. 转换系统镜像格式</h3><div class="hll"><pre><span></span>~/Downloads                                                                    
 ▶ hdiutil convert -format UDRW -o linuxmint-19.1-cinnamon-64bit.dmg linuxmint-19.1-cinnamon-64bit.iso
 正在读取Driver Descriptor Map（DDM：0）…
@@ -95,6 +98,7 @@ Password:
 <p>此过程会持续数分钟，请耐心等待。</p>
 
 
+  </div>
 </div>
 
 

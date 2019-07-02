@@ -110,6 +110,7 @@ div.page .pagination {
     text-align: center;
 }
 
+
 /* for first paragraph style*/
 
 p.firstpara:first-letter {
@@ -137,10 +138,12 @@ p.meta {
 
 div.nav-prev {
     float: left;
+    margin: 20px 0;
 }
 
 div.nav-next {
     float: right;
+    margin: 20px 0;
 }
 
 a {
