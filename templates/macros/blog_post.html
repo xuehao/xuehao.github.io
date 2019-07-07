@@ -10,12 +10,6 @@
 
     <p class="meta">发表于 {{ post.pub_date }}</p>
 
-    {% if post.post_image %}
-    <p class="post-image">
-      <img src="{{ post.post_image|url }}" width="100%" alt="">
-    </p>
-    {% endif %}
-
     <div class="toc">
       <ul>
         {% for item in post.body.toc recursive %}
@@ -24,6 +18,12 @@
         {% endfor %}
       </ul>
     </div>
+
+    {% if post.post_image %}
+    <p class="post-image">
+      <img src="{{ post.post_image|url }}" width="100%" alt="">
+    </p>
+    {% endif %}
 
     {{ post.body }}
 
