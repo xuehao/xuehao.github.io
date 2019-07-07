@@ -8,7 +8,7 @@
     <h2>{{ post.title }}</h2>
     {% endif %}
 
-    <p class="meta">发表于 {{ post.pub_date }}</p>
+    <p class="meta">发表于 {{ post.pub_date }} 归类 <a href="/{{ post.tag }}">{{ post.tag }}</a></p>
 
     <div class="toc">
       <ul>
