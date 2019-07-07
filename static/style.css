@@ -109,6 +109,9 @@ div.page .logo-text,
 div.page .pagination {
     text-align: center;
 }
+div.row{
+    overflow: hidden;
+}
 
 /* for first paragraph style*/
 
