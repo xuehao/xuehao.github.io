@@ -3,7 +3,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="shortcut icon" href="/static/favicon.ico?h=9547cfbf">
 <link rel="stylesheet" href="/static/normalize.css?h=2fef84a1">
-<link rel="stylesheet" href="/static/style.css?h=4d128e1d">
+<link rel="stylesheet" href="/static/style.css?h=69814963">
 <link rel="stylesheet" href="/static/pygments.css">
 <title>Chapter 1. 安装 CentOS 7 — StickMind</title>
 
@@ -41,8 +41,6 @@
 
     <p class="meta">发表于 2018-10-01</p>
 
-    
-
     <div class="toc">
       <ul>
         
@@ -63,6 +61,8 @@
         
       </ul>
     </div>
+
+    
 
     <h2 id="1.1-gpt">1.1 关于 GPT 分区表</h2><p>GUID 磁盘分区表（GUID Partition Table，缩写：GPT），用于替代BIOS系统中的一个扇区来存储逻辑块地址和大小信息的主开机纪录（MBR）分区表。</p>
 <p>MBR 采用 32bits 地址分配给磁盘扇区，那么对于扇区为 512 bytes 的磁盘，MBR 分区表不支持容量大于 2 TB（2^32 × 512 bytes）的分区。GPT 采用 64 bits 地址给磁盘扇区，因而最大分区可以有 2^64 个扇区。对于扇区同样为 512 bytes 的磁盘，这意味着可以有 8 ZB （2^64 × 512 bytes）的最大容量。</p>

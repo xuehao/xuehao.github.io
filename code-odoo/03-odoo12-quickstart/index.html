@@ -3,9 +3,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="shortcut icon" href="/static/favicon.ico?h=9547cfbf">
 <link rel="stylesheet" href="/static/normalize.css?h=2fef84a1">
-<link rel="stylesheet" href="/static/style.css?h=4d128e1d">
+<link rel="stylesheet" href="/static/style.css?h=69814963">
 <link rel="stylesheet" href="/static/pygments.css">
-<title>Task 01. Odoo 12 快速入门 — StickMind</title>
+<title>Task 03. Odoo 12 快速入门 — StickMind</title>
 
 <body>
   <div id="canvas">
@@ -36,12 +36,10 @@
   <div class="blog-post">
 
     
-    <h2>Task 01. Odoo 12 快速入门</h2>
+    <h2>Task 03. Odoo 12 快速入门</h2>
     
 
-    <p class="meta">发表于 2019-01-15</p>
-
-    
+    <p class="meta">发表于 2019-01-25</p>
 
     <div class="toc">
       <ul>
@@ -133,8 +131,9 @@
       </ul>
     </div>
 
-    <p>Odoo 提供了一个快速应用开发框架，非常适合创建商业应用。这类应用通常用于保留业务记录，增删改查操作。Odoo 不仅简化了这类应用的创建，还提供了看板、日历、图表等视图的丰富组件，用于创建好看的用户界面。</p>
-<p>本文主要内容有：</p>
+    
+
+    <p>本文主要内容有：</p>
 <ul>
 <li>引入本文使用的学习项目：to-do（任务清单）应用</li>
 <li>理解 Odoo 的结构、版本和发布，了解使用 Odoo 的相关知识</li>
@@ -185,7 +184,7 @@
 <h3 id="1.2">1.2 基本概念</h3><p>理解 Odoo 结构中的各个层以及我们要使用的各类型组件的作用大有裨益。下面我们先概览下 Odoo 应用结构，然后把应用开发解构为对应组件。</p>
 <p>然后 Odoo 发布有两个版本的定期更新：社区版和企业版，我们应了解两者之前的差别以及大版本发布对开发和部署所带来的变化。首先来看看 Odoo 的应用结构：</p>
 <h4 id="1.2.1-odoo">1.2.1 Odoo 结构</h4><p>Odoo 遵循多层结构，即前述的数据层、逻辑层和展示层:</p>
-<p><img src="/code-odoo/01-odoo12-quickstart/odoo-layers.jpg" alt="alt" title="Odoo Layers"></p>
+<p><img src="/code-odoo/03-odoo12-quickstart/odoo-layers.jpg" alt="alt" title="Odoo Layers"></p>
 <p><strong>数据层</strong>是最底端的层，负责数据持久化存储，Odoo 借助 PostgreSQL 来实现。Odoo 出于设计考虑仅支持 PostgreSQL 数据库，而不支持 MySQL 这一类数据库（有第三方应用可集成 MySQL）。文件附件、图片一类的二进制文件通常存储在一个称为 filestore（目录） 的文件系统中。</p>
 <div class="admonition admonition-note"><p>小贴士：也就说 Odoo 实例的完整备份需包含数据库和 filestore 的拷贝。</p></div><p><strong>逻辑层</strong>负责与数据层的所有交互，并由 Odoo 服务器完成。通常，底端数据库不应通过这一层获取，只有这样才能保证权限控制和数据一致性。在 Odoo 的核心代码中包含供这一接口使用的 ORM (Object-relational Mapping)引擎。ORM 提供插件模块与数据交互的 API。</p>
 <p>比如像客户和供应商这样的 partner 数据实体，是通过模型的 ORM 体现的。这一模型是一个 Python 对象，支持多种交互方法：<code>create()</code>方法用于创建新的伙伴记录，<code>read()</code>方法用于查询已有记录和对应数据。通用方法可在特定模型中实现指定业务逻辑，如<code>create()</code>方法可以设置默认值或强化验证规则，<code>read()</code>方法可支持一些自动计算字段或根据执行操作用户来实施权限控制。</p>
@@ -231,7 +230,7 @@ $ docker container rm odoo
 <p><a href="https://alanhou.org/odoo-12/">Ubuntu 快速安装配置 Odoo 12</a></p>
 <p>对于源码安装会相对复杂，但可变性也更强，在<em>Task02. Odoo 12 开发之开发环境准备</em>中还会详细介绍。</p>
 <h4 id="1.3.5">1.3.5 创建工作数据库</h4><p>通过前面的学习，我们应该都有一个 PostgreSQL 数据库和 Odoo 服务器供运行了。在开始使用我们的项目前还需要再创建一个 Odoo 数据库。如果您在本地安装 Odoo 并保留了默认设置，则可以通过<a href="http://localhost:8069/">http://localhost:8069/</a> 打开 Odoo。第一次打开时，还没有可用的数据库，此时可以看到一个用于创建数据库的页面：</p>
-<p><img src="/code-odoo/01-odoo12-quickstart/odoo-database-creation.jpg" alt="alt" title="Create DB"></p>
+<p><img src="/code-odoo/03-odoo12-quickstart/odoo-database-creation.jpg" alt="alt" title="Create DB"></p>
 <p>创建数据库需的信息有：</p>
 <ul>
 <li>Database Name：数据库的标识名称，在同一台服务器上可以有多个数据库</li>
@@ -242,10 +241,10 @@ $ docker container rm odoo
 <li>Demo data：勾选此选项会在数据库中创建演示数据，通常在开发和测试环境中可以勾选</li>
 </ul>
 <p>如果在 Odoo 的服务端配置中添加了 master password，还会要求输入该密码。这可以阻止未经授权的用户执行相关管理员操作，默认情况下不会设置该密码。 点击 Create database 按钮后，会开始初始化数据库，整个过程可能会需要一到几分钟，结束后会自动登入后台。</p>
-<p><img src="/code-odoo/01-odoo12-quickstart/odoo12-backend.jpg" alt="alt" title="Backend"></p>
+<p><img src="/code-odoo/03-odoo12-quickstart/odoo12-backend.jpg" alt="alt" title="Backend"></p>
 <p>登录界面底部有一个 Manage Databases 的链接，点击进入会可以看到当前可用的数据库，可对它们进行备份、复制和删除操作，当然还可以创建新的数据库。直接进入的地址为：<a href="http://localhost:8069/web/database/manager">http://localhost:8069/web/database/manager</a></p>
-<p><img src="/code-odoo/01-odoo12-quickstart/odoo12-login-page.jpg" alt="alt" title="Login"></p>
-<div class="admonition admonition-note"><p>小贴士：数据库管理器可进行一些管理操作，默认开启且没有保护措施。虽然对于开发来说这样非常方便，但即便是在测试或开发环境，对包含有真实数据的数据库都存在安全风险。建议设置一个复杂的管理密码甚至最好是关闭这一功能（在配置文件中设置 list_db = False）。</p></div><p><img src="/code-odoo/01-odoo12-quickstart/odoo12-manage-databases.jpg" alt="alt" title="Manage DB"></p>
+<p><img src="/code-odoo/03-odoo12-quickstart/odoo12-login-page.jpg" alt="alt" title="Login"></p>
+<div class="admonition admonition-note"><p>小贴士：数据库管理器可进行一些管理操作，默认开启且没有保护措施。虽然对于开发来说这样非常方便，但即便是在测试或开发环境，对包含有真实数据的数据库都存在安全风险。建议设置一个复杂的管理密码甚至最好是关闭这一功能（在配置文件中设置 list_db = False）。</p></div><p><img src="/code-odoo/03-odoo12-quickstart/odoo12-manage-databases.jpg" alt="alt" title="Manage DB"></p>
 <p>现在我们已有经了 Odoo 实例和数据库，下一步就是开启开发者模式这个用于实现我们项目的工具。</p>
 <h4 id="1.3.6">1.3.6 开启开发者模式</h4><p>要实现我们的项目，这里需要用到开发者模式所提供的工具。开发者模式使我们可以在用户界面中直接对 Odoo 应用进行自定义操作。这有利于我们快速修改和添加功能，可用于进行一些添加字段的小调整乃至像创建带有多个模型、视图和菜单项的应用这样的复杂自定义开发。</p>
 <p>但这种直接在用户界面执行的自定义开发相对于在后续章节讲到的编程工具而言也有其局限性，如它无法添加或扩展默认的 ORM 方法（虽然有时自动化动作足以作为一个替代方案）。它也不易于集成到结构性开发流，如版本控制、自动化测试、部署到多环境（质量测试、预发布和生产环境）。</p>
@@ -257,14 +256,14 @@ $ docker container rm odoo
 <li>开发者工具菜单，以调试图标的形式出现在右上角用户名和头像的左侧</li>
 <li>Settings 中的 Technical 菜单项</li>
 </ol>
-<p><img src="/code-odoo/01-odoo12-quickstart/odoo12-developer-mode.jpg" alt="alt" title="Developer Mode"></p>
+<p><img src="/code-odoo/03-odoo12-quickstart/odoo12-developer-mode.jpg" alt="alt" title="Developer Mode"></p>
 <p>开发者模式还会在表单字段上添加一个额外信息：将鼠标悬停在字段上方，就会显示一些相关技术信息。下一部分我们一起来学习相关的开发者模式功能。</p>
 <h3 id="1.4">1.4 为已有模型添加字段</h3><p>为已有表单添加字段是种常见的自定义操作，我们无需创建自定义模块即可在用户界面中进行实现。就我们 to-do 应用而言，需要可以选取一组用户对 to-do 项进行协作。我们可以通过在 partner 表单中添加标识来找到这些用户，那么接下来为 partner 模型添加一个<code>Is Work Team?</code>标记。</p>
 <p>Partner 模型是 Odoo 内核自带的，无需安装任何应用即可使用，但这样在菜单中会无法查看到。一个简单的方法是安装 Contacts 应用。没安装的朋友可以点击 Apps 菜单搜索该应用并进行安装：</p>
-<p><img src="/code-odoo/01-odoo12-quickstart/odoo-contacts.jpg" alt="alt" title="Contacts"></p>
+<p><img src="/code-odoo/03-odoo12-quickstart/odoo-contacts.jpg" alt="alt" title="Contacts"></p>
 <p>安装完成后即可在顶级菜单中找到 Contacts 项。</p>
 <h4 id="1.4.1">1.4.1 为模型添加字段</h4><p>开启开发者模式后，我们可通过菜单 Settings &gt; Technical &gt; Database Structure &gt; Models 来查看模型的定义。这时搜索 res.partner（未安装其它应用的情况下第一个即是），对应的模型描述为 Contact。点击打开表单视图，这时就可以看到 partner 模型的各类信息，包含字段列表：</p>
-<p><img src="/code-odoo/01-odoo12-quickstart/odoo-models-contact.jpg" alt="alt" title="Model Contact"></p>
+<p><img src="/code-odoo/03-odoo12-quickstart/odoo-models-contact.jpg" alt="alt" title="Model Contact"></p>
 <p>点击 Edit，然后在字段列表的最下端点击 Add a line，即会弹出窗口用于创建新字段，输入：</p>
 <ul>
 <li>Field Name: x_is_work_team</li>
@@ -273,24 +272,24 @@ $ docker container rm odoo
 </ul>
 <p>字段名（Field Name）必须以<code>x_</code>开头，这是在用户界面创建模型和字段强制要求的，通过插件模块的自定开发不受这一限制。只修改添加以上信息点击 Save &amp; Close 保存即可。 这个模型有 80 多个字段，我们需要通过右上角的向右箭头浏览到最后一页才能看到新创建的字段。这时再点击左上角的 Save 按钮进行最终的保存。</p>
 <h4 id="1.4.2">1.4.2 为表单视图添加字段</h4><p>我们已经为 partner 模型创建了新字段，但对用户仍不可见，要实现这点我们还在在相应的视图中进行添加操作。再回到前述的 res.partner 模型详情页，点击 Views 标签，我们就可以看到模块的各个 view 定义。正所所见，每个视图都是一条数据库记录，修改或添加视图记录即时生效，在下一次加载视图时即可见：</p>
-<p><img src="/code-odoo/01-odoo12-quickstart/contacts-view-tab.jpg" alt="alt" title="View Tap"></p>
+<p><img src="/code-odoo/03-odoo12-quickstart/contacts-view-tab.jpg" alt="alt" title="View Tap"></p>
 <p>视图列表中有一些需要注意的事项，我们看到有不同的视图类型，如表单视图（Form）、树状列表视图（Tree）、搜索视图（Search）和看板视图（Kanban）。搜索视图指的是右上角搜索框中的过滤选项。其它视图的数据展示方法也各不相同，基本的类型有列表视图和表单视图（用于查看详细信息）。</p>
 <div class="admonition admonition-note"><p>小贴士：树状视图（Tree）和列表视图（List）实为同一视图，实际上 Odoo 中的为列表视图，树状视图的名称是由历史原因产生的 – 过去列表视图是以树状层级结构来进行展示的。</p></div><p>可以看到同一视图类型存在多个定义，通过 View Type 进行排序可以更清晰地看出。每种视图类型（如表单视图）可以有一个或多个 base 视图定义（包含空的继承视图字段）。菜单项使用窗口操作（Window Action）可以指定要用到的 base 视图，如果没有定义，将使用排序值（Sequence）最低的，因而可将其视为默认视图。点击视图，可以在表单中看到包含排序值在内的所有详情：</p>
-<p><img src="/code-odoo/01-odoo12-quickstart/base-view-form.jpg" alt="alt" title="Base View"></p>
+<p><img src="/code-odoo/03-odoo12-quickstart/base-view-form.jpg" alt="alt" title="Base View"></p>
 <p>每个 base 视图都可以有多个扩展，称为继承视图。每个继承视图可以对 base 视图添加修改，如对已有表单添加字段。</p>
 <div class="admonition admonition-note"><p>小贴士：继承视图自身也可以被其它视图继承，这时最外层继承在内层继承执行后作用于 base 视图。</p></div><p>res.partner 模型会包含众多的视图定义，因为类似我们的应用很多应用都需要对其进行扩展。一个替代方法是进入我们需要扩展的某一具体视图，使用开发者工具菜单对其进行编辑。这也可用于了解某一视图在用户界面的某处被使用了。下面我们就来进行操作：</p>
 <ol>
 <li><p>点击 Contacts 应用显示联系人名片列表，然后点击任意名片进入相应的表单视图</p>
-<p><img src="/code-odoo/01-odoo12-quickstart/odoo12-contacts-view.jpg" alt="alt" title="Contacts View"></p>
+<p><img src="/code-odoo/03-odoo12-quickstart/odoo12-contacts-view.jpg" alt="alt" title="Contacts View"></p>
 </li>
 <li><p>在表单视图界面，点击开发者工具菜单（右上解调试图标）并选择编辑视图（Edit View:Form），这时可以看到与前述模型页面相同的视图详情表单，但展示在实际定义使用 base 视图之上。也就是 res.partner.form 视图，通过 External ID 可以查看模块所有者。本处为base.view_partner_form，所以我们知道这个视图属于 base 模块。在 Architecture 字段中，我们可以看到base视图定义的 XML 代码。我们可以在这里编辑视图结构并添加我们的新字段，但从长期看这不 一个好办法：这个视图属于一个插件模块，一旦模块被更新，自定义的代码就会被覆盖并丢失。修改视图的正确姿势为创建一个继承视图（Inherited Views）扩展：</p>
-<p><img src="/code-odoo/01-odoo12-quickstart/edit-form-inherited-views.jpg" alt="alt" title="Inherited View"></p>
+<p><img src="/code-odoo/03-odoo12-quickstart/edit-form-inherited-views.jpg" alt="alt" title="Inherited View"></p>
 </li>
 <li><p>使用继承视图标签我们可以为 base 视图添加扩展视图：</p>
 <p>I. 首先我们需要在原始视图选择一个元素作为扩展点，我们可以通过查看 base 视图的结构选择一个包含 name 属性的 XML 元素，大多数情况选择的是一个 <field> 元素，此处我们选择 <field name=”category_id”…> 元素：</p>
-<p><img src="/code-odoo/01-odoo12-quickstart/category-id-field.jpg" alt="alt" title="Category ID"></p>
+<p><img src="/code-odoo/03-odoo12-quickstart/category-id-field.jpg" alt="alt" title="Category ID"></p>
 <p>II. 现在，点击开发者工具菜单，然后点击编辑视图（Edit View:Form），选择继承视图标签（Inherited Views）标签回到前述的界面，然后点击最下方的 Add a line 链接</p>
-<p><img src="/code-odoo/01-odoo12-quickstart/create-views-inherit.jpg" alt="alt" title="Views Inherit"></p>
+<p><img src="/code-odoo/03-odoo12-quickstart/create-views-inherit.jpg" alt="alt" title="Views Inherit"></p>
 <p>III. 此时会弹出名为 Create Views which inherit from this one 的窗口，填入如下内容</p>
 <ul>
 <li>View Name: Contacts – Custom “Is Work Team” flag</li>
@@ -303,7 +302,7 @@ $ docker container rm odoo
 </ul>
 <p>IV. 此时点击 Save &amp; Close 按钮，然后在 Edit View: Form 窗口点击 Save 按钮</p>
 <p>在保存修改后重载联系人表单视图页面即可查看到变化，在大数浏览器中可以使用 F5 快捷键来重载页面。这时打开任意联系人名片，可以看到右侧 Tags 字段下会多出一个新字段</p>
-<p><img src="/code-odoo/01-odoo12-quickstart/contact-form-view.jpg" alt="alt" title="Contact Form View"></p>
+<p><img src="/code-odoo/03-odoo12-quickstart/contact-form-view.jpg" alt="alt" title="Contact Form View"></p>
 </li>
 </ol>
 <h3 id="1.5-model">1.5 创建新的模型（Model）</h3><p>模型是应用的基本组件，包含了所需使用到的数据结构和存储。接下来我们就为 To-do 项目添加模型，将包含三个字段：</p>
@@ -322,7 +321,7 @@ $ docker container rm odoo
 <p>在进一步添加字段之前可以先进行保存。</p>
 </li>
 <li><p>点击 Save 保存然后点击 Edit 再次进入编辑，可以看到 Odoo 自动添加了一些字段，ORM 在所有模型中添加了这些字段，可用于审计和记录功能。</p>
-<p><img src="/code-odoo/01-odoo12-quickstart/todo-item.jpg" alt="alt" title="TODO Item"></p>
+<p><img src="/code-odoo/03-odoo12-quickstart/todo-item.jpg" alt="alt" title="TODO Item"></p>
 <p>x_name（或 Name）字段是在列表中显示记录或其它记录中引用时显示的标题。在 To-do Item 标题中将使用它，还可以对其进行编辑将字段标签改为更能表达含义的描述。基于前面的知识添加 Is Done? 标记此时就显得非常容易了。</p>
 </li>
 <li><p>在字段列表页底部点击 Add a line 链接创建一个包含如下值的字段：</p>
@@ -332,7 +331,7 @@ $ docker container rm odoo
 <li>Field Type: boolean</li>
 </ul>
 <p>该字段的填写效果如下：</p>
-<p><img src="/code-odoo/01-odoo12-quickstart/x_is_done.jpg" alt="alt" title="x is done"></p>
+<p><img src="/code-odoo/03-odoo12-quickstart/x_is_done.jpg" alt="alt" title="x is done"></p>
 <p>接下来添加 Work Team 字段带有有挑战性了，不仅因为这是一个指向 res.partner 对应记录的关联字段，它还是一个包含多个值的 selection 字段。在很多框架中这都会颇为复杂，但所幸我们使用的是 Odoo，因为它支持 many-to-many 关联。任务清单应用属于这一情况，因为一条任务可以有多个用户，同时一个用户也可以参与多个任务。</p>
 </li>
 <li><p>再次在字段列表中点击 Add a line，添加一个包含如下值的字段：</p>
@@ -343,12 +342,12 @@ $ docker container rm odoo
 <li>Object Relation: res.partner</li>
 <li>Domain: [(‘x_is_work_team’, ‘=’, True)]</li>
 </ul>
-<p><img src="/code-odoo/01-odoo12-quickstart/x_work_team_ids.jpg" alt="alt" title="x work team ids"></p>
+<p><img src="/code-odoo/03-odoo12-quickstart/x_work_team_ids.jpg" alt="alt" title="x work team ids"></p>
 <p>many-to-many 字段有其独有的定义项 - Relation Table, Column 1, and Column 2 项，这些值会被自动填充，大多数情况下都无需修改。在第六章 模型 – 结构化应用数据中将会有更详细的探讨。 Domain 项为非必填项，这里使用到是因为只有符合条件的用户才可被选取加入工作组，如果不加这项则所有用户均可被选取。</p>
 <p>Domain 表达式中对展示的记录进行了过滤，它遵循 Odoo 独有的语法 – 一个包含三个值的元组，第一项为待过滤的字段名、第二项为过滤操作符、第三项为过滤作用的值。详细的解释参见第七章 记录集 – 使用模型数据。</p>
 </li>
 </ol>
-<div class="admonition admonition-note"><p>小贴士：Odoo 有一个交互式的 domain 过滤向导可帮助生成 domain 表达式。访问 Settings &gt; Technical &gt; User Interface &gt; User-defined Filters，点击 Create 选择模型后将会出现 Add filter 按钮，可通过选择字段在下方的文本框中实时生成 domain 表达式。</p></div><p><img src="/code-odoo/01-odoo12-quickstart/user-defined-filter.jpg" alt="alt" title="user-defined-filter"></p>
+<div class="admonition admonition-note"><p>小贴士：Odoo 有一个交互式的 domain 过滤向导可帮助生成 domain 表达式。访问 Settings &gt; Technical &gt; User Interface &gt; User-defined Filters，点击 Create 选择模型后将会出现 Add filter 按钮，可通过选择字段在下方的文本框中实时生成 domain 表达式。</p></div><p><img src="/code-odoo/03-odoo12-quickstart/user-defined-filter.jpg" alt="alt" title="user-defined-filter"></p>
 <p>现在我们已经为 To-do 应用创建好了模型，但还无法使用它，在创建模型后，我们需要配置组来使用该模型。</p>
 <h3 id="1.6">1.6 配置安全权限控制</h3><p>Odoo自带有权限控制机制，用户仅能使用被授权了的功能。这就意味着我们自建的库功能不对普通用户甚至是管理员开放。</p>
 <div class="admonition admonition-note"><p>注意：Odoo 12的修改：管理员用户现在也像其它用户一样受权限控制所限制。而在此前的 Odoo 版本中，admin 都作为特权用户不受权限规则控制。而新版中我们需要进行授权管理员才能访问模型数据</p></div><p>Odoo 安全权限通过安全组来设置访问权限。每个用户的权限根据所属组来决定，对于我们的测试项目，我们将创建一个 to-do 用户组，然后通过组来分配可使用功能的用户。我们通常使用 ACL 为某个组赋予指定模块的读或写权限，就当前项目，我们对添加的 to-do 项模型添加读和写权限。</p>
@@ -362,7 +361,7 @@ $ docker container rm odoo
 <li>Inherited 标签下: 添加 User types/Internal User 项</li>
 </ul>
 <p>效果如下：</p>
-<p><img src="/code-odoo/01-odoo12-quickstart/to-do-user-group.jpg" alt="alt" title="to-do-user-group"></p>
+<p><img src="/code-odoo/03-odoo12-quickstart/to-do-user-group.jpg" alt="alt" title="to-do-user-group"></p>
 <p>在 Application 下拉列表中还没有 to-do 应用，所以我们直接通过组表单来添加。我们还继承了 Internal User 用户组，那么这个组的成员也会自动（递归）成为所继承组的成员，以获取他们原有的权限。Internal User 是基础权限组，通常应用的安全组都继承它。</p>
 <div class="admonition admonition-note"><p>注意：Odoo 12的修改：在 Odoo 12 之前，内部用户组称作雇员（Employee），这只是表面上的修改，代码中标识符（XML id）仍然和此前版本相同：base.group_user。</p></div><h4 id="1.6.2">1.6.2 安全权限控制列表</h4><p>现在我们可以对指定组（To-do User）进行指定模型的权限授予，在上述表单的 Access Rights 标签下添加一条记录，对应的值为：</p>
 <ul>
@@ -374,7 +373,7 @@ $ docker container rm odoo
 <p>现在可以将 admin 用户添加到新建组来测试新加的权限设置</p>
 <ol>
 <li><p>在菜单中点击 Users &amp; Companies &gt; Users，从用户列表中选择 Mitchell Admin，然后编辑表单</p>
-<p><img src="/code-odoo/01-odoo12-quickstart/admin-group-access.jpg" alt="alt" title="admin-group-access"></p>
+<p><img src="/code-odoo/03-odoo12-quickstart/admin-group-access.jpg" alt="alt" title="admin-group-access"></p>
 </li>
 <li><p>在 Access Rights 标签下的 Other 版块，会发现一个名为 To-do User 的复选框用于让用户加入权限组，勾选后点击 Save 保存表单。</p>
 </li>
@@ -395,12 +394,12 @@ $ docker container rm odoo
 <li>Groups: 作用的安全组，选择 To-do User 组</li>
 </ul>
 <p>效果如下：</p>
-<p><img src="/code-odoo/01-odoo12-quickstart/record-rules.jpg" alt="alt" title="record-rules"></p>
+<p><img src="/code-odoo/03-odoo12-quickstart/record-rules.jpg" alt="alt" title="record-rules"></p>
 <p>此时就完成了记录规则的设定，现在可以试试用 Admin 和 Demo 用户分别创建几个任务项，各自将只能看到自己创建的任务。记录规则可通过右上角的切换按钮进行关闭，一旦关闭，用户就可以看到所有人的任务清单了。</p>
 <h4 id="1.6.4">1.6.4 超级用户账号</h4><p>在此前的 Odoo 版本中，admin 用户是一个特权用户可以不受权限控制。Odoo 12 就此做了调整，admin 用户属于所有用户安全组，但只是个普通用户。还是存在一个超级用户不受权限控制，但它无法直接登录。</p>
 <p>我们还是可以以超级用户进行操作，当一个用户以 Administration / Settings 用户组登录时，开发者工具菜单中有一个 Become Superuser 选项，或者在登录页面开启开发者模式，则会出一个 Login as superuser 的隐藏按钮。</p>
 <p>在激活了超级用户后，右上角的当前用户显示为 OdooBot，该处背景也会变成黄黑间隔的条状，以清晰地告知用户激活了超级用户。仅在绝对必要时才应使用这一操作，超级用户不受权限控制这点会导致数据的不一致，比如在多公司场景下，所以应尽量避免。</p>
-<p><img src="/code-odoo/01-odoo12-quickstart/become-superuser.jpg" alt="alt" title="become-superuser"></p>
+<p><img src="/code-odoo/03-odoo12-quickstart/become-superuser.jpg" alt="alt" title="become-superuser"></p>
 <h3 id="1.7">1.7 创建菜单项</h3><p>现在有了存储任务清单的模型，应在用户界面中显示它，添加菜单项可实现这一点。我们这里创建一个顶级菜单项直接打开任务清单，一些像联系人（Contacts）这样的应用采取了这种方式，但另外一些则使用了在顶栏中的子菜单项。</p>
 <div class="admonition admonition-note"><p>注意：Odoo 12的修改：社区版中第一级以下的菜单项也像企业版中一样显示在了顶栏中，而此前版本社区版的菜单项显示在屏幕的左侧。</p></div><p>点击菜单 Settings &gt; Technical &gt; User Interface &gt; Menu Items，点击 Create 即可进入菜单的编辑页面。在该页面中输入如下值：</p>
 <ul>
@@ -411,13 +410,13 @@ $ docker container rm odoo
 <li>Action name: To-do Items</li>
 <li>Object: x_todo_item (目标模型的编码标识)</li>
 <li>显示效果如下
-<img src="/code-odoo/01-odoo12-quickstart/window-action.jpg" alt="alt" title="window-action"></li>
+<img src="/code-odoo/03-odoo12-quickstart/window-action.jpg" alt="alt" title="window-action"></li>
 </ul>
 </li>
 <li>保存所有打开的表单，此时即可在菜单中使用 To-do 应用了</li>
 </ul>
 <p>要在菜单中显示该项，需要重载客户端页面，大多数浏览中可使用快捷键 F5（强制刷新：Windows: Ctrl+F5,  Mac: Cmd+F5）。现在就可以访问菜单项并进行任务清单模型的交互了。虽然我们没有创建视图，但强大的 Odoo 框架自动为我们生成了一个基础视图：</p>
-<p><img src="/code-odoo/01-odoo12-quickstart/to-do-items.jpg" alt="alt" title="to-do-items"></p>
+<p><img src="/code-odoo/03-odoo12-quickstart/to-do-items.jpg" alt="alt" title="to-do-items"></p>
 <p>在本例中，在顶级菜单中直接添加了一个操作，而没有子菜单。但菜单可以包含一系列带有父子关系的菜单项，最末级菜单项关联一个操作（Action），定义有选取时执行的行为。 操作名将作为所展示视图的标题。</p>
 <p>有很多的操作类型，最重要的有窗口（window）、报表（reports）和服务端（server）操作。窗口操作最常用，用作在客户端中展示视图，报表操作用于运行报表，服务端操作用于定义自动化任务。</p>
 <p>截至目前，我们都聚焦在显示视图的窗口操作上，正是使用了直接在菜单项表单中创建的窗口操作来创建了任务清单的菜单项。我们也可以在 Settings &gt; Technical &gt; Actions 中查看和编辑操作，在本例中仅需使用窗口操作。</p>
@@ -431,7 +430,7 @@ $ docker container rm odoo
 <li>View Type: Tree</li>
 <li><p>Model: x_todo_item</p>
 <p>效果如下：
-<img src="/code-odoo/01-odoo12-quickstart/todo-items-list-view.jpg" alt="alt" title="todo-items-list-view"></p>
+<img src="/code-odoo/03-odoo12-quickstart/todo-items-list-view.jpg" alt="alt" title="todo-items-list-view"></p>
 </li>
 </ul>
 </li>
@@ -454,7 +453,7 @@ $ docker container rm odoo
 </ul>
 </li>
 </ul>
-<div class="admonition admonition-note"><p>小贴士：如果不指定 View Type,将会通过视图定义代码来自动识别。</p></div><p><img src="/code-odoo/01-odoo12-quickstart/todo-items-form-view.jpg" alt="alt" title="todo-items-form-view"></p>
+<div class="admonition admonition-note"><p>小贴士：如果不指定 View Type,将会通过视图定义代码来自动识别。</p></div><p><img src="/code-odoo/03-odoo12-quickstart/todo-items-form-view.jpg" alt="alt" title="todo-items-form-view"></p>
 <ul>
 <li><p>在Architecture标签下, 输入如下XML 代码:</p>
 <div class="hll"><pre><span></span>  <span class="p">&lt;</span><span class="nt">form</span><span class="p">&gt;</span>
@@ -482,7 +481,7 @@ $ docker container rm odoo
 <li>Model: x_todo_item</li>
 <li>Architecture: 添加如下 XML 代码:</li>
 </ul>
-<p><img src="/code-odoo/01-odoo12-quickstart/todo-list-search-view.jpg" alt="alt" title="todo-list-search-view"></p>
+<p><img src="/code-odoo/03-odoo12-quickstart/todo-list-search-view.jpg" alt="alt" title="todo-list-search-view"></p>
 <p>此时重载任务清单，可以在搜索框下方 Filters 按钮下选择预设的 Not Done 过滤器，在搜索框中输入  Not Done 也会提示过滤条件。默认开启过滤器会较便捷，在不需时取消过滤即可。正如默认字段值一样，还是使用 context 属性来设置默认过滤器。</p>
 <p>在点击 To-do 菜单时，执行一个窗口操作打开列表视图，该操作可设置一个上下文值，让视图默认开启某一搜索过滤器，操作步骤如下：</p>
 <ul>
@@ -491,7 +490,7 @@ $ docker container rm odoo
 </ul>
 <p>Domain 字段可用于为所显示记录设置固定的过滤器，而且用户无法删除。这不符合我们的场景。我们只是要默认开启 item_not_done 过滤器，用户可以随时取消选择。默认打开过滤器，添加以 search<em>default</em> 作为前缀的 context 键，这里使用 {‘search_default_item_not_done’: True}</p>
 <p>这时再点击 To-do 菜单，搜索框中默认就会开启 Not Done 过滤器。</p>
-<p><img src="/code-odoo/01-odoo12-quickstart/todo-list-default-filter.jpg" alt="alt" title="todo-list-default-filter"></p>
+<p><img src="/code-odoo/03-odoo12-quickstart/todo-list-default-filter.jpg" alt="alt" title="todo-list-default-filter"></p>
 <h3 id="1.9">1.9 总结</h3><p>在本文中，我们不仅概览了 Odoo 组件的组织方式，还利用开发者模式深入到 Odoo 内部来理解这些组件如何共同协作创建应用。</p>
 <p>我们还使用这些工具创建了一个简易的应用，包含模型、视图和对应的菜单。并且掌握了通过开发者工具可以查看当前应用或在用户界面中直接进行快速自定义操作。</p>
 <p>下一篇中我们将更深入地了解 Odoo 开发，并学习如何设置和组织开发环境。</p>
@@ -519,8 +518,8 @@ $ docker container rm odoo
 
 
 <div class="nav-next">
-  <a href="/code-odoo/00-install-odoo12/">
-    Task 00. macOS 安装 Odoo 12 ▶
+  <a href="/code-odoo/02-install-odoo12/">
+    Task 02. macOS 安装 Odoo 12 ▶
   </a>
 </div>
 
