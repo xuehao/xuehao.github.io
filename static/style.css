@@ -109,7 +109,8 @@ div.page .logo-text,
 div.page .pagination {
     text-align: center;
 }
-div.row{
+
+div.row {
     overflow: hidden;
 }
 
@@ -210,6 +211,11 @@ p.post-image>img {
 .note>img {
     margin: unset;
 }
+
+ul li {
+    white-space: normal;
+}
+
 
 /* for markdown note/tip/info/warning style */
 
