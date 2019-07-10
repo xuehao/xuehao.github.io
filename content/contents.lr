@@ -4,8 +4,6 @@ post_image: head_portrait.jpg
 ---
 body:
 
-# 关于我
-
 <p class="post-image"><img src="./head_portrait.jpg" alt="head_portrait" style="width: 45%;"></p>
 
 薛浩，一九九零年农历六月，立秋时节，出生于西楚霸王项羽的故乡（今江苏宿迁），现定居苏州。

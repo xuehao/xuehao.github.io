@@ -3,12 +3,12 @@
   <div class="blog-post">
 
     {% if from_index %}
-    <h2><a href="{{ post|url }}">{{ post.title }}</a></h2>
+    <h2><a href="/{{ post.url }}">{{ post.tag }}</a> / <a href="{{ post|url }}">{{ post.title }}</a></h2>
     {% else %}
-    <h2>{{ post.title }}</h2>
+    <h2><a href="/{{ post.url }}">{{ post.tag }}</a> / {{ post.title }}</h2>
     {% endif %}
 
-    <p class="meta">发表于 {{ post.pub_date }} 归类 <a href="/{{ post.tag }}">{{ post.tag }}</a></p>
+    <p class="meta">发表于 {{ post.pub_date }}</p>
 
     <div class="toc">
       <ul>
