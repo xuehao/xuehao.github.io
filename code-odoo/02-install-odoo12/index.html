@@ -83,12 +83,15 @@
 </li>
 </ul>
 </li>
-<li><p>安装 Python 第三方依赖（可选）</p>
-<p>这个步骤为可选项，因为后面安装 Odoo 时，默认会安装第三方依赖。提前安装是为了指定 pip 国内源。</p>
+<li><p>安装 Python 第三方模块（推荐）</p>
+<p>虽然后面安装 Odoo 时，默认会安装第三方模块，但模块的版本会安装最新版。</p>
+<p>为了保持兼容性，建议单独安装 Python 第三方模块。其次，单独安装可以指定 pip 国内源。</p>
 <div class="admonition admonition-tip"><p>建议使用 venv 虚拟环境</p></div><div class="hll"><pre><span></span>$ python3 -m venv venv
 </pre></div>
 <div class="admonition admonition-warning"><p>Pillow 6.0.0 以下版本，似乎不支持 Python 3.7，安装前记得修改 <code>requirements.txt</code> 文件中的版本号为6.0.0，否则会报错</p></div><div class="hll"><pre><span></span>$ pip3 install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+$ pip3 install phonenumbers
 </pre></div>
+<p>模块 <code>reportlab</code> 可能提示字体缺失，可以参考以下解决办法：<a href="https://stackoverflow.com/questions/28281891/cant-setfonttimes-roman-missing-the-t1-files">Warn: Can't find .pfb for face 'Times-Roman'</a></p>
 </li>
 </ol>
 <h3 id="0.2-odoo">0.2 获取 Odoo 源代码</h3><p>官方提供两种源码获取方式：zip 和 git。</p>
@@ -114,8 +117,8 @@
 
 
 <div class="nav-prev">
-  <a href="/code-odoo/03-odoo12-quickstart/">
-    ◀ Task 03. Odoo 12 快速入门
+  <a href="/code-odoo/03-odoo12-crm/">
+    ◀ Task 03. Odoo CRM 模块分析
   </a>
 </div>
 
