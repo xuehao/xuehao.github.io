@@ -12,6 +12,7 @@ Odoo 提供了一个快速应用开发框架，非常适合创建商业应用。
 
 技术栈包括：
 
-- HTML/CSS/JavaScript（Bootstrap/SCSS）
+- HTML/CSS/JavaScript
+- Bootstrap/SCSS
 - Python（MVC）
 - PostgreSQL

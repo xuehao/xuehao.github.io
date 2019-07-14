@@ -50,9 +50,11 @@ body:
     
     直接下载 [Wkhtmltopdf](https://wkhtmltopdf.org/downloads.html) 安装
 
-4. 安装 Python 第三方依赖（可选）
+4. 安装 Python 第三方模块（推荐）
 
-  这个步骤为可选项，因为后面安装 Odoo 时，默认会安装第三方依赖。提前安装是为了指定 pip 国内源。
+  虽然后面安装 Odoo 时，默认会安装第三方模块，但模块的版本会安装最新版。
+  
+  为了保持兼容性，建议单独安装 Python 第三方模块。其次，单独安装可以指定 pip 国内源。
   
   !!! 建议使用 venv 虚拟环境
   
@@ -64,7 +66,10 @@ body:
 
   ```bash
   $ pip3 install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+  $ pip3 install phonenumbers
   ```
+
+  模块 `reportlab` 可能提示字体缺失，可以参考以下解决办法：[Warn: Can't find .pfb for face 'Times-Roman'](https://stackoverflow.com/questions/28281891/cant-setfonttimes-roman-missing-the-t1-files)
 
 ### 0.2 获取 Odoo 源代码
 
