@@ -1,0 +1,80 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" href="/static/favicon.ico?h=9547cfbf">
+<link rel="stylesheet" href="/static/normalize.css?h=91051880">
+<link rel="stylesheet" href="/static/style.css?h=85802e90">
+<link rel="stylesheet" href="/static/pygments.css">
+<title>DOM 文档对象模型 — StickMind</title>
+
+<body>
+  <div id="canvas">
+    <header>
+      <h1 class="logo-text"><a href="/">StickMind</a></h1>
+      <nav>
+        <ul class="nav navbar-nav">
+          
+          <li ><a href="/code/">代码</a></li>
+          
+          <li ><a href="/english/">英语</a></li>
+          
+          <li ><a href="/music">音乐</a></li>
+          
+          <li ><a href="/photography">摄影</a></li>
+          
+          <li ><a href="/blog/">文章</a></li>
+          
+        </ul>
+      </nav>
+    </header>
+
+    <div class="page">
+      
+
+
+<div class="post">
+  <article class="blog-post">
+
+    
+    <h2><a href="/code-web">Web</a> / DOM 文档对象模型</h2>
+    
+
+    <p class="meta">发表于 2019-07-17</p>
+
+    <div class="toc">
+      <ul>
+        
+        <li><a href="#html-/structure-of-an-html-document">HTML 文档结构/Structure of an HTML document</a>
+          </li>
+        
+        <li><a href="#htmlelement">HTMLElement 继承关系</a>
+          </li>
+        
+      </ul>
+    </div>
+
+    
+
+    <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model">Document Object Model (DOM)</a></p>
+<p>DOM 通过在 memory 中表示一个 document 结构的 object，连接起了 Web Page 和 Programming Language —— 这里通常指的是 JavaScript 编程语言，虽然将 HTML/SVG/XML 文档模型化成对象，并不是 JavaScript 语言的一部分。</p>
+<div class="admonition admonition-warning"><p>目前不关注 SVG/XML 相关信息，只关注 HTML 的 DOM。</p></div><p><a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM">The HTML DOM API</a></p>
+<h3 id="html-/structure-of-an-html-document">HTML 文档结构/Structure of an HTML document</h3><p>每个 DOM 文档都是 <code>Document</code> 接口的一个实例，每个文档表现为一个继承关系的 nodes 树。每一个 node 又都基于 <code>HTMLElement</code> 接口，提供了一些增删改查的操作。</p>
+<div class="admonition admonition-note"><p>这里的 <code>Document</code> 是 HTML 的加强版，<code>HTMLElement</code> 是 <code>Element</code> 的 HTML 扩展</p></div><h3 id="htmlelement">HTMLElement 继承关系</h3><p><img src="https://mdn.mozillademos.org/files/16596/html-dom-hierarchy.svg" alt="HTMLElement 继承关系"></p>
+<div class="admonition admonition-note"><p>根据面向对象原理，每一个元素都支持 <code>HTMLElement</code> 的方法，以及自定义的一些方法</p></div>
+
+  </article>>
+</div>
+
+
+
+
+
+
+
+
+
+    </div>
+
+    <footer>&copy; 2019 StickMind.</footer>
+  </div>
+</body>
