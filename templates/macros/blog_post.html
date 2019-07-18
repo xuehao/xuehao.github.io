@@ -1,6 +1,6 @@
 {% macro render_blog_post(post, from_index=false) %}
 <div class="post">
-  <div class="blog-post">
+  <article class="blog-post">
 
     {% if from_index %}
     <h2><a href="/{{ post.url }}">{{ post.tag }}</a> / <a href="{{ post|url }}">{{ post.title }}</a></h2>
@@ -27,6 +27,6 @@
 
     {{ post.body }}
 
-  </div>
+  </article>>
 </div>
 {% endmacro %}
