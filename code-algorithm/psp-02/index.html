@@ -76,7 +76,7 @@
         <span class="n">theSum</span> <span class="o">=</span> <span class="n">theSum</span> <span class="o">+</span> <span class="n">i</span>
     <span class="k">return</span> <span class="n">theSum</span>
 
-<span class="k">print</span><span class="p">(</span><span class="n">sumOfN</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sumOfN</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
 </pre></div>
 <p>ActiveCode 1：通过<strong>累加</strong>初始化为0的变量来计算前n个自然数的和。</p>
 <div class="hll"><pre><span></span><span class="c1"># Another Summation of the First n Integers (active2)</span>
@@ -87,7 +87,7 @@
        <span class="n">fred</span> <span class="o">=</span> <span class="n">fred</span> <span class="o">+</span> <span class="n">barney</span>
     <span class="k">return</span> <span class="n">fred</span>
 
-<span class="k">print</span><span class="p">(</span><span class="n">foo</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">foo</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
 </pre></div>
 <p>ActiveCode 2：同样是累加方法，但是程序<strong>可读性</strong>变差。</p>
 <p>程序是否优劣，取决于你的评判标准。上述两个程序，在可读性上，sumOfN比foo要好。</p>
@@ -111,7 +111,7 @@
 <p>在程序首尾插入时间戳，计算执行时间。</p>
 <div class="hll"><pre><span></span><span class="c1"># 计算10,000个数的时间</span>
 <span class="o">&gt;&gt;&gt;</span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
-       <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Sum is </span><span class="si">%d</span><span class="s2"> required </span><span class="si">%10.7f</span><span class="s2"> seconds&quot;</span><span class="o">%</span><span class="n">sumOfN</span><span class="p">(</span><span class="mi">10000</span><span class="p">))</span>
+       <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sum is </span><span class="si">%d</span><span class="s2"> required </span><span class="si">%10.7f</span><span class="s2"> seconds&quot;</span><span class="o">%</span><span class="n">sumOfN</span><span class="p">(</span><span class="mi">10000</span><span class="p">))</span>
 <span class="n">Sum</span> <span class="ow">is</span> <span class="mi">50005000</span> <span class="n">required</span>  <span class="mf">0.0018950</span> <span class="n">seconds</span>
 <span class="n">Sum</span> <span class="ow">is</span> <span class="mi">50005000</span> <span class="n">required</span>  <span class="mf">0.0018620</span> <span class="n">seconds</span>
 <span class="n">Sum</span> <span class="ow">is</span> <span class="mi">50005000</span> <span class="n">required</span>  <span class="mf">0.0019171</span> <span class="n">seconds</span>
@@ -120,7 +120,7 @@
 </pre></div>
 <div class="hll"><pre><span></span><span class="c1"># 计算100,000个数的时间。</span>
 <span class="o">&gt;&gt;&gt;</span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
-       <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Sum is </span><span class="si">%d</span><span class="s2"> required </span><span class="si">%10.7f</span><span class="s2"> seconds&quot;</span><span class="o">%</span><span class="n">sumOfN</span><span class="p">(</span><span class="mi">100000</span><span class="p">))</span>
+       <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sum is </span><span class="si">%d</span><span class="s2"> required </span><span class="si">%10.7f</span><span class="s2"> seconds&quot;</span><span class="o">%</span><span class="n">sumOfN</span><span class="p">(</span><span class="mi">100000</span><span class="p">))</span>
 <span class="n">Sum</span> <span class="ow">is</span> <span class="mi">5000050000</span> <span class="n">required</span>  <span class="mf">0.0199420</span> <span class="n">seconds</span>
 <span class="n">Sum</span> <span class="ow">is</span> <span class="mi">5000050000</span> <span class="n">required</span>  <span class="mf">0.0180972</span> <span class="n">seconds</span>
 <span class="n">Sum</span> <span class="ow">is</span> <span class="mi">5000050000</span> <span class="n">required</span>  <span class="mf">0.0194821</span> <span class="n">seconds</span>
@@ -130,7 +130,7 @@
 </pre></div>
 <div class="hll"><pre><span></span><span class="c1"># 计算1,000,000个数的时间。</span>
 <span class="o">&gt;&gt;&gt;</span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
-       <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Sum is </span><span class="si">%d</span><span class="s2"> required </span><span class="si">%10.7f</span><span class="s2"> seconds&quot;</span><span class="o">%</span><span class="n">sumOfN</span><span class="p">(</span><span class="mi">1000000</span><span class="p">))</span>
+       <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sum is </span><span class="si">%d</span><span class="s2"> required </span><span class="si">%10.7f</span><span class="s2"> seconds&quot;</span><span class="o">%</span><span class="n">sumOfN</span><span class="p">(</span><span class="mi">1000000</span><span class="p">))</span>
 <span class="n">Sum</span> <span class="ow">is</span> <span class="mi">500000500000</span> <span class="n">required</span>  <span class="mf">0.1948988</span> <span class="n">seconds</span>
 <span class="n">Sum</span> <span class="ow">is</span> <span class="mi">500000500000</span> <span class="n">required</span>  <span class="mf">0.1850290</span> <span class="n">seconds</span>
 <span class="n">Sum</span> <span class="ow">is</span> <span class="mi">500000500000</span> <span class="n">required</span>  <span class="mf">0.1809771</span> <span class="n">seconds</span>
@@ -143,7 +143,7 @@
 <span class="k">def</span> <span class="nf">sumOfN3</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">n</span><span class="o">*</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span><span class="o">/</span><span class="mi">2</span>
 
-<span class="k">print</span><span class="p">(</span><span class="n">sumOfN3</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sumOfN3</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
 </pre></div>
 <p>ActiveCode 3：使用<strong>方程求</strong>解，计算前n个自然数的和</p>
 <div class="hll"><pre><span></span><span class="n">Sum</span> <span class="ow">is</span> <span class="mi">50005000</span> <span class="n">required</span> <span class="mf">0.00000095</span> <span class="n">seconds</span>
@@ -223,27 +223,27 @@
     <span class="n">alist</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">s2</span><span class="p">)</span>
 
     <span class="n">pos1</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">stillOK</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="n">stillOK</span> <span class="o">=</span> <span class="kc">True</span>
 
     <span class="k">while</span> <span class="n">pos1</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">s1</span><span class="p">)</span> <span class="ow">and</span> <span class="n">stillOK</span><span class="p">:</span>
         <span class="n">pos2</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">found</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="n">found</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">while</span> <span class="n">pos2</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">alist</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">s1</span><span class="p">[</span><span class="n">pos1</span><span class="p">]</span> <span class="o">==</span> <span class="n">alist</span><span class="p">[</span><span class="n">pos2</span><span class="p">]:</span>
-                <span class="n">found</span> <span class="o">=</span> <span class="bp">True</span>
+                <span class="n">found</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">pos2</span> <span class="o">=</span> <span class="n">pos2</span> <span class="o">+</span> <span class="mi">1</span>
 
         <span class="k">if</span> <span class="n">found</span><span class="p">:</span>
-            <span class="n">alist</span><span class="p">[</span><span class="n">pos2</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="n">alist</span><span class="p">[</span><span class="n">pos2</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">stillOK</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="n">stillOK</span> <span class="o">=</span> <span class="kc">False</span>
 
         <span class="n">pos1</span> <span class="o">=</span> <span class="n">pos1</span> <span class="o">+</span> <span class="mi">1</span>
 
     <span class="k">return</span> <span class="n">stillOK</span>
 
-<span class="k">print</span><span class="p">(</span><span class="n">anagramSolution1</span><span class="p">(</span><span class="s1">&#39;abcd&#39;</span><span class="p">,</span><span class="s1">&#39;dcba&#39;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">anagramSolution1</span><span class="p">(</span><span class="s1">&#39;abcd&#39;</span><span class="p">,</span><span class="s1">&#39;dcba&#39;</span><span class="p">))</span>
 </pre></div>
 <p>可以考虑下最差的情况，可以发现第1个字符最多访问n次，第2个字符最多访问n-1次，依次类推。所以复杂度是前n个数的和。参考<a href="https://cs.stackexchange.com/questions/33618/big-o-notation-of-anagram-solution-algorithm">《Big-O Notation of Anagram solution algorithm》</a></p>
 <p>方法2：排序比较法</p>
@@ -257,17 +257,17 @@
     <span class="n">alist2</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
 
     <span class="n">pos</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">matches</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="n">matches</span> <span class="o">=</span> <span class="kc">True</span>
 
     <span class="k">while</span> <span class="n">pos</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">s1</span><span class="p">)</span> <span class="ow">and</span> <span class="n">matches</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">alist1</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span><span class="o">==</span><span class="n">alist2</span><span class="p">[</span><span class="n">pos</span><span class="p">]:</span>
             <span class="n">pos</span> <span class="o">=</span> <span class="n">pos</span> <span class="o">+</span> <span class="mi">1</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">matches</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="n">matches</span> <span class="o">=</span> <span class="kc">False</span>
 
     <span class="k">return</span> <span class="n">matches</span>
 
-<span class="k">print</span><span class="p">(</span><span class="n">anagramSolution2</span><span class="p">(</span><span class="s1">&#39;abcde&#39;</span><span class="p">,</span><span class="s1">&#39;edcba&#39;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">anagramSolution2</span><span class="p">(</span><span class="s1">&#39;abcde&#39;</span><span class="p">,</span><span class="s1">&#39;edcba&#39;</span><span class="p">))</span>
 </pre></div>
 <p>表面上看，这个算法复杂度是O(n)，但是sort方法才是关键，所以这个算法复杂度和sort方法一致，可能是O(n^2)或O(nlogn)。</p>
 <p>方法3：暴力法</p>
@@ -288,16 +288,16 @@
         <span class="n">c2</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span> <span class="o">=</span> <span class="n">c2</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
 
     <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">stillOK</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="n">stillOK</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="k">while</span> <span class="n">j</span><span class="o">&lt;</span><span class="mi">26</span> <span class="ow">and</span> <span class="n">stillOK</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">c1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">==</span><span class="n">c2</span><span class="p">[</span><span class="n">j</span><span class="p">]:</span>
             <span class="n">j</span> <span class="o">=</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">stillOK</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="n">stillOK</span> <span class="o">=</span> <span class="kc">False</span>
 
     <span class="k">return</span> <span class="n">stillOK</span>
 
-<span class="k">print</span><span class="p">(</span><span class="n">anagramSolution4</span><span class="p">(</span><span class="s1">&#39;apple&#39;</span><span class="p">,</span><span class="s1">&#39;pleap&#39;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">anagramSolution4</span><span class="p">(</span><span class="s1">&#39;apple&#39;</span><span class="p">,</span><span class="s1">&#39;pleap&#39;</span><span class="p">))</span>
 </pre></div>
 <p>前两个迭代用来统计字符个数，基于n；后一个迭代比较26个字符，所以复杂度为O(n)</p>
 <p>结束这个例子之前，谈谈空间损耗。虽然最后一个方法时间复杂度是线性的，但是需要更多的空间来存储两个列表。可以说是，牺牲空间换取时间。</p>
