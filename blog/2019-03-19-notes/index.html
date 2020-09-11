@@ -26,19 +26,19 @@
     <div class="toc">
       <ul>
         
-        <li><a href="#1.-cslib">1. 解压文件，此命令会生成一个cslib文件夹</a>
+        <li><a href="#1-jie-ya-wen-jian-ci-ming-ling-hui-sheng-cheng-yi-ge-cslibwen-jian-jia">1. 解压文件，此命令会生成一个cslib文件夹</a>
           </li>
         
-        <li><a href="#2.-cslib">2. 切换到  cslib 文件夹</a>
+        <li><a href="#2-qie-huan-dao-cslib-wen-jian-jia">2. 切换到  cslib 文件夹</a>
           </li>
         
-        <li><a href="#3.-make">3. 使用make构建</a>
+        <li><a href="#3-shi-yong-makegou-jian">3. 使用make构建</a>
           </li>
         
-        <li><a href="#4.-gccxpath">4. 将gccx文件添加到PATH路径</a>
+        <li><a href="#4-jiang-gccxwen-jian-tian-jia-dao-pathlu-jing">4. 将gccx文件添加到PATH路径</a>
           </li>
         
-        <li><a href="#5.">5. 测试安装</a>
+        <li><a href="#5-ce-shi-an-zhuang">5. 测试安装</a>
           </li>
         
       </ul>
@@ -46,9 +46,9 @@
 
     
 
-    <h3 id="1.-cslib">1. 解压文件，此命令会生成一个cslib文件夹</h3><div class="hll"><pre><span></span> $ sh cslib.shar
+    <h3 id="1-jie-ya-wen-jian-ci-ming-ling-hui-sheng-cheng-yi-ge-cslibwen-jian-jia">1. 解压文件，此命令会生成一个cslib文件夹</h3><div class="hll"><pre><span></span> $ sh cslib.shar
 </pre></div>
-<h3 id="2.-cslib">2. 切换到  cslib 文件夹</h3><h3 id="3.-make">3. 使用make构建</h3><div class="admonition admonition-note"><p>注意ubuntu系统需要安装csh工具以及x11开发包</p></div><div class="hll"><pre><span></span>$ sudo apt install csh x11-dev
+<h3 id="2-qie-huan-dao-cslib-wen-jian-jia">2. 切换到  cslib 文件夹</h3><h3 id="3-shi-yong-makegou-jian">3. 使用make构建</h3><div class="admonition admonition-note"><p>注意ubuntu系统需要安装csh工具以及x11开发包</p></div><div class="hll"><pre><span></span>$ sudo apt install csh x11-dev
 $ make
 </pre></div>
 <p>错误记录：</p>
@@ -86,10 +86,10 @@ ranlib cslib.a
 <span class="o">[</span>gccx script created<span class="o">]</span>
 stickmind@mint:~/cslib$
 </pre></div>
-<h3 id="4.-gccxpath">4. 将gccx文件添加到PATH路径</h3><div class="hll"><pre><span></span><span class="nv">PATH</span><span class="o">=</span>~/cslib:<span class="nv">$PATH</span>
+<h3 id="4-jiang-gccxwen-jian-tian-jia-dao-pathlu-jing">4. 将gccx文件添加到PATH路径</h3><div class="hll"><pre><span></span><span class="nv">PATH</span><span class="o">=</span>~/cslib:<span class="nv">$PATH</span>
 <span class="nb">export</span> PATH
 </pre></div>
-<h3 id="5.">5. 测试安装</h3><div class="hll"><pre><span></span>$ gccx -o house house.c 
+<h3 id="5-ce-shi-an-zhuang">5. 测试安装</h3><div class="hll"><pre><span></span>$ gccx -o house house.c 
 $ ./house
 </pre></div>
 <p>我们会得到这样一幅图像：</p>

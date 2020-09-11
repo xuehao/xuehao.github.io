@@ -26,16 +26,16 @@
     <div class="toc">
       <ul>
         
-        <li><a href="#1.">1. 转换系统镜像格式</a>
+        <li><a href="#1-zhuan-huan-xi-tong-jing-xiang-ge-shi">1. 转换系统镜像格式</a>
           </li>
         
-        <li><a href="#2.-u">2. 查看U盘编号</a>
+        <li><a href="#2-cha-kan-upan-bian-hao">2. 查看U盘编号</a>
           </li>
         
-        <li><a href="#3.-u">3. 写入前先卸载U盘</a>
+        <li><a href="#3-xie-ru-qian-xian-xie-zai-upan">3. 写入前先卸载U盘</a>
           </li>
         
-        <li><a href="#4.-u">4. 将系统写入U盘</a>
+        <li><a href="#4-jiang-xi-tong-xie-ru-upan">4. 将系统写入U盘</a>
           </li>
         
       </ul>
@@ -44,7 +44,7 @@
     
 
     <p>有一个老的笔记本，运行 Windows 比较吃力，所以测试一些 Linux 发行版，目的是找一个驱动管理好，运行流畅的系统。以下记录一下 macOS 下制作 USB 启动盘的步骤：</p>
-<h3 id="1.">1. 转换系统镜像格式</h3><div class="hll"><pre><span></span>~/Downloads                                                                    
+<h3 id="1-zhuan-huan-xi-tong-jing-xiang-ge-shi">1. 转换系统镜像格式</h3><div class="hll"><pre><span></span>~/Downloads                                                                    
 ▶ hdiutil convert -format UDRW -o linuxmint-19.1-cinnamon-64bit.dmg linuxmint-19.1-cinnamon-64bit.iso
 正在读取Driver Descriptor Map（DDM：0）…
 正在读取Linux Mint <span class="m">19</span>.1 Cinnamon <span class="m">64</span>-bit （Apple_ISO：1）…
@@ -60,7 +60,7 @@
 节省：0.0%
 created: /Users/xuehao/Downloads/linuxmint-19.1-cinnamon-64bit.dmg
 </pre></div>
-<h3 id="2.-u">2. 查看U盘编号</h3><div class="hll"><pre><span></span>~/Downloads                                                                    
+<h3 id="2-cha-kan-upan-bian-hao">2. 查看U盘编号</h3><div class="hll"><pre><span></span>~/Downloads                                                                    
 ▶ diskutil list
 ......
 /dev/disk3 <span class="o">(</span>external, physical<span class="o">)</span>:
@@ -69,11 +69,11 @@ created: /Users/xuehao/Downloads/linuxmint-19.1-cinnamon-64bit.dmg
    <span class="m">1</span>:                       0xCD                         <span class="m">2</span>.0 GB     disk3s1
    <span class="m">2</span>:                       0xEF                         <span class="m">4</span>.2 MB     disk3s2
 </pre></div>
-<h3 id="3.-u">3. 写入前先卸载U盘</h3><div class="hll"><pre><span></span>~/Downloads                                                                    
+<h3 id="3-xie-ru-qian-xian-xie-zai-upan">3. 写入前先卸载U盘</h3><div class="hll"><pre><span></span>~/Downloads                                                                    
 ▶ diskutil umountDisk /dev/disk3
 Unmount of all volumes on disk3 was successful
 </pre></div>
-<h3 id="4.-u">4. 将系统写入U盘</h3><div class="hll"><pre><span></span>~/Downloads                                                                    
+<h3 id="4-jiang-xi-tong-xie-ru-upan">4. 将系统写入U盘</h3><div class="hll"><pre><span></span>~/Downloads                                                                    
 ▶ sudo dd <span class="nv">bs</span><span class="o">=</span>1m <span class="k">if</span><span class="o">=</span>linuxmint-19.1-cinnamon-64bit.dmg <span class="nv">of</span><span class="o">=</span>/dev/rdisk3
 Password:
 </pre></div>
