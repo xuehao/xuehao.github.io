@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="zh"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>一起来写 vector 容器 | 薛浩的博客</title>
+<meta name="generator" content="Jekyll v4.3.3" />
+<meta property="og:title" content="一起来写 vector 容器" />
+<meta name="author" content="薛浩" />
+<meta property="og:locale" content="zh" />
+<meta name="description" content="容器是一种保存值的集合的数据结构。C 提供了较原始的内建容器，例如数组和结构体；C++ 标准库在此基础上提供了更丰富、更强大的容器。" />
+<meta property="og:description" content="容器是一种保存值的集合的数据结构。C 提供了较原始的内建容器，例如数组和结构体；C++ 标准库在此基础上提供了更丰富、更强大的容器。" />
+<link rel="canonical" href="http://localhost:8000/cs2/2022/08/22/let-us-create-a-vector.html" />
+<meta property="og:url" content="http://localhost:8000/cs2/2022/08/22/let-us-create-a-vector.html" />
+<meta property="og:site_name" content="薛浩的博客" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-08-22T00:00:00+08:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="一起来写 vector 容器" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"薛浩"},"dateModified":"2022-08-22T00:00:00+08:00","datePublished":"2022-08-22T00:00:00+08:00","description":"容器是一种保存值的集合的数据结构。C 提供了较原始的内建容器，例如数组和结构体；C++ 标准库在此基础上提供了更丰富、更强大的容器。","headline":"一起来写 vector 容器","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:8000/cs2/2022/08/22/let-us-create-a-vector.html"},"url":"http://localhost:8000/cs2/2022/08/22/let-us-create-a-vector.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:8000/feed.xml" title="薛浩的博客" />
+
+<link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.2.1/css/all.min.css">
+<!-- MATHJAX -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script async="" id="MathJax-script" src="https://cdn.staticfile.org/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+<script>
+  MathJax = {
+    tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['\\[', '\\]']], tags: 'ams' },
+    options: { skipHtmlTags: ['noscript', 'style', 'textarea', 'pre', 'code', 'aside', 'nav'] },
+    svg: { fontCache: 'global' }
+  };
+</script></head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">薛浩的博客</a></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">一起来写 vector 容器</h1>
+    <p class="post-meta"><time class="dt-published" datetime="2022-08-22T00:00:00+08:00" itemprop="datePublished">
+        2022 年 8 月 22 日
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <div class="container">  
+      <div class="contents">
+        <article class="markdown-body">
+          <ul><li><a href="#task-1类-class">Task 1：类 class</a><ul><li><a href="#命名空间">命名空间</a></li><li><a href="#动态数组">动态数组</a></li><li><a href="#构造析构函数">构造/析构函数</a></li><li><a href="#指针和迭代器">指针和迭代器</a></li><li><a href="#动态扩容">动态扩容</a></li></ul></li><li><a href="#task-2模板-template">Task 2：模板 template</a></li><li><a href="#task-3常量正确-const-correctness">Task 3：常量正确 const-correctness</a></li><li><a href="#task-4运算符重载-operator-overloading">Task 4：运算符重载 operator overloading</a></li><li><a href="#task-5拷贝语义-copy-semantics">Task 5：拷贝语义 copy semantics</a></li><li><a href="#task-6移动语义-move-semantics">Task 6：移动语义 move semantics</a><ul><li><a href="#左值引用-vs-右值引用">左值引用 vs 右值引用</a></li><li><a href="#拷贝-vs-移动">拷贝 vs 移动</a></li></ul></li><li><a href="#task-7-拷贝交换习语">Task 7: 拷贝交换习语</a></li></ul>
+          
+          <p>容器是一种保存值的集合的数据结构。C 提供了较原始的内建容器，例如数组和结构体；<code class="language-plaintext highlighter-rouge">C++</code> 标准库在此基础上提供了更丰富、更强大的容器。</p>
+
+<p>标准库还有很多有用的算法和迭代器，在开发程序过程中，应该优先选用这些工具。虽然 <code class="language-plaintext highlighter-rouge">C++</code> 标准库提供了这些容器，但是 <code class="language-plaintext highlighter-rouge">C++</code> 也为用户提供了编写自己容器的方法——也就是说，<code class="language-plaintext highlighter-rouge">C++</code> 没有将容器的设计限定到某种单一的方法上。</p>
+
+<p>通过研究斯坦福 <code class="language-plaintext highlighter-rouge">C++</code> 库，我们发现了一个现象。早期教材配套库在设计 <code class="language-plaintext highlighter-rouge">Vector</code> 时，使用的是基于动态数组的相对原始的设计策略；而最新版采用的策略，却是基于标准库 <code class="language-plaintext highlighter-rouge">std::vector</code> 进行的扩展，增加了很多参数方面的检查，为初学者的使用提供了更多方便。这也给了我们一个启示：即便标准库没有我们需要的工具，也应该基于标准库进行扩展，而不是采用原始的方式编码。</p>
+
+<p>但作为练习，我们接下来将要实现一个基于动态数组的 <code class="language-plaintext highlighter-rouge">vector</code>，接口类似标准库的 <a href="https://en.cppreference.com/w/cpp/container/vector" target="_blank">std::vector</a>。通过这几个小任务，我们尝试构建一个小型的 <code class="language-plaintext highlighter-rouge">C++</code> 知识框架，目的是能够写出一个兼容标准库（STL-compliant）的容器，体会 <code class="language-plaintext highlighter-rouge">C++</code> 标准库容器的开发过程。所谓兼容标准库，就是让我们的容器能够复用大量现有的标准库算法。</p>
+
+<p>这里采用的开发策略是逐步求精。也就是说，先实现一个基本的容器，逐步添加模板、重载等技术，而不用太关心标准库的细节。在基本实现完成后，再尝试添加迭代器等技术，以便让容器可以兼容标准库的框架。</p>
+
+<h2 id="task-1类-class">Task 1：类 class</h2>
+<blockquote>
+  <ul>
+    <li><a href="https://isocpp.org/wiki/faq/classes-and-objects" target="_blank">Classes and Objects, C++ FAQ</a></li>
+    <li>C++ Primer，Ch 7</li>
+  </ul>
+</blockquote>
+
+<p><em>本小节视频讲解时间段 <a href="https://h8pqt7tpdf.feishu.cn/file/IssCb8xvxoKuGNxxPz1coyB9nrh" target="_blank">00:24:05-00:35:36</a></em></p>
+
+<p>在 <code class="language-plaintext highlighter-rouge">C++</code> 中，我们通过类来定义自己的数据类型。用类来表示概念，可以使我们更容易编写、调试和修改程序。在这个任务中，我们将实现一个基本的 <code class="language-plaintext highlighter-rouge">vector</code> 接口：</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">vector</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="c1">// Special Member Functions</span>
+    <span class="n">vector</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">capacity</span> <span class="o">=</span> <span class="mi">10</span><span class="p">);</span>
+    <span class="o">~</span><span class="n">vector</span><span class="p">();</span>
+
+    <span class="c1">// Element Access</span>
+    <span class="kt">int</span><span class="o">&amp;</span> <span class="n">at</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">index</span><span class="p">);</span>
+    <span class="kt">int</span><span class="o">&amp;</span> <span class="n">front</span><span class="p">();</span>
+    <span class="kt">int</span><span class="o">&amp;</span> <span class="n">back</span><span class="p">();</span>
+
+    <span class="c1">// Iterators</span>
+    <span class="kt">int</span><span class="o">*</span> <span class="n">begin</span><span class="p">();</span>
+    <span class="kt">int</span><span class="o">*</span> <span class="n">end</span><span class="p">();</span>
+
+    <span class="c1">// Capacity</span>
+    <span class="kt">bool</span> <span class="n">empty</span><span class="p">();</span>
+    <span class="kt">size_t</span> <span class="n">size</span><span class="p">();</span>
+    <span class="kt">size_t</span> <span class="n">capacity</span><span class="p">();</span>
+
+    <span class="c1">// Modifiers</span>
+    <span class="kt">void</span> <span class="n">clear</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="n">reserve</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">n</span><span class="p">);</span>
+    <span class="kt">int</span><span class="o">*</span> <span class="n">insert</span><span class="p">(</span><span class="kt">int</span><span class="o">*</span> <span class="n">pos</span><span class="p">,</span> <span class="kt">int</span> <span class="n">value</span><span class="p">);</span>
+    <span class="kt">int</span><span class="o">*</span> <span class="n">erase</span><span class="p">(</span><span class="kt">int</span><span class="o">*</span> <span class="n">pos</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="n">push_back</span><span class="p">(</span><span class="kt">int</span> <span class="n">value</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="n">pop_back</span><span class="p">();</span>
+
+<span class="nl">private:</span>
+    <span class="kt">int</span><span class="o">*</span> <span class="n">m_elems</span><span class="p">;</span>
+    <span class="kt">size_t</span> <span class="n">m_capacity</span><span class="p">;</span>
+    <span class="kt">size_t</span> <span class="n">m_size</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<h3 id="命名空间">命名空间</h3>
+<blockquote>
+  <p>C++ Primer，Ch 18.2</p>
+</blockquote>
+
+<p>当程序开发用到多个库时，难免会发生名称冲突的情况。传统的方式是通过定义特殊的命名规范来避免冲突，比如 <code class="language-plaintext highlighter-rouge">m_data</code> 表示成员变量，<code class="language-plaintext highlighter-rouge">p_arr</code> 表示指针数组。</p>
+
+<p><code class="language-plaintext highlighter-rouge">C++</code> 还提供了<strong>命名空间</strong>（namespace）来防止名称冲突。每个命名空间都是一个作用域，变量名必须通过命名空间才可识别。</p>
+
+<p>由于我们的 <code class="language-plaintext highlighter-rouge">vector</code> 和标准库中的容器同名，所以，此处发生了名称冲突。这里可以使用 <code class="language-plaintext highlighter-rouge">namespace</code> 增加 <code class="language-plaintext highlighter-rouge">cs101</code> 名称限定符，在使用时也需要 <code class="language-plaintext highlighter-rouge">cs101::vector</code> 加以限定。</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">namespace</span> <span class="n">cs101</span> <span class="p">{</span>
+    <span class="k">class</span> <span class="nc">vector</span> <span class="p">{</span> 
+        <span class="p">...</span> <span class="c1">// starting from here</span>
+	<span class="p">};</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="动态数组">动态数组</h3>
+<blockquote>
+  <p>C++ Primer，Ch 12.2</p>
+</blockquote>
+
+<p>认识一个类，应该先从 <code class="language-plaintext highlighter-rouge">private</code> 部分开始，了解其底层表示。参考标准库，我们使用<strong>动态数组</strong>作为底层的表示结构。除此之外，我们还有必要记录数组的分配大小和逻辑大小，方便其他接口的使用。虽然分配大小可以通过数组名和元素类型计算得出，但为了使用上的便利和不必要的计算，我们增加这个成员。</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">private:</span>
+    <span class="kt">int</span><span class="o">*</span> <span class="n">m_elems</span><span class="p">;</span>
+    <span class="kt">size_t</span> <span class="n">m_capacity</span><span class="p">;</span>
+    <span class="kt">size_t</span> <span class="n">m_size</span><span class="p">;</span>
+</code></pre></div></div>
+
+
+    <div class="admonition admonition-type-note">
+      <p class="admonition-title">NOTE</p>
+      
+      
+<p>大多数应用应该使用标准库容器而不是动态数组。使用容器更为简单，更不容易出现内存管理错误，并且可能有更好的性能。</p>
+
+
+    </div>
+
+<h3 id="构造析构函数">构造/析构函数</h3>
+
+<p><strong>默认构造函数</strong>（default constructor）没有参数，标准库 <code class="language-plaintext highlighter-rouge">vector</code> 默认不分配数组；我们的 <code class="language-plaintext highlighter-rouge">vector</code> 使用默认参数，不提供参数时将分配 10 个元素的数组。此处的构造函数，既充当了默认构造函数的功能，又充当了<strong>带参数构造函数</strong>的功能。</p>
+
+<p><strong>析构函数</strong>（destructor）此处只需要删除动态数组，注意使用 <code class="language-plaintext highlighter-rouge">delete[]</code>。</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">vector</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">capacity</span> <span class="o">=</span> <span class="mi">10</span><span class="p">);</span>
+<span class="o">~</span><span class="n">vector</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p>其他一些查询函数的实现较为简单：</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="nf">empty</span><span class="p">();</span>
+<span class="kt">size_t</span> <span class="nf">size</span><span class="p">();</span>
+<span class="kt">size_t</span> <span class="nf">capacity</span><span class="p">();</span>
+</code></pre></div></div>
+
+<h3 id="指针和迭代器">指针和迭代器</h3>
+<blockquote>
+  <p>Textbook，Ch 20.6</p>
+</blockquote>
+
+<p><strong>迭代器</strong>（iterator）是指针（pointer）的泛化或抽象，允许 <code class="language-plaintext highlighter-rouge">C++</code> 程序（特别是标准库算法）<strong>以统一的方式</strong>操作不同的数据结构。为了正确、高效地操作不同的数据结构，<code class="language-plaintext highlighter-rouge">C++</code> 标准不仅规定了迭代器的接口，还规定了迭代器的语义和其复杂度。</p>
+
+<p>由于数组结构的特殊性，此处为了开发的简便，只用了裸指针的别名表示迭代器：</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">using</span> <span class="n">iterator</span> <span class="o">=</span> <span class="kt">int</span><span class="o">*</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>为了支持基于范围的 for 循环，我们需要实现 <code class="language-plaintext highlighter-rouge">begin</code> 和 <code class="language-plaintext highlighter-rouge">end</code>。</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span><span class="n">vector</span><span class="o">::</span><span class="n">iterator</span> <span class="n">itr</span> <span class="o">=</span> <span class="n">intVec</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">itr</span> <span class="o">&lt;</span> <span class="n">intVec</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="o">++</span><span class="n">itr</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="o">*</span><span class="n">itr</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">for</span><span class="p">(</span><span class="k">auto</span> <span class="n">item</span><span class="o">:</span> <span class="n">vec</span><span class="p">){</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">item</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="动态扩容">动态扩容</h3>
+
+<p>插入操作 <code class="language-plaintext highlighter-rouge">insert</code> 的第一次尝试，无扩容操作。使用策略是分配一个足够大的数组，防止溢出；但缺点是造成了空间的浪费。</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">vector</span><span class="o">::</span><span class="n">iterator</span> <span class="n">vector</span><span class="o">::</span><span class="n">insert</span><span class="p">(</span><span class="n">iterator</span> <span class="n">pos</span><span class="p">,</span> <span class="kt">int</span> <span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// 移动 pos 后面的元素，留出插入空间</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span><span class="o">*</span> <span class="n">i</span> <span class="o">=</span> <span class="n">end</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="n">pos</span><span class="p">;</span> <span class="n">i</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+        <span class="o">*</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="o">*</span><span class="n">i</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="c1">// 插入 value</span>
+    <span class="o">*</span><span class="n">pos</span> <span class="o">=</span> <span class="n">value</span><span class="p">;</span>
+    <span class="c1">// 更新 m_size</span>
+    <span class="n">m_size</span><span class="o">++</span><span class="p">;</span>
+    <span class="c1">// 返回插入位置的指针</span>
+    <span class="k">return</span> <span class="n">pos</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>我们需要实现一种新的策略，在程序运行过程中，可以根据元素的数量动态地调整内存的空间，即<strong>动态分配</strong>（dynamical allocation）。</p>
+
+<p>参考标准库文档编写 <a href="https://en.cppreference.com/w/cpp/container/vector/reserve" target="_blank">std::vector&lt;T,Allocator&gt;::reserve</a> 方法，实现动态数组内存管理：</p>
+
+<ul>
+  <li>当 <code class="language-plaintext highlighter-rouge">n</code> 小于等于当前 <code class="language-plaintext highlighter-rouge">capacity</code> 时，不作任何操作</li>
+  <li>当 <code class="language-plaintext highlighter-rouge">n</code> 大于当前 <code class="language-plaintext highlighter-rouge">capacity</code> 时，增加 <code class="language-plaintext highlighter-rouge">capacity</code> 以便可以容纳 <code class="language-plaintext highlighter-rouge">n</code> 个元素</li>
+</ul></code></pre>
+    <div class="admonition admonition-type-tip">
+      <p class="admonition-title">TIP</p>
+      
+      
+<p><strong>扩容系数 Growth factor</strong></p>
+
+<p>为了避免多次调整大小产生的成本，动态数组会大幅度调整大小。动态数组的扩容系数取决于几个因素，包括时空权衡和内存分配器本身使用的算法。在 <code class="language-plaintext highlighter-rouge">C++</code> 中，一般选择的扩容系数为 2。</p>
+
+<p>借助摊销分析，扩容操作的平均时间复杂度为 $O(1)$，这是教学中的一个常见示例，参考教材 12.9 节。</p>
+
+
+    </div>
+
+<p>参考标准库文档编写 <a href="https://en.cppreference.com/w/cpp/container/vector/insert" target="_blank">std::vector&lt;T,Allocator&gt;::insert</a> 方法，注意参数 <code class="language-plaintext highlighter-rouge">pos</code> 为迭代器（裸指针）：</p>
+
+<ul>
+  <li>在 <code class="language-plaintext highlighter-rouge">pos</code> 指向的位置插入 <code class="language-plaintext highlighter-rouge">value</code> 值</li>
+  <li>必要时需要扩容，可以利用 <code class="language-plaintext highlighter-rouge">reserve</code> 方法</li>
+  <li>返回 <code class="language-plaintext highlighter-rouge">pos</code> 迭代器，以便需要时可以访问插入的元素</li>
+  <li>查看测试案例，了解客户端用法</li>
+</ul>
+
+<h2 id="task-2模板-template">Task 2：模板 template</h2>
+<blockquote>
+  <p>C++ Primer，Ch 16</p>
+</blockquote>
+
+<p><em>本小节视频讲解时间段 <a href="https://h8pqt7tpdf.feishu.cn/file/IssCb8xvxoKuGNxxPz1coyB9nrh" target="_blank">00:35:36-00:47:48</a></em></p>
+
+<p>面向对象语言，例如 Python，所有类型都是动态的，类型在运行时确认；<code class="language-plaintext highlighter-rouge">C++</code> 使用模板技术，类型在编译期就能够确认。在这个任务中，我们将使用模板技术，让 <code class="language-plaintext highlighter-rouge">vector</code> 容器支持不同的类型。</p>
+
+<p>模板是泛型编程的基础，是创建类或函数的公式。我们已经接触过函数模板，模板可以看作是<strong>以类型为参数的编译期函数</strong>。</p>
+
+<p>当编译器遇到一个模板定义时，并不会生成代码。只有当代码中实例化一个特定版本时，编译器才会生成代码。这一特性将影响我们如何组织代码，本课程中采用<strong>定义和实现放在同一个头文件中</strong>的策略。</p>
+
+<p>类模板的定义和函数模板类似，但使用上有所区别，类模板必须使用前括号明确类型信息，否则编译器无法自动推断模板类型。</p>
+
+<p>类模板定义以 <code class="language-plaintext highlighter-rouge">template</code> 开始，后面尖括号包含类模板参数列表。根据 <code class="language-plaintext highlighter-rouge">C++</code> 标准要求，类模板定义中需要添加 <code class="language-plaintext highlighter-rouge">value_type</code> 成员类型，所以在后续的接口声明中，可以用此别名替换所有类型：</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">namespace</span> <span class="n">cs101</span> <span class="p">{</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>     <span class="c1">// 类模板定义</span>
+<span class="k">class</span> <span class="nc">vector</span> <span class="p">{</span>
+<span class="nl">public:</span>
+	<span class="k">using</span> <span class="n">value_type</span> <span class="o">=</span> <span class="n">T</span><span class="p">;</span> <span class="c1">// 类成员定义（标准要求）</span>
+	
+	<span class="n">value_type</span> <span class="o">&amp;</span><span class="n">at</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">index</span><span class="p">);</span>
+	<span class="n">value_type</span> <span class="o">&amp;</span><span class="n">front</span><span class="p">();</span>
+	<span class="n">value_type</span> <span class="o">&amp;</span><span class="n">back</span><span class="p">();</span>
+
+<span class="nl">private:</span>
+    <span class="p">...</span>
+    
+<span class="p">};</span> <span class="c1">// end of vector</span>
+
+<span class="p">}</span> <span class="c1">// end of cs101</span>
+</code></pre></div></div>
+
+<p>不同类型的类，拥有不同类型的成员函数实现。为了实现成员函数的模板化，同样需要以 <code class="language-plaintext highlighter-rouge">template</code> 开始：</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="n">vector</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">vector</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">capacity</span><span class="p">)</span>
+    <span class="o">:</span> <span class="n">m_elems</span><span class="p">{</span><span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="n">capacity</span><span class="p">]},</span> <span class="n">m_capacity</span><span class="p">{</span><span class="n">capacity</span><span class="p">},</span> <span class="n">m_size</span><span class="p">{</span><span class="mi">0</span><span class="p">}</span> <span class="p">{}</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span> 
+<span class="kt">bool</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">empty</span><span class="p">()</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>当成员函数返回值包含类模板成员名时，需要结合模板和限定名来访问。例如，返回值为 <code class="language-plaintext highlighter-rouge">value_type</code> 需要按如下代码处理：</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="k">typename</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">value_type</span> <span class="o">&amp;</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">at</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">index</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="o">*</span><span class="p">(</span><span class="n">begin</span><span class="p">()</span> <span class="o">+</span> <span class="n">index</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="task-3常量正确-const-correctness">Task 3：常量正确 const-correctness</h2>
+<blockquote>
+  <p><a href="https://isocpp.org/wiki/faq/const-correctness" target="_blank">Const Correctness, C++ FAQ (isocpp.org)</a></p>
+</blockquote>
+
+<p><em>本小节视频讲解时间段 <a href="https://h8pqt7tpdf.feishu.cn/file/IssCb8xvxoKuGNxxPz1coyB9nrh" target="_blank">00:48:00-01:01:00</a></em></p>
+
+<p>使用 <code class="language-plaintext highlighter-rouge">const</code> 声明对象（或者对象引用、对象指针），则表明对象的值无法改变。在目前的实现中，我们的 <code class="language-plaintext highlighter-rouge">vector</code> 容器还不支持常量接口。如果定义这样的常量对象，编译器将禁止调用 <code class="language-plaintext highlighter-rouge">vector</code> 的所有方法。</p>
+
+<p>对于一些查询接口，例如 <code class="language-plaintext highlighter-rouge">size()</code>、<code class="language-plaintext highlighter-rouge">isEmpty()</code> 等，本身并不会改变对象的值。如果也禁用这些接口，类的通用性将变差。对于此类接口，可以使用 <code class="language-plaintext highlighter-rouge">const</code> 进行标记，这样不管使常量对象还是非常量对象都可以调用此类接口。</p>
+
+<p>以下接口仅作查询操作，只需要在声明后面添加关键字：</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">empty</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+<span class="kt">size_t</span> <span class="n">size</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+<span class="kt">size_t</span> <span class="n">capacity</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>相应的实现也需要同样的调整：</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="kt">size_t</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">size</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="n">m_size</span><span class="p">;</span> 
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>而像 <code class="language-plaintext highlighter-rouge">at()</code>、<code class="language-plaintext highlighter-rouge">front()</code> 这样的接口，既可以用于查询操作又可以用于修改操作。这类接口需要同时实现两个版本：</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">value_type</span><span class="o">&amp;</span> <span class="n">at</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">index</span><span class="p">);</span>
+<span class="k">const</span> <span class="n">value_type</span><span class="o">&amp;</span> <span class="n">at</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">index</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>在使用迭代器时，如果不修改对象的内容，经常使用如下语法：</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span><span class="p">(</span><span class="k">const</span> <span class="kt">int</span> <span class="o">&amp;</span> <span class="n">item</span><span class="o">:</span> <span class="n">vec</span><span class="p">){</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">item</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>此时也需要添加常量迭代器，以及常量版本的 <code class="language-plaintext highlighter-rouge">begin()</code>、<code class="language-plaintext highlighter-rouge">end()</code> 接口：</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">using</span> <span class="n">iterator</span> <span class="o">=</span> <span class="n">T</span><span class="o">*</span><span class="p">;</span>
+<span class="k">using</span> <span class="n">const_iterator</span> <span class="o">=</span> <span class="k">const</span> <span class="n">T</span><span class="o">*</span><span class="p">;</span>
+
+<span class="n">iterator</span> <span class="nf">begin</span><span class="p">();</span>
+<span class="n">iterator</span> <span class="nf">end</span><span class="p">();</span>
+<span class="n">const_iterator</span> <span class="n">begin</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+<span class="n">const_iterator</span> <span class="n">end</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</code></pre></div></div></code></pre>
+    <div class="admonition admonition-type-note">
+      <p class="admonition-title">NOTE</p>
+      
+      
+<p>对于上述 <code class="language-plaintext highlighter-rouge">at()</code> 这样的接口，在实现过程中我们发现函数体内的代码完全一致。为了避免 <code class="language-plaintext highlighter-rouge">const</code> 和 <code class="language-plaintext highlighter-rouge">non-const</code> 成员函数中代码重复，参考 Scott Meyer 在《Effective C++, 3rd》中条款 3 介绍的写法。</p>
+
+
+    </div>
+
+<h2 id="task-4运算符重载-operator-overloading">Task 4：运算符重载 operator overloading</h2>
+<blockquote>
+  <ul>
+    <li><a href="https://isocpp.org/wiki/faq/operator-overloading" target="_blank">Operator Overloading, C++ FAQ (isocpp.org)</a></li>
+    <li>C++ Primer，Ch 14</li>
+  </ul>
+</blockquote>
+
+<p><em>本小节视频讲解时间段 <a href="https://h8pqt7tpdf.feishu.cn/file/Kh7obHaxNoxsGWxfziqcUfFTn3d" target="_blank">00:11:10-00:31:08</a></em></p>
+
+<p>内置类型支持大量的运算符，这些运算符同样可以用于自定义的类型，并重新赋予新的含义，例如字符串的 <code class="language-plaintext highlighter-rouge">+</code> 运算符表示连接两个字符串，而不是数值类型的加法操作。这个任务中，我们将让 <code class="language-plaintext highlighter-rouge">vector</code> 容器支持一些运算符操作。</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 注意要保持常量正确</span>
+<span class="n">value_type</span> <span class="o">&amp;</span><span class="k">operator</span><span class="p">[](</span><span class="kt">size_t</span> <span class="n">index</span><span class="p">);</span>
+<span class="k">const</span> <span class="n">value_type</span> <span class="o">&amp;</span><span class="k">operator</span><span class="p">[](</span><span class="kt">size_t</span> <span class="n">index</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+<span class="c1">// 注意重载为全局函数</span>
+<span class="n">std</span><span class="o">::</span><span class="n">ostream</span> <span class="o">&amp;</span><span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">ostream</span> <span class="o">&amp;</span><span class="n">os</span><span class="p">,</span> <span class="k">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">vec</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>运算符本质仍然是函数，函数名由关键字 <code class="language-plaintext highlighter-rouge">operator</code> 和运算符构成，例如 <code class="language-plaintext highlighter-rouge">str1 + str2</code> 会转换为类似 <code class="language-plaintext highlighter-rouge">operator+(str1, str2)</code>  这样的函数进行处理。运算符函数和普通函数一样，也有返回值、参数列表、函数体等内容。</p>
+
+<p>关于运算符重载，标准也作了一些限制（参考 <a href="https://en.cppreference.com/w/cpp/language/operators" target="_blank">Restrictions</a>）。</p>
+
+<p>方法既可以设计为成员函数，也可以设计为全局函数。 对于运算符重载，有些应该设计为成员函数，比如 <code class="language-plaintext highlighter-rouge">=</code>、<code class="language-plaintext highlighter-rouge">[]</code>；有些推荐设计为全局函数，比如 <code class="language-plaintext highlighter-rouge">&lt;&lt;</code>、<code class="language-plaintext highlighter-rouge">&gt;&gt;</code> 等。这些约定，标准文档也作了说明，比如 <a href="https://en.cppreference.com/w/cpp/language/operator_member_access" target="_blank">Member access operators</a> 推荐的原型示例。</p>
+
+<p>将模板类接口设计为全局函数时，需要解决两个问题。首先，全局函数无法访问类的私有成员，解决这个问题可以使用 <code class="language-plaintext highlighter-rouge">friend</code> 关键字标记函数声明，并添加到类的接口中。其次，模板函数在类中声明时，仍然需要使用 <code class="language-plaintext highlighter-rouge">template</code> 模板。此时可能会遇到类型名冲突的问题，解决方法是在类中使用另一个名称标记模板的 <code class="language-plaintext highlighter-rouge">typename</code> 以避免和类模板类型名称冲突。参考 <a href="https://stackoverflow.com/questions/4660123/overloading-friend-operator-for-template-class" target="_blank">overloading friend operator« for template class</a></p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">K</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">M</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">H</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">hash</span><span class="o">&lt;</span><span class="n">K</span><span class="p">&gt;</span><span class="o">&gt;</span>
+<span class="k">class</span> <span class="nc">HashMap</span> <span class="p">{</span>
+    <span class="p">...</span>
+    
+    <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">K2</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">M2</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">H2</span><span class="p">&gt;</span>
+    <span class="k">friend</span> <span class="n">std</span><span class="o">::</span><span class="n">ostream</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">ostream</span><span class="o">&amp;</span> <span class="n">os</span><span class="p">,</span> <span class="k">const</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">K2</span><span class="p">,</span> <span class="n">M2</span><span class="p">,</span> <span class="n">H2</span><span class="o">&gt;&amp;</span> <span class="n">map</span><span class="p">);</span>
+
+    <span class="p">...</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<h2 id="task-5拷贝语义-copy-semantics">Task 5：拷贝语义 copy semantics</h2>
+<blockquote>
+  <p>C++ Primer，Ch 13</p>
+</blockquote>
+
+<p><em>本小节视频讲解时间段 <a href="https://h8pqt7tpdf.feishu.cn/file/Kh7obHaxNoxsGWxfziqcUfFTn3d" target="_blank">00:31:08-01:04:22</a></em></p>
+
+<p>在 CS101 的类实现中，我们只强调了如何创建对象（构造函数）和如何销毁对象（析构函数）。除了对象的创建和销毁，我们还需要控制对象的拷贝和赋值。这个任务中，我们将实现拷贝构造函数和拷贝赋值运算符。</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">vector</span><span class="p">(</span><span class="k">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">other</span><span class="p">);</span>               <span class="c1">// copy constructor</span>
+<span class="n">vector</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">other</span><span class="p">);</span> <span class="c1">// copy assignment</span>
+</code></pre></div></div>
+
+<p>下面的两种用法分别演示了拷贝构造函数和拷贝赋值运算符的使用场景和区别：</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// create vec1</span>
+<span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">vec1</span><span class="p">;</span>
+<span class="n">vec1</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="s">"A"</span><span class="p">);</span>
+<span class="n">vec1</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="s">"B"</span><span class="p">);</span>
+<span class="n">vec1</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="s">"C"</span><span class="p">);</span>
+
+<span class="c1">// copy constructor: create vec2 using the contents of vec1</span>
+<span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">vec2</span> <span class="o">=</span> <span class="n">vec1</span><span class="p">;</span>
+
+<span class="c1">// create vec3 with default value</span>
+<span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">vec3</span><span class="p">;</span>
+<span class="c1">// copy assignment: replace vec3 using the contents of vec1</span>
+<span class="n">vec3</span> <span class="o">=</span> <span class="n">vec1</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>理解两者的工作机制将有助于后续的代码实现。拷贝构造函数是使用另一个对象的值来创建一个新的对象；而拷贝赋值运算符操作的是一个已有的对象，只是利用另一个对象的值替换已有对象的内容。</p>
+
+<p><a href="https://en.cppreference.com/w/cpp/language/rule_of_three" target="_blank">三法则</a>（rule of three）的要求是，假如类实现了下面任意一个成员函数，则其他两个也必须实现：</p>
+
+<ul>
+  <li>析构函数</li>
+  <li>拷贝构造函数</li>
+  <li>赋值运算符</li>
+</ul>
+
+<p>我们的 <code class="language-plaintext highlighter-rouge">vector</code> 已经包含了析构函数，所以此时编译器会自动为我们生成其他两个。由于在类中涉及到动态内存分配，这些自动生成的成员函数并不能满足内存管理的要求。底层原因是，编译器和运行时只能管理栈内存，所以堆内存并不会得到正确处理，因而造成了内存问题。</p>
+
+<p>实现拷贝构造函数和拷贝赋值运算符，可以参考上述文档的示例。需要注意的是，拷贝赋值运算符可能会发生自我拷贝，例如 <code class="language-plaintext highlighter-rouge">vec1 = vec1</code>，此时需要作一些特别的处理。</p>
+
+<h2 id="task-6移动语义-move-semantics">Task 6：移动语义 move semantics</h2>
+<blockquote>
+  <p>C++ Primer，Ch 13</p>
+</blockquote>
+
+<h3 id="左值引用-vs-右值引用">左值引用 vs 右值引用</h3>
+
+<p>我们已经了解过引用在函数参数等场景下的应用，现在我们将这一概念继续细化。目前接触过的引用，称为<strong>左值引用</strong>：</p>
+
+<ul>
+  <li>语法格式为 <code class="language-plaintext highlighter-rouge">T&amp;</code>，这里 <code class="language-plaintext highlighter-rouge">T</code> 为类型名</li>
+  <li>运算符 <code class="language-plaintext highlighter-rouge">=</code> 右边的表达式必须是命名变量，即在调试器面板中可以看到这个变量名和值</li>
+</ul>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">num</span><span class="p">{</span><span class="mi">3</span><span class="p">};</span>
+<span class="kt">int</span><span class="o">&amp;</span> <span class="n">lref</span> <span class="o">=</span> <span class="n">num</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>以下写法违背了上述第二条规则，虽然函数返回整型，但这个返回值是没有名称的：</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">fn</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="mi">3</span><span class="p">;</span> <span class="p">}</span>
+<span class="kt">int</span><span class="o">&amp;</span> <span class="n">lref</span> <span class="o">=</span> <span class="n">fn</span><span class="p">();</span>       <span class="c1">// error</span>
+</code></pre></div></div>
+
+<p>函数的返回值是一个临时的值，如果没有变量进行存储，系统将会自动丢弃该值。所以，对于上述写法可以作如下改写：</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">fn</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="mi">3</span><span class="p">;</span> <span class="p">}</span>
+<span class="kt">int</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">fn</span><span class="p">();</span>       <span class="c1">// copy ctor</span>
+<span class="kt">int</span><span class="o">&amp;</span> <span class="n">lref</span> <span class="o">=</span> <span class="n">temp</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>以上对左值引用的修改，在函数调用的使用中，影响更大。我们使用引用的动机是避免拷贝，提升效率，但增加的临时变量 <code class="language-plaintext highlighter-rouge">temp</code> 却再次发生了拷贝。</p>
+
+<p>为了解决这个问题，<code class="language-plaintext highlighter-rouge">C++</code> 又推出了一个新的引用类型，称为<strong>右值引用</strong>：</p>
+
+<ul>
+  <li>语法格式为 <code class="language-plaintext highlighter-rouge">T&amp;&amp;</code>，这里 <code class="language-plaintext highlighter-rouge">T</code> 为类型名</li>
+  <li>用于绑定临时对象，避免销毁</li>
+</ul>
+
+<p>左值引用的是一个对象的变量，而右值引用的是一个临时对象的表达式值。因为变量通常都是在 <code class="language-plaintext highlighter-rouge">=</code> 的左边，而临时对象的表达式值通常都是在 <code class="language-plaintext highlighter-rouge">=</code> 右边，所以左值/右值的命名在理解上也较为直接。</p>
+
+<p>有了这个新技术，我们就可以更好地改写上述问题，避免拷贝：</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">fn</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="mi">3</span><span class="p">;</span> <span class="p">}</span>
+<span class="kt">int</span><span class="o">&amp;&amp;</span> <span class="n">rref</span> <span class="o">=</span> <span class="n">fn</span><span class="p">();</span>       <span class="c1">// oook</span>
+</code></pre></div></div>
+
+<p>另外，左值是无法使用右值引用的，如果强行进行绑定，需要借助 <code class="language-plaintext highlighter-rouge">std::move</code> 来操作：</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">num</span><span class="p">{</span><span class="mi">3</span><span class="p">};</span>
+<span class="kt">int</span><span class="o">&amp;&amp;</span> <span class="n">rref</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">num</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h3 id="拷贝-vs-移动">拷贝 vs 移动</h3>
+
+<p>目前我们已经完成了对象的拷贝控制。将一个对象的值拷贝给另一个对象，对于基本类型来说，这是唯一合理的方式；但对于容器来说，特别是元素数量很多的情况，这样的拷贝将会消耗大量计算资源。</p>
+
+<p>在某些场景下，避免拷贝并不会影响程序的逻辑。例如，交换两个对象的内容，并不需要维护一个临时容器，将所有元素拷贝两次。现实生活中也有类似的比喻，比如房产交易并不需要将房子搬来搬去，而只需要变更双方名下的房屋地址就可以完成。</p>
+
+<p><code class="language-plaintext highlighter-rouge">C++</code> 增加了移动的概念来支持这一目的，通过实现移动构造函数和移动赋值运算符，我们可以为类增加移动控制。</p>
+
+<p><a href="https://en.cppreference.com/w/cpp/language/rule_of_three" target="_blank">五法则</a>（rule of five）的要求是，一旦实现三法则，编译器将无法为我们生成移动构造函数和移动赋值运算符。所以，对于我们的 <code class="language-plaintext highlighter-rouge">vector</code> 容器，此时还需要实现如下两个函数：</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">vector</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="o">&amp;&amp;</span><span class="n">other</span><span class="p">);</span>                    <span class="c1">// move constructor</span>
+<span class="n">vector</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="o">&amp;&amp;</span><span class="n">other</span><span class="p">);</span>      <span class="c1">// move assignment</span>
+</code></pre></div></div>
+
+<h2 id="task-7-拷贝交换习语">Task 7: 拷贝交换习语</h2>
+<blockquote>
+  <p>C++ Primer，Ch 13</p>
+</blockquote>
+
+<p>涉及到资源管理的类，通常定义一个 <code class="language-plaintext highlighter-rouge">swap</code> 函数比较方便。交换两个对象，并不需要拷贝整个对象的内容，而只需要交换两个对象管理的内存指针。</p>
+
+<p>通过 <code class="language-plaintext highlighter-rouge">swap</code> 函数需要定义两个版本，一个是成员函数，另一个是全局函数。<code class="language-plaintext highlighter-rouge">swap</code> 的内部实现需要交换所有的私有成员。</p>
+
+<p>为了安全地处理异常，交换和移动都需要使用 <code class="language-plaintext highlighter-rouge">noexcept</code> 标记。这意味着如果发生任何异常，当前对象保持不变，避免在处理过程中破坏现有对象。</p>
+
+<p>利用 <code class="language-plaintext highlighter-rouge">swap</code> 改写拷贝赋值、移动特殊函数，可以大大简化代码的实现，避免重复。</p>
+
+<hr />
+<p><em>Enjoy!</em></p></code></pre>
+        </article>
+      </div>   
+      <div class="table-of-contents">
+        <ul><li><a href="#task-1类-class">Task 1：类 class</a><ul><li><a href="#命名空间">命名空间</a></li><li><a href="#动态数组">动态数组</a></li><li><a href="#构造析构函数">构造/析构函数</a></li><li><a href="#指针和迭代器">指针和迭代器</a></li><li><a href="#动态扩容">动态扩容</a></li></ul></li><li><a href="#task-2模板-template">Task 2：模板 template</a></li><li><a href="#task-3常量正确-const-correctness">Task 3：常量正确 const-correctness</a></li><li><a href="#task-4运算符重载-operator-overloading">Task 4：运算符重载 operator overloading</a></li><li><a href="#task-5拷贝语义-copy-semantics">Task 5：拷贝语义 copy semantics</a></li><li><a href="#task-6移动语义-move-semantics">Task 6：移动语义 move semantics</a><ul><li><a href="#左值引用-vs-右值引用">左值引用 vs 右值引用</a></li><li><a href="#拷贝-vs-移动">拷贝 vs 移动</a></li></ul></li><li><a href="#task-7-拷贝交换习语">Task 7: 拷贝交换习语</a></li></ul>
+      </div>
+    </div>
+  </div><a class="u-url" href="/cs2/2022/08/22/let-us-create-a-vector.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="https://github.com/xuehao" target="_blank">
+            <svg class="svg-icon white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+          </a>
+        </p>
+        <p class="feed-subscribe">
+          <a href="https://space.bilibili.com/95093036" target="_blank">
+            <svg class="svg-icon white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M488.6 104.1C505.3 122.2 513 143.8 511.9 169.8V372.2C511.5 398.6 502.7 420.3 485.4 437.3C468.2 454.3 446.3 463.2 419.9 464H92C65.6 463.2 43.8 454.2 26.7 436.8C9.7 419.4 .8 396.5 0 368.2V169.8C.8 143.8 9.7 122.2 26.7 104.1C43.8 87.8 65.6 78.8 92 78H121.4L96.1 52.2C90.3 46.5 87.4 39.2 87.4 30.4C87.4 21.6 90.3 14.3 96.1 8.6C101.8 2.9 109.1 0 117.9 0C126.7 0 134 2.9 139.8 8.6L213.1 78H301.1L375.6 8.6C381.7 2.9 389.2 0 398 0C406.8 0 414.1 2.9 419.9 8.6C425.6 14.3 428.5 21.6 428.5 30.4C428.5 39.2 425.6 46.5 419.9 52.2L394.6 78L423.9 78C450.3 78.8 471.9 87.8 488.6 104.1H488.6zM449.8 173.8C449.4 164.2 446.1 156.4 439.1 150.3C433.9 144.2 425.1 140.9 416.4 140.5H96.1C86.5 140.9 78.6 144.2 72.5 150.3C66.3 156.4 63.1 164.2 62.7 173.8V368.2C62.7 377.4 66 385.2 72.5 391.7C79 398.2 86.9 401.5 96.1 401.5H416.4C425.6 401.5 433.4 398.2 439.7 391.7C446 385.2 449.4 377.4 449.8 368.2L449.8 173.8zM185.5 216.5C191.8 222.8 195.2 230.6 195.6 239.7V273C195.2 282.2 191.9 289.9 185.8 296.2C179.6 302.5 171.8 305.7 162.2 305.7C152.6 305.7 144.7 302.5 138.6 296.2C132.5 289.9 129.2 282.2 128.8 273V239.7C129.2 230.6 132.6 222.8 138.9 216.5C145.2 210.2 152.1 206.9 162.2 206.5C171.4 206.9 179.2 210.2 185.5 216.5H185.5zM377 216.5C383.3 222.8 386.7 230.6 387.1 239.7V273C386.7 282.2 383.4 289.9 377.3 296.2C371.2 302.5 363.3 305.7 353.7 305.7C344.1 305.7 336.3 302.5 330.1 296.2C323.1 289.9 320.7 282.2 320.4 273V239.7C320.7 230.6 324.1 222.8 330.4 216.5C336.7 210.2 344.5 206.9 353.7 206.5C362.9 206.9 370.7 210.2 377 216.5H377z"/></svg>
+          </a>
+        </p>
+        <p class="feed-subscribe">
+          <a href="mailto:xuehao0618@outlook.com" target="_blank">
+            <svg class="svg-icon white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"/></svg>
+          </a>
+        </p>
+      
+      </div>
+      <div class="footer-col">
+        <p><p>专注工业软件领域，分享数理、编程、模拟、可视化等内容。更多精彩，敬请关注：<a href="https://www.stickmind.com" target="_blank">stickmind.com</a>！</p>
+</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

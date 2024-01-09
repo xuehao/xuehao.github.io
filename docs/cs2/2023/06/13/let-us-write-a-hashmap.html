@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>编写兼容 STL 的 HashMap 容器 | 薛浩的博客</title>
+<meta name="generator" content="Jekyll v4.3.3" />
+<meta property="og:title" content="编写兼容 STL 的 HashMap 容器" />
+<meta name="author" content="薛浩" />
+<meta property="og:locale" content="zh" />
+<meta name="description" content="本文改编自斯坦福 CS106L 的一份作业，详细的背景介绍可以参考官方文档。" />
+<meta property="og:description" content="本文改编自斯坦福 CS106L 的一份作业，详细的背景介绍可以参考官方文档。" />
+<link rel="canonical" href="http://localhost:8000/cs2/2023/06/13/let-us-write-a-hashmap.html" />
+<meta property="og:url" content="http://localhost:8000/cs2/2023/06/13/let-us-write-a-hashmap.html" />
+<meta property="og:site_name" content="薛浩的博客" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-06-13T00:00:00+08:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="编写兼容 STL 的 HashMap 容器" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"薛浩"},"dateModified":"2023-06-13T00:00:00+08:00","datePublished":"2023-06-13T00:00:00+08:00","description":"本文改编自斯坦福 CS106L 的一份作业，详细的背景介绍可以参考官方文档。","headline":"编写兼容 STL 的 HashMap 容器","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:8000/cs2/2023/06/13/let-us-write-a-hashmap.html"},"url":"http://localhost:8000/cs2/2023/06/13/let-us-write-a-hashmap.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:8000/feed.xml" title="薛浩的博客" />
+
+<link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.2.1/css/all.min.css">
+<!-- MATHJAX -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script async="" id="MathJax-script" src="https://cdn.staticfile.org/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+<script>
+  MathJax = {
+    tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['\\[', '\\]']], tags: 'ams' },
+    options: { skipHtmlTags: ['noscript', 'style', 'textarea', 'pre', 'code', 'aside', 'nav'] },
+    svg: { fontCache: 'global' }
+  };
+</script></head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">薛浩的博客</a></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">编写兼容 STL 的 HashMap 容器</h1>
+    <p class="post-meta"><time class="dt-published" datetime="2023-06-13T00:00:00+08:00" itemprop="datePublished">
+        2023 年 6 月 13 日
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <div class="container">  
+      <div class="contents">
+        <article class="markdown-body">
+          <ul><li><a href="#milestone-0阅读">Milestone 0：阅读</a></li><li><a href="#milestone-1实现-rehash">Milestone 1：实现 <code class="language-plaintext highlighter-rouge">rehash()</code></a></li><li><a href="#milestone-2运算符重载和常量正确">Milestone 2：运算符重载和常量正确</a><ul><li><a href="#索引-">索引 <code class="language-plaintext highlighter-rouge">[]</code></a></li><li><a href="#流插入-">流插入 <code class="language-plaintext highlighter-rouge">&lt;&lt;</code></a></li><li><a href="#相等--和不相等-">相等 <code class="language-plaintext highlighter-rouge">==</code> 和不相等 <code class="language-plaintext highlighter-rouge">!=</code></a></li><li><a href="#常量正确">常量正确</a></li></ul></li><li><a href="#milestone-3拷贝语义和移动语义">Milestone 3：拷贝语义和移动语义</a></li><li><a href="#milestone-4问答题">Milestone 4：问答题</a></li><li><a href="#milestone-5列表初始化范围构造器可选">Milestone 5：列表初始化/范围构造器（可选）</a></li><li><a href="#milestone-6迭代器可选">Milestone 6：迭代器（可选）</a></li></ul>
+          
+          <p>本文改编自斯坦福 CS106L 的一份作业，详细的背景介绍可以参考<a href="https://web.stanford.edu/class/cs106l/assignment2.html" target="_blank">官方文档</a>。</p>
+
+<p>改版后的初始项目代码<strong>不包含迭代器的内容</strong>，所以在实现的过程中注意不要使用基于范围的 <code class="language-plaintext highlighter-rouge">for</code> 循环进行迭代。虽然使用传统的 <code class="language-plaintext highlighter-rouge">for</code> 循环处理略微繁琐，但不失为一个练习的契机。</p>
+
+<p>在完成本项目的练习后，你将有两个选择。其一，继续参考公开的教材和资料，独立完成迭代器的开发工作；其二，斯坦福的初始项目已经包含了完整的迭代器代码实现，可以直接借用，改写本项目代码，体会迭代器开发的过程。</p>
+
+<p><em>本小节视频讲解时间段 <a href="https://h8pqt7tpdf.feishu.cn/file/Kh7obHaxNoxsGWxfziqcUfFTn3d" target="_blank">01:04:22-01:15:30</a></em></p>
+
+<h2 id="milestone-0阅读">Milestone 0：阅读</h2>
+
+<p><a href="/assets/files/2023/HashMap-starter.zip">初始项目</a>包含如下文件：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>HashMap/
+	include/
+		hashmap.h 包含 HashMap 的定义，在这里添加你的定义
+		hashmap_impl.h 包含 HashMap 的实现，在这里添加你的实现
+		hashmap_iterator.h 用于后续添加迭代器的代码
+		test_settings.h 用于开关每个子任务的默认测试案例
+		rang.h 用于终端文本颜色，可忽略
+	res/
+		short_anser.txt 包含一些简短的问答
+	src/
+		main.cpp 主函数，可以在这里添加自定义测试
+		test.cpp 默认测试案例，原则上不需要修改
+		utils.cpp 斯坦福 C++ 库提取的一些使用工具，可忽略
+</code></pre></div></div>
+
+<p>初始项目代码已经完成了部分文档的编写，这些文档包含了大量零碎的知识点，需要参考 C++ 在线文档尝试理解每个部分的意思，特别是 <code class="language-plaintext highlighter-rouge">hashmap.h</code> 和 <code class="language-plaintext highlighter-rouge">hashmap_impl.h</code> 两个文件。</p>
+
+<p>只有理解了这些代码的设计意图，才能更好地完成后续任务。</p>
+
+<h2 id="milestone-1实现-rehash">Milestone 1：实现 <code class="language-plaintext highlighter-rouge">rehash()</code></h2>
+
+<p><em>本小节视频讲解时间段 <a href="https://h8pqt7tpdf.feishu.cn/file/IssCb8xvxoKuGNxxPz1coyB9nrh" target="_blank">00:13:34-00:22:55</a></em></p>
+
+<p>第一个需要你完成的函数是 <code class="language-plaintext highlighter-rouge">rehash</code>，这个函数的实现需要你对链表的使用有一定的了解，这在 <a href="https://cs101.stickmind.com/" target="_blank">CS101</a> 的作业中已经有了大量的练习。</p>
+
+<p>和 <a href="https://cs101.stickmind.com/" target="_blank">CS101</a> 链表作业的实现要求类似，<code class="language-plaintext highlighter-rouge">rehash</code> 的实现同样<strong>禁止分配任何内存</strong>，还要避免内存泄漏。只能利用现有的节点，通过指针的灵活操作来实现调整节点的目的。在实现的过程中，记得参考 <code class="language-plaintext highlighter-rouge">insert</code> 和 <code class="language-plaintext highlighter-rouge">erase</code> 的现有实现。</p>
+
+<p>默认提供了 <code class="language-plaintext highlighter-rouge">1A</code> 和 <code class="language-plaintext highlighter-rouge">1B</code> 两个测试，前者为外部测试，后者为内部测试。内部测试较为粗糙，有一定的失败机率，偶尔发生不用担心。除了这些测试，你还可以添加自己的测试案例。良好的测试，能够让你对自己的代码更有信心。</p>
+
+<p>这个任务完成后，你将对初始项目的代码有更深刻的了解。</p>
+
+<h2 id="milestone-2运算符重载和常量正确">Milestone 2：运算符重载和常量正确</h2>
+
+<p>此部分你将实现 4 个运算符重载，还有 1 个常量接口问题需要解决。在实现的过程中，记得修改 <code class="language-plaintext highlighter-rouge">test_settings.h</code> 文件，依次开启相关的测试案例。</p>
+
+<h3 id="索引-">索引 <code class="language-plaintext highlighter-rouge">[]</code></h3>
+
+<p>索引操作接收一个<strong>键</strong>（key），并返回<strong>映射值</strong>（mapped value）的一个引用。索引操作需要支持自动插入，也就是说，当键不存在时，将创建一个默认的映射值，一起组成一个新的<strong>键/映射对</strong>（key/mapped pair）插入元素。</p>
+
+<h3 id="流插入-">流插入 <code class="language-plaintext highlighter-rouge">&lt;&lt;</code></h3>
+
+<p>流插入操作将 <code class="language-plaintext highlighter-rouge">HashMap</code> 的内容输出到输出流中，输出格式可以模仿斯坦福库中的 <code class="language-plaintext highlighter-rouge">HashMap</code>：</p>
+
+<ul>
+  <li>使用类似 <code class="language-plaintext highlighter-rouge">{key1: mapped1, key2: mapped2, ...}</code> 的格式输出所有的元素</li>
+  <li>输出顺序没有要求，这符合无序映射的特性</li>
+</ul>
+
+<p>更重要的是，流插入操作支持链式插入，例如 <code class="language-plaintext highlighter-rouge">cout &lt;&lt; map1 &lt;&lt; map2 &lt;&lt; endl</code>。思考这一点在实现中如何体现。</p>
+
+<h3 id="相等--和不相等-">相等 <code class="language-plaintext highlighter-rouge">==</code> 和不相等 <code class="language-plaintext highlighter-rouge">!=</code></h3>
+
+<p>如果两个对象的键/映射对完全相同，即包含完全相同的元素，则两个对象相等；反之，则不相等。</p>
+
+<p>如果<strong>桶</strong>（bucket）大小或元素在桶中的位置不一致，不影响判断结果，只以元素本身作比较。</p>
+
+<h3 id="常量正确">常量正确</h3>
+
+<p>初始代码或你自己添加的成员函数可能不符合常量正确（const correctness）的要求。这一步的任务是找出这些接口并修复。</p>
+
+<h2 id="milestone-3拷贝语义和移动语义">Milestone 3：拷贝语义和移动语义</h2>
+
+<p>初始代码已经包含了<strong>构造函数</strong>和<strong>析构函数</strong>；这部分需要你实现拷贝语义和移动语义的几个接口：</p>
+
+<ul>
+  <li>拷贝构造函数</li>
+  <li>拷贝赋值运算符</li>
+  <li>移动构造函数</li>
+  <li>移动赋值运算符</li>
+</ul>
+
+<p>拷贝操作需要创建给定对象的相同副本；移动操作需要将给定对象的内容转嫁给当前对象。两个实现都要避免内存泄漏，并尽可能安全高效地实现代码。</p>
+
+<p>关于测试案例，<code class="language-plaintext highlighter-rouge">3A</code> 用于测试拷贝操作，<code class="language-plaintext highlighter-rouge">3B</code> 用于测试移动操作，<code class="language-plaintext highlighter-rouge">3C</code> 用于确认移动操作的效率，实现过程中要避免拷贝。</p>
+
+<h2 id="milestone-4问答题">Milestone 4：问答题</h2>
+
+<p>在 <code class="language-plaintext highlighter-rouge">res/short_answers.txt</code> 中有 10 个小问题需要你思考。这些问题有助于你更好地理解一些细节问题。</p>
+
+<h2 id="milestone-5列表初始化范围构造器可选">Milestone 5：列表初始化/范围构造器（可选）</h2>
+
+<h2 id="milestone-6迭代器可选">Milestone 6：迭代器（可选）</h2>
+        </article>
+      </div>   
+      <div class="table-of-contents">
+        <ul><li><a href="#milestone-0阅读">Milestone 0：阅读</a></li><li><a href="#milestone-1实现-rehash">Milestone 1：实现 <code class="language-plaintext highlighter-rouge">rehash()</code></a></li><li><a href="#milestone-2运算符重载和常量正确">Milestone 2：运算符重载和常量正确</a><ul><li><a href="#索引-">索引 <code class="language-plaintext highlighter-rouge">[]</code></a></li><li><a href="#流插入-">流插入 <code class="language-plaintext highlighter-rouge">&lt;&lt;</code></a></li><li><a href="#相等--和不相等-">相等 <code class="language-plaintext highlighter-rouge">==</code> 和不相等 <code class="language-plaintext highlighter-rouge">!=</code></a></li><li><a href="#常量正确">常量正确</a></li></ul></li><li><a href="#milestone-3拷贝语义和移动语义">Milestone 3：拷贝语义和移动语义</a></li><li><a href="#milestone-4问答题">Milestone 4：问答题</a></li><li><a href="#milestone-5列表初始化范围构造器可选">Milestone 5：列表初始化/范围构造器（可选）</a></li><li><a href="#milestone-6迭代器可选">Milestone 6：迭代器（可选）</a></li></ul>
+      </div>
+    </div>
+  </div><a class="u-url" href="/cs2/2023/06/13/let-us-write-a-hashmap.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="https://github.com/xuehao" target="_blank">
+            <svg class="svg-icon white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+          </a>
+        </p>
+        <p class="feed-subscribe">
+          <a href="https://space.bilibili.com/95093036" target="_blank">
+            <svg class="svg-icon white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M488.6 104.1C505.3 122.2 513 143.8 511.9 169.8V372.2C511.5 398.6 502.7 420.3 485.4 437.3C468.2 454.3 446.3 463.2 419.9 464H92C65.6 463.2 43.8 454.2 26.7 436.8C9.7 419.4 .8 396.5 0 368.2V169.8C.8 143.8 9.7 122.2 26.7 104.1C43.8 87.8 65.6 78.8 92 78H121.4L96.1 52.2C90.3 46.5 87.4 39.2 87.4 30.4C87.4 21.6 90.3 14.3 96.1 8.6C101.8 2.9 109.1 0 117.9 0C126.7 0 134 2.9 139.8 8.6L213.1 78H301.1L375.6 8.6C381.7 2.9 389.2 0 398 0C406.8 0 414.1 2.9 419.9 8.6C425.6 14.3 428.5 21.6 428.5 30.4C428.5 39.2 425.6 46.5 419.9 52.2L394.6 78L423.9 78C450.3 78.8 471.9 87.8 488.6 104.1H488.6zM449.8 173.8C449.4 164.2 446.1 156.4 439.1 150.3C433.9 144.2 425.1 140.9 416.4 140.5H96.1C86.5 140.9 78.6 144.2 72.5 150.3C66.3 156.4 63.1 164.2 62.7 173.8V368.2C62.7 377.4 66 385.2 72.5 391.7C79 398.2 86.9 401.5 96.1 401.5H416.4C425.6 401.5 433.4 398.2 439.7 391.7C446 385.2 449.4 377.4 449.8 368.2L449.8 173.8zM185.5 216.5C191.8 222.8 195.2 230.6 195.6 239.7V273C195.2 282.2 191.9 289.9 185.8 296.2C179.6 302.5 171.8 305.7 162.2 305.7C152.6 305.7 144.7 302.5 138.6 296.2C132.5 289.9 129.2 282.2 128.8 273V239.7C129.2 230.6 132.6 222.8 138.9 216.5C145.2 210.2 152.1 206.9 162.2 206.5C171.4 206.9 179.2 210.2 185.5 216.5H185.5zM377 216.5C383.3 222.8 386.7 230.6 387.1 239.7V273C386.7 282.2 383.4 289.9 377.3 296.2C371.2 302.5 363.3 305.7 353.7 305.7C344.1 305.7 336.3 302.5 330.1 296.2C323.1 289.9 320.7 282.2 320.4 273V239.7C320.7 230.6 324.1 222.8 330.4 216.5C336.7 210.2 344.5 206.9 353.7 206.5C362.9 206.9 370.7 210.2 377 216.5H377z"/></svg>
+          </a>
+        </p>
+        <p class="feed-subscribe">
+          <a href="mailto:xuehao0618@outlook.com" target="_blank">
+            <svg class="svg-icon white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"/></svg>
+          </a>
+        </p>
+      
+      </div>
+      <div class="footer-col">
+        <p><p>专注工业软件领域，分享数理、编程、模拟、可视化等内容。更多精彩，敬请关注：<a href="https://www.stickmind.com" target="_blank">stickmind.com</a>！</p>
+</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

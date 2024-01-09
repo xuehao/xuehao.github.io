@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>在 Linux 环境下学习 C 语言 | 薛浩的博客</title>
+<meta name="generator" content="Jekyll v4.3.3" />
+<meta property="og:title" content="在 Linux 环境下学习 C 语言" />
+<meta name="author" content="薛浩" />
+<meta property="og:locale" content="zh" />
+<meta name="description" content="本文介绍如何在 Linux 平台，以一种“透明”的方式学习 C 语言。" />
+<meta property="og:description" content="本文介绍如何在 Linux 平台，以一种“透明”的方式学习 C 语言。" />
+<link rel="canonical" href="http://localhost:8000/c/2019/12/21/learning-c-on-linux.html" />
+<meta property="og:url" content="http://localhost:8000/c/2019/12/21/learning-c-on-linux.html" />
+<meta property="og:site_name" content="薛浩的博客" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-12-21T00:00:00+08:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="在 Linux 环境下学习 C 语言" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"薛浩"},"dateModified":"2019-12-21T00:00:00+08:00","datePublished":"2019-12-21T00:00:00+08:00","description":"本文介绍如何在 Linux 平台，以一种“透明”的方式学习 C 语言。","headline":"在 Linux 环境下学习 C 语言","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:8000/c/2019/12/21/learning-c-on-linux.html"},"url":"http://localhost:8000/c/2019/12/21/learning-c-on-linux.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:8000/feed.xml" title="薛浩的博客" />
+
+<link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.2.1/css/all.min.css">
+<!-- MATHJAX -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script async="" id="MathJax-script" src="https://cdn.staticfile.org/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+<script>
+  MathJax = {
+    tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['\\[', '\\]']], tags: 'ams' },
+    options: { skipHtmlTags: ['noscript', 'style', 'textarea', 'pre', 'code', 'aside', 'nav'] },
+    svg: { fontCache: 'global' }
+  };
+</script></head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">薛浩的博客</a></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">在 Linux 环境下学习 C 语言</h1>
+    <p class="post-meta"><time class="dt-published" datetime="2019-12-21T00:00:00+08:00" itemprop="datePublished">
+        2019 年 12 月 21 日
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <div class="container">  
+      <div class="contents">
+        <article class="markdown-body">
+          <ul><li><a href="#创建个人-root-系统">创建个人 root 系统</a></li><li><a href="#从源码编译程序库">从源码编译程序库</a></li><li><a href="#构建包含库的-c-程序">构建包含库的 C 程序</a></li><li><a href="#关于-gcc-和-makefile">关于 GCC 和 Makefile</a></li></ul>
+          
+          <p>本文介绍如何在 Linux 平台，以一种“透明”的方式学习 C 语言。</p>
+
+<h2 id="创建个人-root-系统">创建个人 root 系统</h2>
+
+<p>所谓“个人 root”系统，其实就是避免把软件安装到系统路径。这样我们可以方便的查看 root 目录下的文件，审查所安装软件的具体行为，而不必到系统目录中查找。创建个人 root 系统还可以避免使用系统 root 权限。</p>
+
+<p>创建 root 系统目录：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">mkdir</span> ~/root <span class="c"># 用于保存非系统程序库</span>
+</code></pre></div></div>
+
+<p>将个人 root 系统目录添加到系统路径：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">mkdir</span> ~/root <span class="c"># 用于保存非系统程序库</span>
+</code></pre></div></div>
+
+<p>其实，这样的个人路径，在类似 Ubuntu 的系统中已经默认存在了，即个人文件夹下的 <code class="language-plaintext highlighter-rouge">.local</code> 目录。如果你愿意，完全可以使用该目录，而且不需要去修改系统路径。</p>
+
+<h2 id="从源码编译程序库">从源码编译程序库</h2>
+
+<p>学习 C 语言完全可以像学习 Python 那样，直接使用现成的库。在 C 语言几十年的发展过程中，除了标准库的更新外，还产生了无数质量上乘的第三方库。利用这些库，我们可以更愉快的编程了。</p>
+
+<p>下面会以 <a href="https://www.gnu.org/software/gsl/" target="_blank">GSL</a> 库为例，介绍类似第三方库的安装和使用方法，为后续学习其他的库奠定基础。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>wget http://mirrors.ustc.edu.cn/gnu/gsl/gsl-2.6.tar.gz
+<span class="nv">$ </span><span class="nb">tar </span>xvzf gsl-2.6.tar.gz
+<span class="nv">$ </span><span class="nb">cd </span>gsl-2.6
+<span class="nv">$ </span>./configure <span class="nt">--prefix</span><span class="o">=</span><span class="nv">$HOME</span>/root <span class="c"># 使用 prefix 参数指定安装目录</span>
+<span class="nv">$ </span>make <span class="o">&amp;&amp;</span> make <span class="nb">install</span>
+</code></pre></div></div>
+
+<p>该程序库将被添加到个人 root 系统，可以去目录中查看具体安装了哪些东西。</p>
+
+<h2 id="构建包含库的-c-程序">构建包含库的 C 程序</h2>
+
+<p>编写测试程序：</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 文件名：gsl_erf.c</span>
+<span class="cp">#include</span> <span class="cpf">&lt;math.h&gt;</span><span class="c1">        // erf, sqrt 等</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="c1">       // printf 等</span><span class="cp">
+#include</span> <span class="cpf">&lt;gsl/gsl_cdf.h&gt;</span><span class="cp">
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kt">double</span> <span class="n">bottom_tail</span> <span class="o">=</span> <span class="n">gsl_cdf_gaussian_P</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">.</span><span class="mi">96</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+  <span class="n">printf</span><span class="p">(</span><span class="s">"Area between [-1.96, 1.96]: %g</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">bottom_tail</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>编写 <code class="language-plaintext highlighter-rouge">Makefile</code> 文件，通过 <code class="language-plaintext highlighter-rouge">-I</code> 指定库的头文件搜索路径；通过 <code class="language-plaintext highlighter-rouge">-L</code> 指定库的搜索路径：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CFLAGS=-I${HOME}/root/include -g -Wall -std=gnu11 -O3
+LDLIBS=-L${HOME}/root/lib -lgsl -lgslcblas -lm
+</code></pre></div></div>
+
+<p>或者使用 GSL 自带的配置信息，该命令会自动计算出相关的路径：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CFLAGS=`gsl-config --cflags` -g -Wall -std=gnu11 -O3
+LDLIBS=`gsl-config --libs`
+</code></pre></div></div>
+
+<p>编译测试程序：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>make gsl_erf
+</code></pre></div></div>
+
+<p>运行测试程序：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">export </span><span class="nv">LD_LIBRARY_PATH</span><span class="o">=</span><span class="nv">$HOME</span>/root/lib:<span class="nv">$LD_LIBRARY_PATH</span> <span class="c"># 指定库路径</span>
+<span class="nv">$ </span>./gsl_erf
+Area between <span class="o">[</span><span class="nt">-1</span>.96, 1.96]: 0.950004
+</code></pre></div></div>
+
+<p>对于运行时需要连接共享库的程序，和编译过程一样，同样需要指定库的路径，可以通过修改 <code class="language-plaintext highlighter-rouge">LD_LIBRARY_PATH</code> 变量实现。</p>
+
+<h2 id="关于-gcc-和-makefile">关于 GCC 和 Makefile</h2>
+
+<p><code class="language-plaintext highlighter-rouge">Makefile</code> 编译过程的套路一般为：</p>
+
+<ul>
+  <li>设置编译器选项的变量：<code class="language-plaintext highlighter-rouge">CFLAGS</code> 为我们提供了编译器的一些选项</li>
+  <li>设置连接器选项的变量：<code class="language-plaintext highlighter-rouge">LDLIBS</code> 为我们提供了连接器的一些选项。</li>
+  <li>使用 <code class="language-plaintext highlighter-rouge">make</code> 等工具将变量转换成真正的编译和连接的命令</li>
+</ul>
+
+<p>常用编译器选项：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">选项</th>
+      <th style="text-align: center">说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">-g</td>
+      <td style="text-align: center">加入调试符号</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">-Wall</td>
+      <td style="text-align: center">添加编译器警告</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">-std=gun11</td>
+      <td style="text-align: center">编译器版本为 C11</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">-O3</td>
+      <td style="text-align: center">优化等级为 3</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">-o</td>
+      <td style="text-align: center">指定输出的文件名，默认文件名为 <code class="language-plaintext highlighter-rouge">a.out</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>常用连接器选项：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">选项</th>
+      <th style="text-align: center">说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">-I(大写的 i)</td>
+      <td style="text-align: center">添加头文件搜索路径</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">-L</td>
+      <td style="text-align: center">添加库文件搜索路径</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">-l(小写的 L)</td>
+      <td style="text-align: center">指定需要连接的库：<code class="language-plaintext highlighter-rouge">-lgsl</code> 自动连接名为 <code class="language-plaintext highlighter-rouge">libgsl.a</code> 库</td>
+    </tr>
+  </tbody>
+</table>
+        </article>
+      </div>   
+      <div class="table-of-contents">
+        <ul><li><a href="#创建个人-root-系统">创建个人 root 系统</a></li><li><a href="#从源码编译程序库">从源码编译程序库</a></li><li><a href="#构建包含库的-c-程序">构建包含库的 C 程序</a></li><li><a href="#关于-gcc-和-makefile">关于 GCC 和 Makefile</a></li></ul>
+      </div>
+    </div>
+  </div><a class="u-url" href="/c/2019/12/21/learning-c-on-linux.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="https://github.com/xuehao" target="_blank">
+            <svg class="svg-icon white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+          </a>
+        </p>
+        <p class="feed-subscribe">
+          <a href="https://space.bilibili.com/95093036" target="_blank">
+            <svg class="svg-icon white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M488.6 104.1C505.3 122.2 513 143.8 511.9 169.8V372.2C511.5 398.6 502.7 420.3 485.4 437.3C468.2 454.3 446.3 463.2 419.9 464H92C65.6 463.2 43.8 454.2 26.7 436.8C9.7 419.4 .8 396.5 0 368.2V169.8C.8 143.8 9.7 122.2 26.7 104.1C43.8 87.8 65.6 78.8 92 78H121.4L96.1 52.2C90.3 46.5 87.4 39.2 87.4 30.4C87.4 21.6 90.3 14.3 96.1 8.6C101.8 2.9 109.1 0 117.9 0C126.7 0 134 2.9 139.8 8.6L213.1 78H301.1L375.6 8.6C381.7 2.9 389.2 0 398 0C406.8 0 414.1 2.9 419.9 8.6C425.6 14.3 428.5 21.6 428.5 30.4C428.5 39.2 425.6 46.5 419.9 52.2L394.6 78L423.9 78C450.3 78.8 471.9 87.8 488.6 104.1H488.6zM449.8 173.8C449.4 164.2 446.1 156.4 439.1 150.3C433.9 144.2 425.1 140.9 416.4 140.5H96.1C86.5 140.9 78.6 144.2 72.5 150.3C66.3 156.4 63.1 164.2 62.7 173.8V368.2C62.7 377.4 66 385.2 72.5 391.7C79 398.2 86.9 401.5 96.1 401.5H416.4C425.6 401.5 433.4 398.2 439.7 391.7C446 385.2 449.4 377.4 449.8 368.2L449.8 173.8zM185.5 216.5C191.8 222.8 195.2 230.6 195.6 239.7V273C195.2 282.2 191.9 289.9 185.8 296.2C179.6 302.5 171.8 305.7 162.2 305.7C152.6 305.7 144.7 302.5 138.6 296.2C132.5 289.9 129.2 282.2 128.8 273V239.7C129.2 230.6 132.6 222.8 138.9 216.5C145.2 210.2 152.1 206.9 162.2 206.5C171.4 206.9 179.2 210.2 185.5 216.5H185.5zM377 216.5C383.3 222.8 386.7 230.6 387.1 239.7V273C386.7 282.2 383.4 289.9 377.3 296.2C371.2 302.5 363.3 305.7 353.7 305.7C344.1 305.7 336.3 302.5 330.1 296.2C323.1 289.9 320.7 282.2 320.4 273V239.7C320.7 230.6 324.1 222.8 330.4 216.5C336.7 210.2 344.5 206.9 353.7 206.5C362.9 206.9 370.7 210.2 377 216.5H377z"/></svg>
+          </a>
+        </p>
+        <p class="feed-subscribe">
+          <a href="mailto:xuehao0618@outlook.com" target="_blank">
+            <svg class="svg-icon white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"/></svg>
+          </a>
+        </p>
+      
+      </div>
+      <div class="footer-col">
+        <p><p>专注工业软件领域，分享数理、编程、模拟、可视化等内容。更多精彩，敬请关注：<a href="https://www.stickmind.com" target="_blank">stickmind.com</a>！</p>
+</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

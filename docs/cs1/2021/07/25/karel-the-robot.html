@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Karel the Robot | 薛浩的博客</title>
+<meta name="generator" content="Jekyll v4.3.3" />
+<meta property="og:title" content="Karel the Robot" />
+<meta name="author" content="薛浩" />
+<meta property="og:locale" content="zh" />
+<meta name="description" content="最近整理了斯坦福 CS106A 的 Assignment 1，走进了一个叫做 Karel 的世界。" />
+<meta property="og:description" content="最近整理了斯坦福 CS106A 的 Assignment 1，走进了一个叫做 Karel 的世界。" />
+<link rel="canonical" href="http://localhost:8000/cs1/2021/07/25/karel-the-robot.html" />
+<meta property="og:url" content="http://localhost:8000/cs1/2021/07/25/karel-the-robot.html" />
+<meta property="og:site_name" content="薛浩的博客" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-07-25T00:00:00+08:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Karel the Robot" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"薛浩"},"dateModified":"2021-07-25T00:00:00+08:00","datePublished":"2021-07-25T00:00:00+08:00","description":"最近整理了斯坦福 CS106A 的 Assignment 1，走进了一个叫做 Karel 的世界。","headline":"Karel the Robot","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:8000/cs1/2021/07/25/karel-the-robot.html"},"url":"http://localhost:8000/cs1/2021/07/25/karel-the-robot.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:8000/feed.xml" title="薛浩的博客" />
+
+<link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.2.1/css/all.min.css">
+<!-- MATHJAX -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script async="" id="MathJax-script" src="https://cdn.staticfile.org/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+<script>
+  MathJax = {
+    tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['\\[', '\\]']], tags: 'ams' },
+    options: { skipHtmlTags: ['noscript', 'style', 'textarea', 'pre', 'code', 'aside', 'nav'] },
+    svg: { fontCache: 'global' }
+  };
+</script></head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">薛浩的博客</a></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Karel the Robot</h1>
+    <p class="post-meta"><time class="dt-published" datetime="2021-07-25T00:00:00+08:00" itemprop="datePublished">
+        2021 年 7 月 25 日
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <div class="container">  
+      <div class="contents">
+        <article class="markdown-body">
+          <ul><li><a href="#问题">问题</a></li><li><a href="#过程抽象">过程抽象</a></li><li><a href="#函数调用">函数调用</a></li><li><a href="#总结">总结</a></li></ul>
+          
+          <p>最近整理了斯坦福 CS106A 的 Assignment 1，走进了一个叫做 Karel 的世界。</p>
+
+<p>原本以为这只是一个简单的上手项目，激发学生对课程的兴趣而已，所以也没怎么重视。但是做完这几个题目之后，我的观念转变了，又回头仔细看了课程中的几个关键点。</p>
+
+<p>Karel 是个经典的计算机科学教学项目，值得好好揣摩。设计这个课程的家伙，应该不仅自己掌握了计算机科学的精髓，而且还懂得怎样去做教学。所以，这真不是一个简简单单的上手项目，不然斯坦福每年也不会都用这个来教学。</p>
+
+<p>在回看时，我仔细梳理了<strong>问题求解</strong>的过程，并深入思考了课程中反复提及的<strong>自顶向下分解策略</strong>（top-down decomposition）和函数调用的<strong>前置/后置条件</strong>（pre/post condition）。结合 Assignment 可以发现，作业的设计完全就是为了强化这些概念。</p>
+
+<p>独立完成这些作业，一定会有一种豁然开朗的感觉。虽然说不清楚到底是啥感觉，但我知道，下次再遇到问题求解的时候，在大方向上，应该会更有把握，避免走太多弯路！</p>
+
+<h2 id="问题">问题</h2>
+
+<p>下面就以画棋盘那道题为例，分析一下问题求解的过程。</p>
+
+
+    <div class="admonition admonition-type-note">
+      <p class="admonition-title">NOTE</p>
+      
+      
+<p>顺便提一下，这个题整整耗了我半天时间！原因嘛，就是没有应用课程中的关键点，没有按照老师教的方法来做……细品！</p>
+
+
+    </div>
+
+<p>问题很简单，就是让 Karel 从起点，每放置完一个 Beeper 跳一个格子。问题的难点主要体现在两个方面：</p>
+
+<ol>
+  <li>只能使用 Karel 编程语言，不能使用 Java 里面的东西，特别是变量；</li>
+  <li>地图不固定，不仅要满足多行多列，甚至单行单列，都要能够应付。</li>
+</ol></code></pre>
+    <div class="admonition admonition-type-info">
+      <p class="admonition-title">INFO</p>
+      
+      
+<p><strong>Karel 编程语言</strong></p>
+
+<p>所谓 Karel 编程语言，就是 Karel 的世界了，它只包含有限的几个程序构件块。你想用高级一点的东西？对不起，没有！</p>
+
+<p>Why？我觉得，只有这样的限制才会迫使你去思考：为了解决问题，编程语言的那些奇技淫巧是否真有必要？</p>
+
+
+    </div>
+
+<h2 id="过程抽象">过程抽象</h2>
+
+<p>这个策略，也可以称为<strong>逐步求精</strong>。但课件里，直译过来不是分而治之吗？至于为什么我不翻译为分而治之，是因为这个词，我把它给了更重要的递归策略。后续课程会专门训练递归思维。</p>
+
+<p>对于棋盘这个问题，使用逐步求精的方法，很容易这么去思考：<strong>先让 Karel 从起点往上，走完所有的格子</strong>。暂且把放置 Beeper 的任务放一放，以便简化问题求解。那么首先需要解决的问题是：</p>
+
+<blockquote>
+  <p>Q: Karel 撞墙后如何移动到上一层？</p>
+
+  <p>A: 我们可以用一个 <code class="language-plaintext highlighter-rouge">moveUp</code> 函数来抽象这个过程。</p>
+</blockquote>
+
+<p>继续细分，又有两种情况：一种是面朝东撞墙，另一种是面朝西撞墙。所以，我们可以使用一个 <code class="language-plaintext highlighter-rouge">if ... else ...</code> 条件分支，来区分这两种情况：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="kt">void</span> <span class="nf">moveUp</span><span class="o">()</span> <span class="o">{</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">facingEast</span><span class="o">())</span> <span class="o">{</span>
+    <span class="c1">// 向东的情况</span>
+  <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+    <span class="c1">// 向西的情况</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>现在，我们再解决移动到上一格的问题。但在移动之前，其实还需要检测上方是否到顶。这就顺便解决了第二个问题：</p>
+
+<blockquote>
+  <p>Q: Karel 何时停止？</p>
+
+  <p>A: 如果到顶了，那么不作任何操作；如果没到顶，那么移动到上一层并改变方向（即转身向上、走一步到上层、再转身改变方向，三个步骤一气呵成）。</p>
+</blockquote>
+
+<p>这一步无论向东还是向西，除了转动方向不同外，程序结构是一模一样的：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// pre-condition: 前方有障碍</span>
+<span class="c1">// post-condition: 跳到上一格，并转身</span>
+<span class="kd">private</span> <span class="kt">void</span> <span class="nf">moveUp</span><span class="o">()</span> <span class="o">{</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">facingEast</span><span class="o">())</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">leftIsClear</span><span class="o">())</span> <span class="o">{</span> <span class="c1">// 对于这个条件检测</span>
+      <span class="n">turnLeft</span><span class="o">();</span>
+      <span class="n">move</span><span class="o">();</span>
+      <span class="n">turnLeft</span><span class="o">();</span>
+    <span class="o">}</span>
+  <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">rightIsClear</span><span class="o">())</span> <span class="o">{</span> <span class="c1">// 思考函数调用的时机问题</span>
+      <span class="n">turnRight</span><span class="o">();</span>
+      <span class="n">move</span><span class="o">();</span>
+      <span class="n">turnRight</span><span class="o">();</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>注意，每次移动到上一层会改变之前的方向，可以看作是 Karel 又到了一个新的起点。这一步很重要，因为条件没变，所以可以复用很多过程。</p>
+
+<p><code class="language-plaintext highlighter-rouge">moveUp</code> 函数的抽象过程是通用的，能够满足所有的情况。但要仔细思考函数调用的时机！至此，我们的程序已经能够让 Karel 从起点走到终点，并且适用于所有的地图。</p>
+
+<h2 id="函数调用">函数调用</h2>
+
+<p>接下来，我们进一步解决 Karel 如何放置 Beeper 的问题。</p>
+
+<p>有点编程经验的人，可能会想到设置一个 FLAG 标记，来记录间隔放置的状态。但这样不符合题目的要求，因为要求只能使用 Karal 编程语言，所以不存在变量的概念。</p>
+
+<p>仔细看一下 Karel 提供的构件块，目前只能使用过程的方式来确定 Karel 跳过一个格子放置一个 Beeper 的事情，即</p>
+
+<ul>
+  <li>走一步</li>
+  <li>再走一步</li>
+  <li>放置一个 Beeper</li>
+</ul>
+
+<p>把这三个动作当成一个整体来考虑，然后通过循环控制结构，直到顶部结束。大概的过程如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">while</span> <span class="o">(</span><span class="n">frontIsClear</span><span class="o">())</span> <span class="o">{</span>
+  <span class="n">move</span><span class="o">();</span>
+  <span class="n">move</span><span class="o">();</span>
+  <span class="n">putBeeper</span><span class="o">();</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>这个时候，我们应该思考函数调用这件事。</p>
+
+<blockquote>
+  <p>Q: 函数可以随便调用吗？如果不是，调用函数的条件是什么呢？</p>
+</blockquote>
+
+<p>为了回答这个问题，依次来分析每个函数调用的前置后置条件。</p>
+
+<ul>
+  <li>
+    <p>走第一步调用 <code class="language-plaintext highlighter-rouge">move</code> 函数：前置条件有循环控制条件来保证，而后置条件可能出现撞墙的情况，所以我们还需要利用之前写好的 <code class="language-plaintext highlighter-rouge">moveUp</code> 函数重写上述过程：</p>
+
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">while</span> <span class="o">(</span><span class="n">frontIsClear</span><span class="o">())</span> <span class="o">{</span> <span class="c1">// pre-con</span>
+    <span class="n">move</span><span class="o">();</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">frontIsClear</span><span class="o">())</span> <span class="o">{</span>  <span class="c1">// post-con</span>
+        <span class="n">move</span><span class="o">();</span> <span class="c1">// 无遮挡情况</span>
+        <span class="n">putBeeper</span><span class="o">();</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+        <span class="n">moveUp</span><span class="o">();</span> <span class="c1">// 有遮挡情况</span>
+        <span class="n">putBeeper</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>无遮挡情况走第二步同样调用 <code class="language-plaintext highlighter-rouge">move</code> 函数：前置条件是无遮挡情况的，移动会很顺利，紧接着就应该放置一个 Beeper。但是，后置条件同样可能会出现遮挡的情况，所以要追加一个处理过程，让 Karel 恢复自由状态：</p>
+
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">while</span> <span class="o">(</span><span class="n">frontIsClear</span><span class="o">())</span> <span class="o">{</span>
+    <span class="n">move</span><span class="o">();</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">frontIsClear</span><span class="o">())</span> <span class="o">{</span>
+        <span class="n">move</span><span class="o">();</span>
+        <span class="n">putBeeper</span><span class="o">();</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">frontIsBlocked</span><span class="o">())</span> <span class="o">{</span> <span class="c1">// 结束后有遮挡的情况，恢复Karel自由身</span>
+        <span class="n">moveUp</span><span class="o">();</span>
+        <span class="n">move</span><span class="o">();</span>
+        <span class="n">putBeeper</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+        <span class="n">moveUp</span><span class="o">();</span>
+        <span class="n">putBeeper</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>有遮挡情况走第二步调用的是 <code class="language-plaintext highlighter-rouge">moveUp</code> 函数：前置条件是有遮挡情况的，可能出现到顶的情况，也就是说 <code class="language-plaintext highlighter-rouge">moveUp</code> 调用会失败。所以是否向上或者放置 Beeper，我们需要再加一个判断：</p>
+
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">while</span> <span class="o">(</span><span class="n">frontIsClear</span><span class="o">())</span> <span class="o">{</span>
+    <span class="n">move</span><span class="o">();</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">frontIsClear</span><span class="o">())</span> <span class="o">{</span>
+        <span class="n">move</span><span class="o">();</span>
+        <span class="n">putBeeper</span><span class="o">();</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">frontIsBlocked</span><span class="o">())</span> <span class="o">{</span>
+        <span class="n">moveUp</span><span class="o">();</span>
+        <span class="k">if</span><span class="o">(</span><span class="n">frontIsClear</span><span class="o">()){</span> <span class="c1">// moveUp失败的情况</span>
+            <span class="n">move</span><span class="o">();</span>
+            <span class="n">putBeeper</span><span class="o">();</span>
+        <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+        <span class="n">moveUp</span><span class="o">();</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">frontIsClear</span><span class="o">())</span> <span class="o">{</span> <span class="c1">// moveUp失败的情况</span>
+        <span class="n">putBeeper</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>至此我们完成了整个过程的调用分析，对每个函数的前置后置条件加以区分和约束，使程序最终达到稳定。</p>
+
+<p>回答前面的问题：</p>
+
+<blockquote>
+  <p>Q: 函数可以随便调用吗？如果不是，调用函数的条件是什么呢？</p>
+
+  <p>A: 函数是对过程的一个抽象，每次调用都必须检查前置条件和后置条件。</p>
+</blockquote>
+
+<p>最后，我们将整个过程放置到 <code class="language-plaintext highlighter-rouge">fixGeneralCase</code> 函数中，对于只有一列的情况，我们做一个 <code class="language-plaintext highlighter-rouge">fixOneColumnCase</code> 函数单独处理就好。</p>
+
+<h2 id="总结">总结</h2>
+
+<p><img src="/assets/img/2021/CheckerboardKarel.gif" alt="CheckerboardKarel" /></p>
+
+<p>完整的代码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/*
+ * File: CheckerboardKarel.java
+ * ----------------------------
+ * When you finish writing it, the CheckerboardKarel class should draw
+ * a checkerboard using beepers, as described in Assignment 1.  You
+ * should make sure that your program works for all of the sample
+ * worlds supplied in the starter folder.
+ */</span>
+
+<span class="kn">import</span> <span class="nn">stanford.karel.*</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">CheckerboardKarel</span> <span class="kd">extends</span> <span class="nc">SuperKarel</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">putBeeper</span><span class="o">();</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">frontIsBlocked</span><span class="o">())</span> <span class="o">{</span>
+      <span class="n">fixOneColumnCase</span><span class="o">();</span> <span class="c1">// Special case</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+      <span class="n">fixGeneralCase</span><span class="o">();</span> <span class="c1">// General case</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+
+  <span class="c1">// pre-condition: front is blocked</span>
+  <span class="c1">// post-condition: front is blocked</span>
+  <span class="kd">private</span> <span class="kt">void</span> <span class="nf">fixOneColumnCase</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">turnLeft</span><span class="o">();</span>
+    <span class="k">while</span> <span class="o">(</span><span class="n">frontIsClear</span><span class="o">())</span> <span class="o">{</span>
+      <span class="n">move</span><span class="o">();</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">frontIsClear</span><span class="o">())</span> <span class="o">{</span>
+        <span class="n">move</span><span class="o">();</span>
+        <span class="n">putBeeper</span><span class="o">();</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+
+  <span class="c1">// pre-condition: front is clear</span>
+  <span class="c1">// post-condition: front is blocked</span>
+  <span class="kd">private</span> <span class="kt">void</span> <span class="nf">fixGeneralCase</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">while</span> <span class="o">(</span><span class="n">frontIsClear</span><span class="o">())</span> <span class="o">{</span> <span class="c1">// General case</span>
+      <span class="c1">// pre-condition: front is clear</span>
+      <span class="n">move</span><span class="o">();</span>
+      <span class="c1">// post-condition: front is clear/blocked</span>
+
+      <span class="c1">// So, you need to deal with two conditions.</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">frontIsClear</span><span class="o">())</span> <span class="o">{</span>
+        <span class="c1">// condition 1: front is clear</span>
+        <span class="n">move</span><span class="o">();</span>
+        <span class="n">putBeeper</span><span class="o">();</span>
+        <span class="c1">// post-condition: front is clear/blocked</span>
+
+        <span class="c1">// Again, you need to double check the blocked condition.</span>
+        <span class="c1">// pre-condition: front is blocked</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">frontIsBlocked</span><span class="o">())</span> <span class="o">{</span>
+          <span class="n">moveUp</span><span class="o">();</span>
+          <span class="k">if</span> <span class="o">(</span><span class="n">frontIsClear</span><span class="o">())</span> <span class="o">{</span> <span class="c1">// just in case moveUp() is failure</span>
+            <span class="n">move</span><span class="o">();</span>
+            <span class="n">putBeeper</span><span class="o">();</span>
+          <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="cm">/* post-condition: front is clear */</span>
+      <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+        <span class="c1">// condition 2: front is blocked</span>
+        <span class="n">moveUp</span><span class="o">();</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">frontIsClear</span><span class="o">())</span> <span class="c1">// just in case moveUp() is failure</span>
+          <span class="n">putBeeper</span><span class="o">();</span>
+        <span class="cm">/* post-condition: front is clear */</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+
+  <span class="c1">// pre-condition: front is blocked</span>
+  <span class="c1">// post-condition: move to the next row and change direction</span>
+  <span class="kd">private</span> <span class="kt">void</span> <span class="nf">moveUp</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">facingEast</span><span class="o">())</span> <span class="o">{</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">leftIsClear</span><span class="o">())</span> <span class="o">{</span>
+        <span class="n">turnLeft</span><span class="o">();</span>
+        <span class="n">move</span><span class="o">();</span>
+        <span class="n">turnLeft</span><span class="o">();</span>
+      <span class="o">}</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">rightIsClear</span><span class="o">())</span> <span class="o">{</span>
+        <span class="n">turnRight</span><span class="o">();</span>
+        <span class="n">move</span><span class="o">();</span>
+        <span class="n">turnRight</span><span class="o">();</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div></code></pre>
+        </article>
+      </div>   
+      <div class="table-of-contents">
+        <ul><li><a href="#问题">问题</a></li><li><a href="#过程抽象">过程抽象</a></li><li><a href="#函数调用">函数调用</a></li><li><a href="#总结">总结</a></li></ul>
+      </div>
+    </div>
+  </div><a class="u-url" href="/cs1/2021/07/25/karel-the-robot.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="https://github.com/xuehao" target="_blank">
+            <svg class="svg-icon white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+          </a>
+        </p>
+        <p class="feed-subscribe">
+          <a href="https://space.bilibili.com/95093036" target="_blank">
+            <svg class="svg-icon white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M488.6 104.1C505.3 122.2 513 143.8 511.9 169.8V372.2C511.5 398.6 502.7 420.3 485.4 437.3C468.2 454.3 446.3 463.2 419.9 464H92C65.6 463.2 43.8 454.2 26.7 436.8C9.7 419.4 .8 396.5 0 368.2V169.8C.8 143.8 9.7 122.2 26.7 104.1C43.8 87.8 65.6 78.8 92 78H121.4L96.1 52.2C90.3 46.5 87.4 39.2 87.4 30.4C87.4 21.6 90.3 14.3 96.1 8.6C101.8 2.9 109.1 0 117.9 0C126.7 0 134 2.9 139.8 8.6L213.1 78H301.1L375.6 8.6C381.7 2.9 389.2 0 398 0C406.8 0 414.1 2.9 419.9 8.6C425.6 14.3 428.5 21.6 428.5 30.4C428.5 39.2 425.6 46.5 419.9 52.2L394.6 78L423.9 78C450.3 78.8 471.9 87.8 488.6 104.1H488.6zM449.8 173.8C449.4 164.2 446.1 156.4 439.1 150.3C433.9 144.2 425.1 140.9 416.4 140.5H96.1C86.5 140.9 78.6 144.2 72.5 150.3C66.3 156.4 63.1 164.2 62.7 173.8V368.2C62.7 377.4 66 385.2 72.5 391.7C79 398.2 86.9 401.5 96.1 401.5H416.4C425.6 401.5 433.4 398.2 439.7 391.7C446 385.2 449.4 377.4 449.8 368.2L449.8 173.8zM185.5 216.5C191.8 222.8 195.2 230.6 195.6 239.7V273C195.2 282.2 191.9 289.9 185.8 296.2C179.6 302.5 171.8 305.7 162.2 305.7C152.6 305.7 144.7 302.5 138.6 296.2C132.5 289.9 129.2 282.2 128.8 273V239.7C129.2 230.6 132.6 222.8 138.9 216.5C145.2 210.2 152.1 206.9 162.2 206.5C171.4 206.9 179.2 210.2 185.5 216.5H185.5zM377 216.5C383.3 222.8 386.7 230.6 387.1 239.7V273C386.7 282.2 383.4 289.9 377.3 296.2C371.2 302.5 363.3 305.7 353.7 305.7C344.1 305.7 336.3 302.5 330.1 296.2C323.1 289.9 320.7 282.2 320.4 273V239.7C320.7 230.6 324.1 222.8 330.4 216.5C336.7 210.2 344.5 206.9 353.7 206.5C362.9 206.9 370.7 210.2 377 216.5H377z"/></svg>
+          </a>
+        </p>
+        <p class="feed-subscribe">
+          <a href="mailto:xuehao0618@outlook.com" target="_blank">
+            <svg class="svg-icon white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"/></svg>
+          </a>
+        </p>
+      
+      </div>
+      <div class="footer-col">
+        <p><p>专注工业软件领域，分享数理、编程、模拟、可视化等内容。更多精彩，敬请关注：<a href="https://www.stickmind.com" target="_blank">stickmind.com</a>！</p>
+</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
